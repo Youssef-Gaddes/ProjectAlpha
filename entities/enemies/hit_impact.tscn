@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://brccmg6kep042"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vd777"]
+emission_shape = 1
+emission_sphere_radius = 0.2
+direction = Vector3(1, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
+scale_max = 3.0
+color = Color(0.9254902, 0.23529412, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sgxj1"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0, 0.10980392, 1)
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_rpuoj"]
+material = SubResource("StandardMaterial3D_sgxj1")
+size = Vector2(0.1, 0.1)
+
+[node name="hit_impact" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6282938, 0)
+emitting = false
+amount = 20
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB(-0.1439752, -1.5940298, -1.1322557, 1.9900024, 2.2808018, 2.488789)
+trail_lifetime = 4.67
+process_material = SubResource("ParticleProcessMaterial_vd777")
+draw_pass_1 = SubResource("QuadMesh_rpuoj")
