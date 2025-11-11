@@ -1,6 +1,7 @@
-[gd_scene load_steps=86 format=4 uid="uid://bilfcbv2i3nhq"]
+[gd_scene load_steps=88 format=4 uid="uid://bilfcbv2i3nhq"]
 
 [ext_resource type="Script" uid="uid://dirtfwl4bk6nq" path="res://entities/enemies/enemy.gd" id="1_7k104"]
+[ext_resource type="PackedScene" uid="uid://clavheqhxclwi" path="res://UI/health_bar.tscn" id="2_wqcwe"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_30cji"]
 resource_name = "Black"
@@ -11302,7 +11303,7 @@ _data = {
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7xaro"]
-radius = 0.2734375
+radius = 0.17285156
 height = 1.940918
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7k104"]
@@ -11448,6 +11449,9 @@ graph_offset = Vector2(-113, -157)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ar8e5"]
 size = Vector3(1, 1.7744751, 1)
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_wqcwe"]
+viewport_path = NodePath("SubViewport")
+
 [node name="Enemy" type="CharacterBody3D"]
 collision_layer = 4
 collision_mask = 7
@@ -11501,7 +11505,7 @@ bones/5/parent = 4
 bones/5/rest = Transform3D(0.9999999, -0.00011671041, 7.415356e-07, 0.00011667839, 0.9998395, 0.017913755, -2.832138e-06, -0.017913751, 0.99983966, 5.820766e-13, 0.0021629182, -9.5496944e-11)
 bones/5/enabled = true
 bones/5/position = Vector3(5.820766e-13, 0.0021629182, -9.5496944e-11)
-bones/5/rotation = Quaternion(0.0027652143, 7.2141525e-08, 4.068466e-06, 0.9999962)
+bones/5/rotation = Quaternion(-0.0063716397, 5.8758064e-07, 4.6368834e-05, 0.9999797)
 bones/5/scale = Vector3(0.9999999, 0.99999994, 1.0000001)
 bones/6/name = "Neck"
 bones/6/parent = 5
@@ -11515,7 +11519,7 @@ bones/7/parent = 6
 bones/7/rest = Transform3D(0.9999998, 1.6885911e-05, -0.00055098167, -1.8894138e-05, 0.9999934, -0.003645015, 0.0005509164, 0.0036450247, 0.9999932, -4.9476512e-12, 0.00076728663, -1.0111762e-10)
 bones/7/enabled = true
 bones/7/position = Vector3(-4.9476512e-12, 0.00076728663, -1.0111762e-10)
-bones/7/rotation = Quaternion(-0.022871332, -0.0002754847, 0.000112253845, 0.99973845)
+bones/7/rotation = Quaternion(-0.003578921, -0.00027541927, 1.756618e-05, 0.9999936)
 bones/7/scale = Vector3(0.99999994, 1, 1)
 bones/8/name = "Shoulder.L"
 bones/8/parent = 5
@@ -11529,14 +11533,14 @@ bones/9/parent = 8
 bones/9/rest = Transform3D(0.36806506, -0.92386764, -0.104864694, -0.16009939, -0.17406915, 0.97163165, -0.9159126, -0.34083495, -0.21197946, -1.862645e-10, 0.0006563328, -3.7252902e-11)
 bones/9/enabled = true
 bones/9/position = Vector3(-1.862645e-10, 0.0006563328, -3.7252902e-11)
-bones/9/rotation = Quaternion(0.67422944, -0.4042447, -0.3876315, -0.4813967)
+bones/9/rotation = Quaternion(0.6642052, -0.40835518, -0.38521373, -0.4936475)
 bones/9/scale = Vector3(0.9999998, 0.99999994, 0.99999994)
 bones/10/name = "LowerArm.L"
 bones/10/parent = 9
 bones/10/rest = Transform3D(0.9303354, 0.36658472, -0.009574549, -0.3520948, 0.9002507, 0.256082, 0.10249523, -0.23487097, 0.9666077, 5.494803e-10, 0.001819079, -2.0954757e-10)
 bones/10/enabled = true
 bones/10/position = Vector3(5.494803e-10, 0.001819079, -2.0954757e-10)
-bones/10/rotation = Quaternion(-0.12212112, -0.029415457, -0.18433733, 0.9748031)
+bones/10/rotation = Quaternion(-0.12454637, -0.028956678, -0.18440998, 0.9744962)
 bones/10/scale = Vector3(0.99999994, 1, 1)
 bones/11/name = "Wrist.L"
 bones/11/parent = 10
@@ -11557,14 +11561,14 @@ bones/13/parent = 12
 bones/13/rest = Transform3D(0.9889904, -0.13324317, -0.064375125, 0.13656248, 0.9893569, 0.050235767, 0.0569964, -0.058473926, 0.9966605, 3.7252902e-11, 0.0012436743, -6.519258e-11)
 bones/13/enabled = true
 bones/13/position = Vector3(3.7252902e-11, 0.0012436743, -6.519258e-11)
-bones/13/rotation = Quaternion(-0.04076491, -0.032128636, 0.067051314, 0.99639857)
+bones/13/rotation = Quaternion(-0.023101086, -0.029914374, 0.06779735, 0.996983)
 bones/13/scale = Vector3(1, 0.99999994, 0.99999994)
 bones/14/name = "Index3.L"
 bones/14/parent = 13
 bones/14/rest = Transform3D(0.9984271, -0.052247897, 0.020329954, 0.048939727, 0.98913896, 0.13859674, -0.027350536, -0.13738383, 0.99014014, -2.3283063e-11, 0.00032753736, 1.16415315e-11)
 bones/14/enabled = true
 bones/14/position = Vector3(-2.3283063e-11, 0.00032753736, 1.16415315e-11)
-bones/14/rotation = Quaternion(-0.0789678, 0.011659046, 0.025057146, 0.99649405)
+bones/14/rotation = Quaternion(-0.064081945, 0.012102039, 0.025519587, 0.99754494)
 bones/14/scale = Vector3(0.9999999, 1, 0.99999994)
 bones/15/name = "Index4.L"
 bones/15/parent = 14
@@ -11585,14 +11589,14 @@ bones/17/parent = 16
 bones/17/rest = Transform3D(0.99863064, 0.007675399, 0.05174865, -0.01682856, 0.98373353, 0.1788447, -0.049534164, -0.17947066, 0.9825155, -1.2805685e-11, 0.0012387839, -1.1373231e-10)
 bones/17/enabled = true
 bones/17/position = Vector3(-1.2805685e-11, 0.0012387839, -1.1373231e-10)
-bones/17/rotation = Quaternion(-0.089830786, 0.025400847, -0.0061243623, 0.99561423)
+bones/17/rotation = Quaternion(-0.08965242, 0.025361469, -0.0060888147, 0.99563164)
 bones/17/scale = Vector3(0.99999994, 1.0000001, 1)
 bones/18/name = "Middle3.L"
 bones/18/parent = 17
 bones/18/rest = Transform3D(0.9992116, 0.035910368, 0.016923308, -0.03891526, 0.9702924, 0.23878509, -0.007845697, -0.23925546, 0.97092485, 1.8626451e-11, 0.00040393544, 1.6530975e-10)
 bones/18/enabled = true
 bones/18/position = Vector3(1.8626451e-11, 0.00040393544, 1.6530975e-10)
-bones/18/rotation = Quaternion(-0.12018016, 0.0061843367, -0.018860886, 0.9925537)
+bones/18/rotation = Quaternion(-0.11989505, 0.006116503, -0.018875921, 0.9925883)
 bones/18/scale = Vector3(0.9999999, 1, 0.9999999)
 bones/19/name = "Middle4.L"
 bones/19/parent = 18
@@ -11613,14 +11617,14 @@ bones/21/parent = 20
 bones/21/rest = Transform3D(0.94579613, 0.045558576, 0.32154933, -0.09816506, 0.98390144, 0.14933628, -0.30956933, -0.17280659, 0.9350425, -5.5879353e-11, 0.0012290282, -4.0978193e-10)
 bones/21/enabled = true
 bones/21/position = Vector3(-5.5879353e-11, 0.0012290282, -4.0978193e-10)
-bones/21/rotation = Quaternion(-0.08193629, 0.1604658, -0.036559377, 0.98295504)
+bones/21/rotation = Quaternion(-0.08193291, 0.16051698, -0.03655428, 0.9829472)
 bones/21/scale = Vector3(0.99999994, 0.9999999, 0.9999999)
 bones/22/name = "Ring3.L"
 bones/22/parent = 21
 bones/22/rest = Transform3D(0.99332535, 0.07269884, 0.08955263, -0.09171209, 0.9686362, 0.23093939, -0.069954894, -0.23761106, 0.9688381, -4.1909514e-11, 0.00033938847, -1.6996636e-10)
 bones/22/enabled = true
 bones/22/position = Vector3(-4.1909514e-11, 0.00033938847, -1.6996636e-10)
-bones/22/rotation = Quaternion(-0.11788195, 0.040102042, -0.041274253, 0.99135876)
+bones/22/rotation = Quaternion(-0.118164204, 0.040226366, -0.04146295, 0.9913122)
 bones/22/scale = Vector3(1, 1.0000001, 0.99999994)
 bones/23/name = "Ring4.L"
 bones/23/parent = 22
@@ -11669,14 +11673,14 @@ bones/29/parent = 28
 bones/29/rest = Transform3D(0.9466764, -0.15964952, -0.2798493, 0.17142484, 0.9850336, 0.01795152, 0.27279496, -0.0649674, 0.9598761, -7.45058e-10, 0.00082309655, 3.72529e-10)
 bones/29/enabled = true
 bones/29/position = Vector3(-7.45058e-10, 0.00082309655, 3.72529e-10)
-bones/29/rotation = Quaternion(0.03296067, -0.124571905, 0.08502652, 0.9880111)
+bones/29/rotation = Quaternion(-0.00181151, -0.13460544, 0.08434069, 0.98730177)
 bones/29/scale = Vector3(0.9999998, 0.99999994, 1)
 bones/30/name = "Thumb3.L"
 bones/30/parent = 29
 bones/30/rest = Transform3D(0.9424334, -0.29738247, -0.1529143, 0.33039308, 0.89862, 0.28865638, 0.051570497, -0.3225613, 0.9451427, 3.72529e-10, 0.00032080116, 2.2351741e-10)
 bones/30/enabled = true
 bones/30/position = Vector3(3.72529e-10, 0.00032080116, 2.2351741e-10)
-bones/30/rotation = Quaternion(-0.098199815, -0.05519488, 0.1275396, 0.9854157)
+bones/30/rotation = Quaternion(-0.1361889, -0.05351493, 0.1493768, 0.97789335)
 bones/30/scale = Vector3(0.9999999, 1, 1)
 bones/31/name = "Shoulder.R"
 bones/31/parent = 5
@@ -11690,14 +11694,14 @@ bones/32/parent = 31
 bones/32/rest = Transform3D(0.4288851, 0.8880649, 0.16552332, -0.12297584, -0.124128796, 0.9846159, 0.8949493, -0.44264254, 0.055973537, -2.6077032e-10, 0.0006563323, -1.862645e-10)
 bones/32/enabled = true
 bones/32/position = Vector3(-2.6077032e-10, 0.0006563323, -1.862645e-10)
-bones/32/rotation = Quaternion(-0.6259655, -0.30785054, -0.43900096, 0.5662803)
+bones/32/rotation = Quaternion(-0.6148767, -0.31167358, -0.4346589, 0.5795325)
 bones/32/scale = Vector3(0.9999999, 0.9999998, 0.99999976)
 bones/33/name = "LowerArm.R"
 bones/33/parent = 32
 bones/33/rest = Transform3D(0.7158032, -0.50109965, -0.48633835, 0.6668096, 0.69728774, 0.26297304, 0.20734206, -0.512532, 0.83325887, -4.0978193e-10, 0.0018190793, -6.239861e-10)
 bones/33/enabled = true
 bones/33/position = Vector3(-4.0978193e-10, 0.0018190793, -6.239861e-10)
-bones/33/rotation = Quaternion(-0.20790455, -0.19347501, 0.3238851, 0.90246415)
+bones/33/rotation = Quaternion(-0.21216364, -0.19285324, 0.32374763, 0.90165496)
 bones/33/scale = Vector3(1, 1, 1)
 bones/34/name = "Wrist.R"
 bones/34/parent = 33
@@ -11830,42 +11834,42 @@ bones/52/parent = 51
 bones/52/rest = Transform3D(0.9478078, 0.16952822, 0.27003774, -0.1665, 0.9854461, -0.03425788, -0.27191532, -0.012491395, 0.96224004, -5.5879353e-11, 0.00082309754, -5.2154064e-10)
 bones/52/enabled = true
 bones/52/position = Vector3(-5.5879353e-11, 0.00082309754, -5.2154064e-10)
-bones/52/rotation = Quaternion(0.040351175, 0.12260567, -0.085199356, 0.987968)
+bones/52/rotation = Quaternion(0.004861826, 0.137528, -0.08501436, 0.9868308)
 bones/52/scale = Vector3(0.9999999, 0.99999994, 0.99999994)
 bones/53/name = "Thumb3.R"
 bones/53/parent = 52
 bones/53/rest = Transform3D(0.95604646, 0.23825349, 0.17091066, -0.28853822, 0.868142, 0.40382567, -0.052161854, -0.43539035, 0.8987293, 7.4505804e-11, 0.00032080192, 1.4901161e-10)
 bones/53/enabled = true
 bones/53/position = Vector3(7.4505804e-11, 0.00032080192, 1.4901161e-10)
-bones/53/rotation = Quaternion(-0.09411781, 0.05571629, -0.12265481, 0.9864043)
+bones/53/rotation = Quaternion(-0.20658037, 0.057655748, -0.13535929, 0.9673046)
 bones/53/scale = Vector3(0.99999994, 1, 1)
 bones/54/name = "UpperLeg.L"
 bones/54/parent = 1
 bones/54/rest = Transform3D(-0.40304244, 0.16230834, -0.9006494, -0.18778726, -0.9778734, -0.09218509, -0.8957075, 0.1319795, 0.424593, 0.0012013827, 0.0009874933, 0.00018380948)
 bones/54/enabled = true
 bones/54/position = Vector3(0.0012013827, 0.0009874933, 0.00018380948)
-bones/54/rotation = Quaternion(-0.53573614, 0.020490553, 0.83574325, -0.11874423)
+bones/54/rotation = Quaternion(-0.5361015, 0.013855736, 0.8371206, -0.10785348)
 bones/54/scale = Vector3(0.9999996, 0.99999946, 0.9999733)
 bones/55/name = "LowerLeg.L"
 bones/55/parent = 54
 bones/55/rest = Transform3D(7.1525574e-07, 0.4509837, 0.89253217, -1.4901161e-08, 0.89253205, -0.45098376, -1, 3.0926893e-07, 6.4510897e-07, 1.7229468e-10, 0.0043297927, -4.6566126e-11)
 bones/55/enabled = true
 bones/55/position = Vector3(1.7229468e-10, 0.0043297927, -4.6566126e-11)
-bones/55/rotation = Quaternion(0.18543051, 0.68236, -0.1854304, 0.6823606)
+bones/55/rotation = Quaternion(0.16887335, 0.6866451, -0.16887325, 0.6866457)
 bones/55/scale = Vector3(1, 0.9999999, 1)
 bones/56/name = "UpperLeg.R"
 bones/56/parent = 1
 bones/56/rest = Transform3D(-0.33228368, -0.11879041, 0.93564385, 0.37214774, -0.92806244, 0.014335489, 0.8666565, 0.35297054, 0.35257828, -0.001210447, 0.0009874933, 0.0001838077)
 bones/56/enabled = true
 bones/56/position = Vector3(-0.001210447, 0.0009874933, 0.0001838077)
-bones/56/rotation = Quaternion(0.5551755, 0.12475474, 0.80503094, 0.16775496)
+bones/56/rotation = Quaternion(0.55695873, 0.11619782, 0.8075136, 0.15561742)
 bones/56/scale = Vector3(0.9999999, 0.9999996, 0.9999732)
 bones/57/name = "LowerLeg.R"
 bones/57/parent = 56
 bones/57/rest = Transform3D(8.940698e-07, -0.39228544, -0.91984373, 0, 0.9198437, -0.39228544, 1.0000001, 3.507305e-07, 8.224044e-07, -3.7252902e-11, 0.0043297927, -1.3969838e-11)
 bones/57/enabled = true
 bones/57/position = Vector3(-3.7252902e-11, 0.0043297927, -1.3969838e-11)
-bones/57/rotation = Quaternion(0.16612037, -0.68731636, 0.16612023, 0.68731683)
+bones/57/rotation = Quaternion(0.14727964, -0.69159836, 0.14727955, 0.69159895)
 bones/57/scale = Vector3(1.0000001, 1.0000001, 1.0000001)
 bones/58/name = "Foot.L"
 bones/58/parent = 0
@@ -11897,7 +11901,7 @@ bones/61/rotation = Quaternion(-0.0026737682, -3.409373e-05, 9.115905e-08, 0.999
 bones/61/scale = Vector3(1, 1, 1)
 
 [node name="Head" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(0.9999845, -0.0023956785, -0.0050031412, -0.0051668864, -0.07404644, -0.997241, 0.0020185977, 0.9972518, -0.07405773, 3.903753e-05, -0.0009349304, 0.015471003)
+transform = Transform3D(0.9999847, -0.002391447, -0.004954505, -0.005158006, -0.094289266, -0.9955312, 0.001913597, 0.995542, -0.094300225, 3.9026298e-05, -0.0008968496, 0.015475702)
 bone_name = "Head"
 bone_idx = 7
 
@@ -11905,7 +11909,7 @@ bone_idx = 7
 transform = Transform3D(1, 3.2526065e-19, 4.5138983e-36, -3.2526065e-19, 1, 1.3877788e-17, 0, -1.3877788e-17, 1, -8.673617e-21, 0.0025427258, -1.3877787e-19)
 
 [node name="Index4_L" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.06407058, -0.18417254, 0.9808031, -0.9977878, 0.029245716, -0.059688367, -0.017691148, -0.98245853, -0.18563907, 0.0026118364, -0.00055268983, 0.007981012)
+transform = Transform3D(-0.06484375, -0.09151299, 0.9936899, -0.99788654, 0.010027725, -0.064194016, -0.0040896456, -0.99575293, -0.09196986, 0.0028199716, -0.0006602919, 0.00801427)
 bone_name = "Index4.L"
 bone_idx = 15
 
@@ -11913,7 +11917,7 @@ bone_idx = 15
 transform = Transform3D(1, 8.6736174e-19, -1.8948969e-35, -8.6736174e-19, 1, -2.1846674e-17, 0, 2.1846674e-17, 1, -6.938894e-20, 0.000265756, -8.3266725e-19)
 
 [node name="Middle4_L" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.06815478, -0.27182183, 0.9599308, -0.9972105, -0.01075548, -0.07384721, 0.030398019, -0.9622876, -0.27033088, 0.0026476043, -0.0002573121, 0.0078062373)
+transform = Transform3D(-0.070330046, -0.24384868, 0.96725917, -0.9963753, -0.029327895, -0.07984066, 0.04783696, -0.96936965, -0.24090245, 0.0028306588, -0.00036830633, 0.007835143)
 bone_name = "Middle4.L"
 bone_idx = 19
 
@@ -11921,7 +11925,7 @@ bone_idx = 19
 transform = Transform3D(1, 6.938894e-18, 1.3877788e-17, -6.938894e-18, 1, -4.553649e-17, -1.3877788e-17, 4.553649e-17, 1, 0, 0.0002736408, 4.1633362e-19)
 
 [node name="Ring4_L" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.34034988, -0.4071856, 0.8475616, -0.9382122, 0.20706497, -0.27727354, -0.06259853, -0.8895638, -0.45250136, 0.0025905345, 0.0001262572, 0.008000411)
+transform = Transform3D(-0.34012678, -0.38236353, 0.8591335, -0.93886304, 0.1899285, -0.28716215, -0.053373568, -0.9042813, -0.4235871, 0.0027680332, 1.898286e-05, 0.008020243)
 bone_name = "Ring4.L"
 bone_idx = 23
 
@@ -11929,7 +11933,7 @@ bone_idx = 23
 transform = Transform3D(1, -2.7755576e-17, 1.733337e-33, 2.7755576e-17, 1, -6.2450045e-17, 0, 6.2450045e-17, 1, 0, 0.00031505365, -4.1633362e-19)
 
 [node name="Pinky4_L" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.04222093, -0.5171062, 0.85487884, -0.99257815, 0.11937076, 0.023184434, -0.11403619, -0.8475564, -0.5183089, 0.0025584782, 0.00028436494, 0.0082431855)
+transform = Transform3D(-0.04052502, -0.49296433, 0.86910444, -0.99457407, 0.10330444, 0.012220025, -0.09580612, -0.86389464, -0.49447662, 0.0027296336, 0.00018188161, 0.008258848)
 bone_name = "Pinky4.L"
 bone_idx = 27
 
@@ -11937,7 +11941,7 @@ bone_idx = 27
 transform = Transform3D(1, 1.3877788e-17, 5.2041704e-18, -1.3877788e-17, 1, 2.1900884e-17, -5.2041704e-18, -2.1900884e-17, 1, -1.3877787e-19, 0.00022030526, 0)
 
 [node name="Thumb3_L" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.13233808, -0.07542078, 0.9883308, -0.9578544, -0.246736, -0.147086, 0.25495043, -0.9661431, -0.039589524, 0.0024888867, -0.0010032943, 0.0089011835)
+transform = Transform3D(-0.15904331, -0.1808216, 0.97057086, -0.96497077, -0.17929377, -0.19152892, 0.20865017, -0.967035, -0.14597213, 0.0026184323, -0.0010863222, 0.008934257)
 bone_name = "Thumb3.L"
 bone_idx = 30
 
@@ -11945,7 +11949,7 @@ bone_idx = 30
 transform = Transform3D(1, -2.7755576e-17, 2.7755576e-17, 2.7755576e-17, 1, 6.2450045e-17, -2.7755576e-17, -6.2450045e-17, 1, -2.7755575e-19, 0.00033027818, 1.3877787e-19)
 
 [node name="Index4_R" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.3515861, 0.3337963, -0.87462366, 0.88519603, -0.18550326, -0.4266326, -0.30465427, -0.92421144, -0.23025456, -0.0018802508, -0.0022320126, 0.008303462)
+transform = Transform3D(-0.36002937, 0.3081194, -0.88059115, 0.8798945, -0.2015952, -0.43028292, -0.31010187, -0.9297419, -0.1985321, -0.0020519674, -0.0023196263, 0.008351684)
 bone_name = "Index4.R"
 bone_idx = 38
 
@@ -11953,7 +11957,7 @@ bone_idx = 38
 transform = Transform3D(1, 1.540744e-33, -5.551115e-17, 0, 1, 2.7755576e-17, 5.551115e-17, -2.7755576e-17, 1, -5.551115e-19, 0.000265756, -4.1633362e-19)
 
 [node name="Middle4_R" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.3565071, 0.367843, -0.85883284, 0.9116147, -0.06434504, -0.40597656, -0.20459746, -0.9276588, -0.3123915, -0.002012013, -0.0019171905, 0.008017348)
+transform = Transform3D(-0.36218345, 0.34203768, -0.867083, 0.9080448, -0.08052565, -0.41105825, -0.21042, -0.93622935, -0.28142017, -0.0021916497, -0.0020097676, 0.008063913)
 bone_name = "Middle4.R"
 bone_idx = 42
 
@@ -11961,7 +11965,7 @@ bone_idx = 42
 transform = Transform3D(1, 1.3877788e-17, 5.551115e-17, -1.3877788e-17, 1, -4.8572257e-17, -5.551115e-17, 4.8572257e-17, 1, 0, 0.0002736408, -1.3877787e-19)
 
 [node name="Ring4_R" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.60272384, 0.4424261, -0.6640654, 0.75775474, 0.05654941, -0.65008384, -0.2500616, -0.8950201, -0.36933386, -0.00207857, -0.0016135749, 0.008104804)
+transform = Transform3D(-0.60953885, 0.41747558, -0.6739259, 0.7534975, 0.040892713, -0.6561769, -0.24637921, -0.9077674, -0.3394922, -0.002255811, -0.0017046614, 0.008147903)
 bone_name = "Ring4.R"
 bone_idx = 46
 
@@ -11969,7 +11973,7 @@ bone_idx = 46
 transform = Transform3D(1, -1.3877788e-17, 1.6653345e-16, 1.3877788e-17, 1, -3.1225023e-17, -1.6653345e-16, 3.1225023e-17, 1, 2.7755575e-19, 0.00031505365, 1.3877787e-19)
 
 [node name="Pinky4_R" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.34231845, 0.5660337, -0.74994904, 0.91620976, 0.024168223, -0.39996797, -0.20827065, -0.82402736, -0.5268788, -0.0021257412, -0.0013899918, 0.008285713)
+transform = Transform3D(-0.3481027, 0.5430062, -0.76417845, 0.91257095, 0.009707592, -0.40880144, -0.21456356, -0.8396722, -0.49891073, -0.0022979937, -0.0014779622, 0.008326148)
 bone_name = "Pinky4.R"
 bone_idx = 50
 
@@ -11977,7 +11981,7 @@ bone_idx = 50
 transform = Transform3D(1, -8.6736174e-19, -1.6653345e-16, 8.6736174e-19, 1, 1.1319071e-16, 1.6653345e-16, -1.1319071e-16, 1, 0, 0.00022030526, -2.7755575e-19)
 
 [node name="Thumb3_R" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(-0.3179918, 0.31980646, -0.89252704, 0.62569803, -0.6364835, -0.45098734, -0.7123075, -0.70186293, 0.0022945702, -0.001724636, -0.0024388132, 0.009516896)
+transform = Transform3D(-0.37050334, 0.53101885, -0.7620667, 0.63789064, -0.4509011, -0.6243255, -0.6751454, -0.71743035, -0.17167114, -0.0018430321, -0.0024951207, 0.009556268)
 bone_name = "Thumb3.R"
 bone_idx = 53
 
@@ -11985,7 +11989,7 @@ bone_idx = 53
 transform = Transform3D(1, -1.6653345e-16, -1.6653345e-16, 1.6653345e-16, 1, 1.110223e-16, 1.6653345e-16, -1.110223e-16, 1, 0, 0.00033027818, 2.7755575e-19)
 
 [node name="LowerLeg_L" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(0.6058029, -0.18623202, -0.7734988, 0.79012936, 0.25445867, 0.5575956, 0.092978954, -0.9489822, 0.3013071, 0.002156375, -0.00015193823, 0.005072968)
+transform = Transform3D(0.6061395, -0.16886093, -0.77721334, 0.78993434, 0.24140143, 0.5636448, 0.0924405, -0.9556202, 0.27971944, 0.0020698896, -8.620278e-05, 0.0050496245)
 bone_name = "LowerLeg.L"
 bone_idx = 55
 
@@ -11993,7 +11997,7 @@ bone_idx = 55
 transform = Transform3D(1, 5.551115e-17, 3.081488e-33, -5.551115e-17, 1, 5.551115e-17, 0, -5.551115e-17, 1, -2.7755575e-19, 0.005111207, -2.7755575e-19)
 
 [node name="LowerLeg_R" type="BoneAttachment3D" parent="Mesh/RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(0.99322593, 0.008348102, -0.115672275, 0.1150479, 0.054604094, 0.9918576, 0.014595838, -0.998473, 0.053274997, -0.00072657596, -0.0027354248, 0.0053257006)
+transform = Transform3D(0.993249, 0.010887841, -0.11526148, 0.114882745, 0.03042907, 0.9929123, 0.014317607, -0.99947727, 0.028973382, -0.000741083, -0.002615677, 0.0052738586)
 bone_name = "LowerLeg.R"
 bone_idx = 57
 
@@ -12084,3 +12088,16 @@ monitorable = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 transform = Transform3D(0.9416685, 0, 0, 0, 1, 0, 0, 0, 1.5462135, 0.009593487, 0.8874706, 0.98814726)
 shape = SubResource("BoxShape3D_ar8e5")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+target_desired_distance = 0.5
+path_max_distance = 3.01
+avoidance_enabled = true
+radius = 1.5
+neighbor_distance = 0.2
+debug_enabled = true
+
+[node name="Sprite3D" parent="." instance=ExtResource("2_wqcwe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.030229092, 2.0644145, 0.01345855)
+texture = SubResource("ViewportTexture_wqcwe")

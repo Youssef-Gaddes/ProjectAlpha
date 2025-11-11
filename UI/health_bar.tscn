@@ -1,0 +1,76 @@
+[gd_scene load_steps=7 format=3 uid="uid://clavheqhxclwi"]
+
+[ext_resource type="Script" uid="uid://7kd11wst71pq" path="res://UI/health_bar.gd" id="1_6f3ms"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_6f3ms"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0yf5l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tqipt"]
+bg_color = Color(0.88714725, 0.16571936, 0, 1)
+border_color = Color(0.5834488, 0.12955773, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0.37823164, 6.0464254e-07, 4.813075e-08, 0.33333334)
+shadow_size = 1
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qh381"]
+bg_color = Color(0.24477634, 0.24477643, 0.24477628, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+shadow_color = Color(0, 0, 0, 0.27450982)
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xoxfh"]
+bg_color = Color(0.82605994, 0.82606006, 0.8260599, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="Sprite3D" type="Sprite3D"]
+billboard = 1
+texture = SubResource("ViewportTexture_6f3ms")
+script = ExtResource("1_6f3ms")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(120, 5)
+
+[node name="healthBar" type="ProgressBar" parent="SubViewport"]
+z_index = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/background = SubResource("StyleBoxEmpty_0yf5l")
+theme_override_styles/fill = SubResource("StyleBoxFlat_tqipt")
+value = 50.0
+show_percentage = false
+
+[node name="damageBar" type="ProgressBar" parent="SubViewport/healthBar"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_qh381")
+theme_override_styles/fill = SubResource("StyleBoxFlat_xoxfh")
+value = 70.0
+show_percentage = false
+
+[node name="Timer" type="Timer" parent="SubViewport/healthBar"]
+wait_time = 0.9
+one_shot = true
+
+[connection signal="timeout" from="SubViewport/healthBar/Timer" to="." method="_on_timer_timeout"]
