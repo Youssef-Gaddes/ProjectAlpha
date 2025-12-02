@@ -55,7 +55,7 @@ points = PackedVector3Array(0.01, 0.01, 0.02, 0.01, 0.01, 0, -0.01, 0.01, 0.02, 
 [resource]
 item/0/name = "Cube"
 item/0/mesh = SubResource("ArrayMesh_38nkg")
-item/0/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/mesh_transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 item/0/mesh_cast_shadow = 1
 item/0/shapes = [SubResource("ConvexPolygonShape3D_0xm2m"), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)]
 item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)

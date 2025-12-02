@@ -11,8 +11,9 @@ extends CharacterBody3D
 
 @export_group("Combat")
 @export var attack_damage: Array[float] = [10.0, 15.0, 25.0]
-@export var attack_duration: float = 0.8667 / 1.5
-@export var attack_speed_multiplier: float = 0.3
+@export var attack_duration: Array[float] = [0.8667, 1.0, 1.5333]
+@export var attack_speed: float = 2
+@export var attack_speed_multiplier: float = 0.4
 @export var max_combo: int = 3
 @export var combo_window: float = 0.25
 @export var hitbox_activation_delay: float = 0.21 / 1.5
@@ -62,6 +63,9 @@ func _ready():
 	current_health = max_health
 	anim_state.travel("Idle")
 	_setup_hitbox()
+	attack_duration[0] = attack_duration[0]/attack_speed
+	attack_duration[1] = attack_duration[1]/attack_speed
+	attack_duration[2] = attack_duration[2]/attack_speed
 
 func _setup_hitbox():
 	if hitbox:
@@ -173,13 +177,14 @@ func _state_attack(delta: float):
 		_interrupt_attack()
 		_change_state(PlayerState.DODGE)
 		return
-	
-	# Slow movement during attack
-	var input = _get_movement_input()
-	if input.length() > idle_threshold:
-		_move_with_input(input, speed * attack_speed_multiplier, delta, false)  # false = no rotation
+
+	if attack_timer >= attack_duration[attack_index-1]-0.08:
+		velocity.x = attack_dir.x * 6
+		velocity.z = attack_dir.z * 6
 	else:
-		_apply_friction(delta)
+		velocity.x = attack_dir.x * 0.6
+		velocity.z = attack_dir.z * 0.6
+		
 	
 	# Queue combo
 	if attack_timer <= combo_window and Input.is_action_just_pressed("attack"):
@@ -187,8 +192,8 @@ func _state_attack(delta: float):
 	
 	# End attack
 	if attack_timer <= 0:
-		if combo_queued and attack_index < max_combo:
-			_continue_combo()
+		if combo_queued:
+			_continue_combo()  # Always continue if queued (loops back to attack 1)
 		else:
 			_end_attack()
 
@@ -256,7 +261,7 @@ func _change_state(new_state: PlayerState):
 # === COMBAT SYSTEM ===
 func _start_attack():
 	attack_index = 1 if attack_index == 0 else attack_index
-	attack_timer = attack_duration
+	attack_timer = attack_duration[attack_index-1]
 	combo_queued = false
 	
 	# Lock attack direction
@@ -271,16 +276,25 @@ func _start_attack():
 	
 	# Play animation and activate hitbox
 	_play_animation("Punch" + str(attack_index))
-	hitbox_timer = hitbox_activation_delay + hitbox_active_duration
+	hitbox_timer = attack_duration[attack_index-1]
 	_spawn_swing_particle()
 
 func _continue_combo():
-	attack_index += 1
-	attack_timer = attack_duration
+	if attack_index == max_combo:
+		attack_index =1
+		attack_dir = get_mouse_direction()
+		if attack_dir == Vector3.ZERO:
+			attack_dir = -global_transform.basis.z
+		look_at(global_position - attack_dir, Vector3.UP)
+		rotation.x = 0
+		rotation.z = 0
+	else:
+		attack_index += 1
+	attack_timer = attack_duration[attack_index-1]
 	combo_queued = false
 	
 	_play_animation("Punch" + str(attack_index))
-	hitbox_timer = hitbox_activation_delay + hitbox_active_duration
+	hitbox_timer = attack_duration[attack_index-1]-0.2
 	_spawn_swing_particle()
 
 func _interrupt_attack():
@@ -290,7 +304,6 @@ func _interrupt_attack():
 	attack_timer = 0
 	_deactivate_hitbox()
 	hitbox_timer = 0
-	get_tree().get_first_node_in_group('player_atttack_particle').queue_free()
 	print("Attack interrupted!")
 
 func _end_attack():
@@ -326,17 +339,15 @@ func _start_dodge():
 	dodge_timer = dodge_duration
 	
 	# Disable collisions during dodge (i-frames)
-	set_collision_mask_value(3, false)
-	set_collision_layer_value(1, false)  # Enemy bodies (layer 3)
-	$Hurtbox.set_collision_layer_value(11, false)  # Player hurtbox (layer 11) - can't be hit
+	set_collision_mask_value(3, false)  # Enemy bodies (layer 3)
+	$Hurtbox.set_collision_layer_value(6, false)  # Player hurtbox (layer 6) - can't be hit
 	
 	_play_animation("Roll")
 
 func _end_dodge():
 	# Re-enable collisions
 	set_collision_mask_value(3, true)
-	set_collision_layer_value(1, true) 
-	$Hurtbox.set_collision_layer_value(11, true)
+	$Hurtbox.set_collision_layer_value(6, true)
 	
 	velocity = Vector3.ZERO
 	_change_state(PlayerState.IDLE)
@@ -354,7 +365,7 @@ func _update_hitbox(delta: float):
 
 func _activate_hitbox():
 	hitbox_active = true
-	hitbox_collision.disabled = false
+	hitbox_collision.set_deferred('disabled', false)
 	hit_enemies.clear()
 
 func _deactivate_hitbox():
@@ -379,7 +390,7 @@ func _on_hitbox_area_entered(area: Area3D):
 
 # === HEALTH SYSTEM ===
 func take_damage(damage: float, knockback_dir: Vector3):
-	if is_invulnerable or current_state == PlayerState.DODGE or current_state == PlayerState.DEAD:
+	if is_invulnerable or current_state == PlayerState.DODGE:
 		return
 	
 	current_health -= damage
@@ -485,8 +496,7 @@ func _spawn_swing_particle():
 	var particle = swing_particle_scene.instantiate()
 	add_child(particle)
 	particle.position = Vector3(0, 1, 1)
-	while attack_timer == 0:
-		particle.queue_free()
-	await get_tree().create_timer(attack_duration).timeout
+	
+	await get_tree().create_timer(attack_duration[attack_index-1]).timeout
 	if is_instance_valid(particle):
 		particle.queue_free()
