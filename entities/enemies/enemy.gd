@@ -390,7 +390,6 @@ func _transition_to(new_state: State) -> void:
 		State.DEAD:
 			if effect_marker.visible == true:
 				_exec_done()
-			effect_marker.visible = false
 			_stop_flash()
 			_disable_hitbox()
 			_play_animation("Die")

@@ -134,7 +134,7 @@ func _await_judgment():
 		get_parent().add_child(new_instance)
 
 func _execute():
-	if not executables.is_empty() and judgment>=execute_cost :
+	if (executables.is_empty() == false) and judgment>=execute_cost :
 		judgment -= execute_cost
 		get_tree().get_first_node_in_group('UI')._update_judgment_bars()
 		for i in executables:
