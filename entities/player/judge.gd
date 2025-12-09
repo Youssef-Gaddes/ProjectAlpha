@@ -9,7 +9,7 @@ extends CharacterBody3D
 @export var idle_threshold: float = 0.1
 
 @export_group("Combat")
-@export var attack_damage: Array[float] = [20.0, 30.0, 50.0]
+@export var attack_damage: Array[float] = [200.0, 30.0, 50.0]
 @export var attack_duration: Array[float] = [3, 2.98, 3]
 @export var attack_speed: float = 2
 @export var attack_speed_multiplier: float = 0.4
@@ -59,6 +59,14 @@ extends CharacterBody3D
 @onready var hitbox: Area3D = $Hitbox
 @onready var hitbox_collision: CollisionShape3D = $Hitbox/AttackHitbox
 @onready var circle: PackedScene = preload('res://entities/player/await_judgement.tscn')
+@onready var ui: CanvasLayer
+
+# === VERDICT ===
+var verdict:bool = false
+var detected_entities: Array[CharacterBody3D] = []
+var current_verdict: CharacterBody3D
+var held_timer: float = 0.0
+const TAP_DURATION_THRESHOLD: float = 0.6 # Seconds to differentiate tap from hold
 
 # === STATE MACHINE ===
 enum PlayerState { IDLE, WALK, RUN, ATTACK, DODGE, HIT, DEAD, HEAVY_WINDUP, HEAVY_ATTACK }
@@ -94,7 +102,8 @@ var is_invulnerable: bool = false
 
 # === INITIALIZATION ===
 func _ready():
-	print(circle)
+	ui = get_tree().get_first_node_in_group('UI')
+	verdict = false
 	add_to_group("player")
 	current_health = max_health
 	anim_state.travel("Idle")
@@ -110,6 +119,48 @@ func _setup_hitbox():
 
 # === MAIN LOOP ===
 func _physics_process(delta):
+	if verdict and not detected_entities.is_empty():
+		if current_verdict != get_closest_entity() and current_verdict != null:
+			current_verdict.verdict_indicator.visible = false
+		current_verdict = get_closest_entity()
+		current_verdict.verdict_indicator.visible = true
+		ui.show_verdict()
+	elif detected_entities.is_empty() and current_verdict != null:
+		current_verdict.verdict_indicator.visible = false
+		current_verdict = null
+		ui.hide_verdict()
+	
+	if Input.is_action_pressed("kill"):
+		held_timer += delta
+	
+	if verdict and current_verdict != null and Input.is_action_just_pressed("kill"):
+		held_timer = 0.0 # Reset timer for a new press
+	
+	if Input.is_action_just_released("kill"):
+		if held_timer < TAP_DURATION_THRESHOLD and current_verdict != null:
+			current_verdict._transition_to(current_verdict.State.DEAD)
+		# Add your single-press logic here (e.g., shoot, use item once)
+		else:
+			get_parent()._kill_all()
+			# Logic for when a hold action concludes (e.g., place building)
+		held_timer = 0.0 # Reset timer after deciding
+	
+	if Input.is_action_pressed("spare"):
+		held_timer += delta
+	
+	if verdict and current_verdict != null and Input.is_action_just_pressed("spare"):
+		held_timer = 0.0 # Reset timer for a new press
+	
+	if Input.is_action_just_released("spare"):
+		if held_timer < TAP_DURATION_THRESHOLD and current_verdict != null:
+			current_verdict._transition_to(current_verdict.State.SPARED)
+		# Add your single-press logic here (e.g., shoot, use item once)
+		else:
+			get_parent()._spare_all()
+
+			# Logic for when a hold action concludes (e.g., place building)
+		held_timer = 0.0 # Reset timer after deciding
+		
 	if Input.is_action_just_pressed("ability_1"):
 		_execute()
 	if Input.is_action_just_pressed("ability_2"):
@@ -138,10 +189,41 @@ func _execute():
 		judgment -= execute_cost
 		get_tree().get_first_node_in_group('UI')._update_judgment_bars()
 		for i in executables:
-			print(i, ' has been executed')
 			i.exec_die()
 		executables.clear()
-		print('executable empty :', executables)
+
+# === VERDICT ===
+func _verdict_start():
+	$VerdictArea/CollisionShape3D.set_deferred('disabled',false)
+	verdict = true
+	
+func _on_verdict_area_body_entered(body: Node3D) -> void:
+	if body.is_in_group("enemy"):  # Filter by group
+		detected_entities.append(body)
+func _on_verdict_area_body_exited(body: Node3D) -> void:
+	if body.is_in_group("enemy"):
+		var idx := detected_entities.find(body)
+		if idx != -1:
+			detected_entities.remove_at(idx)
+
+
+func get_closest_entity() -> CharacterBody3D:
+	if detected_entities.is_empty():
+		return null
+	
+	var closest: CharacterBody3D = null
+	var closest_distance: float = INF
+	
+	for entity in detected_entities:
+		if not is_instance_valid(entity):  # Safety check
+			continue
+		
+		var distance: float = global_position.distance_to(entity.global_position)
+		if distance < closest_distance:
+			closest_distance = distance
+			closest = entity
+	
+	return closest
 
 # === STATE MACHINE ===
 func _update_state_machine(delta: float):
@@ -676,7 +758,6 @@ func _on_hitbox_area_entered(area: Area3D):
 	if enemy.health <= (exec_percentage*enemy.max_health)/100 and enemy.health > 0:
 		if enemy not in executables:
 			executables.append(enemy)
-			print('new enemy added :',enemy,'  executables :', executables)
 			enemy._exec_ready()
 
 
@@ -815,7 +896,7 @@ func flash_red(duration := 0.15):
 
 func die():
 	_change_state(PlayerState.DEAD)
-	print("Player died!")
+
 
 # === MOVEMENT HELPERS ===
 func _get_movement_input() -> Vector2:

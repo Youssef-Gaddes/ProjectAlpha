@@ -7,8 +7,11 @@ extends CanvasLayer
 @onready var j_bar4: ProgressBar = $Control/MarginContainer/VBoxContainer/HBoxContainer/judgment_bar_4
 @onready var j_bar5: ProgressBar = $Control/MarginContainer/VBoxContainer/HBoxContainer/judgment_bar_5
 @onready var bars:Array[ProgressBar] = [j_bar1,j_bar2,j_bar3,j_bar4,j_bar5]
+@onready var kill_spare: MarginContainer = $Control/MarginContainer/VBoxContainer/KillSpare
+
 
 func _ready() -> void:
+	kill_spare.visible = false
 	health_bar.max_value = player.max_health
 	health_bar.value = player.current_health
 	for i in range(bars.size()):
@@ -16,6 +19,12 @@ func _ready() -> void:
 		bars[i].max_value = player.max_judgment
 func _process(_delta: float) -> void:
 	health_bar.value = player.current_health
+
+func show_verdict():
+	kill_spare.visible = true
+
+func hide_verdict():
+	kill_spare.visible = false
 
 func _update_judgment_bars():
 	var p_judgment = player.judgment

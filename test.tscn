@@ -1,5 +1,6 @@
-[gd_scene load_steps=19 format=4 uid="uid://ddgfi5vn8fttw"]
+[gd_scene load_steps=18 format=4 uid="uid://ddgfi5vn8fttw"]
 
+[ext_resource type="Script" uid="uid://byvh1vkuefrb1" path="res://combat_map.gd" id="1_00tp4"]
 [ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/judge.tscn" id="1_xersf"]
 [ext_resource type="PackedScene" uid="uid://co40qlblv3tjg" path="res://camera_3d.tscn" id="2_8uh7m"]
 [ext_resource type="Texture2D" uid="uid://cceyjwfmgcrhp" path="res://tiles/Floor/8/8_diffuseOriginal.bmp" id="3_xersf"]
@@ -9,8 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://blw3re02d1xqt" path="res://tiles/Floor/8/8_edge.bmp" id="7_0m0f1"]
 [ext_resource type="Texture2D" uid="uid://bx2douy6lyhxx" path="res://tiles/Floor/8/8_smoothness.bmp" id="8_b0q6j"]
 [ext_resource type="PackedScene" uid="uid://1fpbgm5usmiw" path="res://UI/ui.tscn" id="10_00tp4"]
-[ext_resource type="PackedScene" uid="uid://bd22nw3xibvr0" path="res://entities/enemies/enemy_1/enemy_1.tscn" id="10_77dp3"]
-[ext_resource type="PackedScene" uid="uid://683rthte6ka" path="res://entities/player/await_judgement.tscn" id="11_77dp3"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_ppyta"]
 vertices = PackedVector3Array(-54.17545, 0.35586268, -47.26291, -54.17545, 0.35586268, 46.98709, 54.07455, 0.35586268, 46.98709, 54.07455, 0.35586268, -47.26291)
@@ -76,6 +75,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_frfwh")
 
 [node name="Test" type="Node3D"]
+script = ExtResource("1_00tp4")
 
 [node name="Judge" parent="." instance=ExtResource("1_xersf")]
 
@@ -114,17 +114,36 @@ skeleton = NodePath("")
 
 [node name="CanvasLayer" parent="." instance=ExtResource("10_00tp4")]
 
-[node name="enemy_1" parent="." instance=ExtResource("10_77dp3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2872086, 0, -15.354299)
+[node name="SpawPoints" type="Node3D" parent="."]
 
-[node name="enemy_2" parent="." instance=ExtResource("10_77dp3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.512136, 0, -15.354299)
+[node name="SpawnPoint" type="Marker3D" parent="SpawPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -9.113)
+gizmo_extents = 1.7
 
-[node name="enemy_3" parent="." instance=ExtResource("10_77dp3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6074476, 0, -15.354299)
+[node name="SpawnPoint5" type="Marker3D" parent="SpawPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.1690235, 1, -9.113)
+gizmo_extents = 1.7
 
-[node name="enemy_4" parent="." instance=ExtResource("10_77dp3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2872086, 0, -20.120005)
+[node name="SpawnPoint6" type="Marker3D" parent="SpawPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8619452, 1, -13.339182)
+gizmo_extents = 1.7
 
-[node name="await_judgement" parent="." instance=ExtResource("11_77dp3")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -2.3608265, 0, 0)
+[node name="SpawnPoint7" type="Marker3D" parent="SpawPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7154627, 1, -11.76928)
+gizmo_extents = 1.7
+
+[node name="SpawnPoint8" type="Marker3D" parent="SpawPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -12.688985)
+gizmo_extents = 1.7
+
+[node name="SpawnPoint2" type="Marker3D" parent="SpawPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.447863, 1, -9.113)
+gizmo_extents = 1.7
+
+[node name="SpawnPoint3" type="Marker3D" parent="SpawPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.296856, 1, -9.113)
+gizmo_extents = 1.7
+
+[node name="SpawnPoint4" type="Marker3D" parent="SpawPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.330636, 1, -9.113)
+gizmo_extents = 1.7

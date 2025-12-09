@@ -58,13 +58,18 @@ extends CharacterBody3D
 @onready var anim_state: AnimationNodeStateMachinePlayback = anim_tree.get("parameters/playback") if anim_tree else null
 @onready var hitbox_area: Area3D = $Hitbox if has_node("Hitbox") else null
 @onready var hitbox_shape: CollisionShape3D = $Hitbox/CollisionShape3D if has_node("Hitbox/CollisionShape3D") else null
+@onready var hurtbox_shape: CollisionShape3D = $Hurtbox/CollisionShape3D
 @onready var health_bar: Sprite3D = $Sprite3D if has_node("Sprite3D") else null
 @onready var dmg_label: Sprite3D = $damage_number if has_node("damage_number") else null
 @onready var mesh: MeshInstance3D = $enemy/Armature/Skeleton3D/Ch25 if has_node("enemy/Armature/Skeleton3D/Ch25") else null
 @onready var effect_marker: Marker3D = $effect_marker
+@onready var ui:CanvasLayer
+@onready var verdict_indicator: MeshInstance3D = $verdict_indicator
+
+# === VERDICT ===
 
 # === STATE MACHINE ===
-enum State { IDLE, CHASE, WALK, WINDUP, ATTACKING, RECOVERY, HURT, DEAD, STUNNED }
+enum State { IDLE, CHASE, WALK, WINDUP, ATTACKING, RECOVERY, HURT, DEAD, STUNNED, DOWNED, SPARED }
 var state: State = State.IDLE
 
 # === ATTACK STATE ===
@@ -102,6 +107,7 @@ var health: float
 # =====================================================================
 
 func _ready() -> void:
+	ui=get_tree().get_first_node_in_group('UI')
 	effect_marker.visible = false
 	health = max_health
 	arc_direction = 1 if randf() < 0.5 else -1
@@ -162,7 +168,10 @@ func _setup_material() -> void:
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
 		return
-	
+	if state == State.DOWNED:
+		return
+	if state == State.SPARED:
+		return
 	velocity.y = -9.8
 	
 	_update_timers(delta)
@@ -345,7 +354,7 @@ func _transition_to(new_state: State) -> void:
 	if state in [State.WINDUP, State.ATTACKING, State.RECOVERY]:
 		_disable_hitbox()
 	if state in [State.HURT] and stunned == true:
-		if new_state != State.DEAD:
+		if new_state != State.DOWNED:
 			new_state = State.STUNNED
 		
 	
@@ -387,14 +396,22 @@ func _transition_to(new_state: State) -> void:
 			_disable_hitbox()
 			_play_animation("Hit")
 		
-		State.DEAD:
+		State.DOWNED:
 			if effect_marker.visible == true:
 				_exec_done()
 			_stop_flash()
 			_disable_hitbox()
+			_disable_hurtbox()
+			_play_animation("Kneel")
+		
+		State.DEAD:
 			_play_animation("Die")
 			_die()
-	
+		
+		State.SPARED:
+			_play_animation("Idle")
+			_spare()
+signal downed
 
 # =====================================================================
 # ANIMATION CALLBACKS
@@ -519,6 +536,10 @@ func _disable_hitbox() -> void:
 	if hitbox_shape:
 		hitbox_shape.set_deferred('disabled', true)
 
+func _disable_hurtbox() -> void:
+	if hurtbox_shape:
+		hurtbox_shape.set_deferred('disabled', true)
+
 func _on_hitbox_entered(area: Area3D) -> void:
 	if hit_player_this_attack:
 		return
@@ -575,7 +596,7 @@ func _follow_path(speed: float, delta: float) -> void:
 		_rotate_towards_direction(final_dir, delta)
 
 func _on_velocity_computed(safe_velocity: Vector3) -> void:
-	if state in [State.WINDUP, State.ATTACKING, State.RECOVERY, State.HURT, State.DEAD]:
+	if state in [State.WINDUP, State.ATTACKING, State.RECOVERY, State.HURT, State.DEAD, State.DOWNED]:
 		return
 	
 	velocity.x = safe_velocity.x
@@ -654,7 +675,7 @@ func _stop_flash() -> void:
 # =====================================================================
 
 func take_damage(damage: float, knockback_dir: Vector3) -> void:
-	if state == State.DEAD:
+	if state == State.DEAD or state == State.DOWNED:
 		return
 	
 	health -= damage
@@ -676,9 +697,20 @@ func take_damage(damage: float, knockback_dir: Vector3) -> void:
 	_transition_to(State.HURT)
 	
 	if health <= 0:
-		_transition_to(State.DEAD)
+		_transition_to(State.DOWNED)
+		downed.emit(self)
+
+func _spare() -> void:
+	get_parent()._on_enemy_spared(self)
+	collision_layer = 0
+	collision_mask = 0
+	nav_agent.avoidance_enabled = false
+	$Hurtbox/CollisionShape3D.set_deferred('disabled', true)
+
+
 
 func _die() -> void:
+	get_parent()._on_enemy_killed(self)
 	collision_layer = 0
 	collision_mask = 0
 	nav_agent.avoidance_enabled = false

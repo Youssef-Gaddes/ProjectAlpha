@@ -39,12 +39,74 @@ layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 2
 
+[node name="KillSpare" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 490
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 140
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/KillSpare"]
+layout_mode = 2
+
+[node name="HboxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/KillSpare/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/KillSpare/VBoxContainer/HboxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/KillSpare/VBoxContainer/HboxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Kill"
+horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="Control/MarginContainer/VBoxContainer/KillSpare/VBoxContainer/HboxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/KillSpare/VBoxContainer/HboxContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/KillSpare/VBoxContainer/HboxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/KillSpare/VBoxContainer/HboxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Spare"
+horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="Control/MarginContainer/VBoxContainer/KillSpare/VBoxContainer/HboxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/KillSpare/VBoxContainer/HboxContainer/VBoxContainer2/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = "C"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="judgment_bar_1" type="ProgressBar" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -56,7 +118,7 @@ fill_mode = 3
 show_percentage = false
 
 [node name="judgment_bar_2" type="ProgressBar" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -68,7 +130,7 @@ fill_mode = 3
 show_percentage = false
 
 [node name="judgment_bar_3" type="ProgressBar" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -80,7 +142,7 @@ fill_mode = 3
 show_percentage = false
 
 [node name="judgment_bar_4" type="ProgressBar" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -92,7 +154,7 @@ fill_mode = 3
 show_percentage = false
 
 [node name="judgment_bar_5" type="ProgressBar" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(40, 40)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -104,7 +166,7 @@ fill_mode = 3
 show_percentage = false
 
 [node name="ProgressBar" type="ProgressBar" parent="Control/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(540, 40)
+custom_minimum_size = Vector2(540, 25)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
