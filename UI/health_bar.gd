@@ -14,11 +14,9 @@ func _ready() -> void:
 	health_bar.value = health
 	damage_bar.max_value = health
 	damage_bar.value = health
-	print(entity.max_health)
 func set_health(amount):
 	timer.start()
 	health_bar.value -= amount
-	print(health_bar.value)
 	dmg += amount
 	if health_bar.value <= 0:
 		await get_tree().create_timer(1).timeout

@@ -61,9 +61,10 @@ extends CharacterBody3D
 @onready var health_bar: Sprite3D = $Sprite3D if has_node("Sprite3D") else null
 @onready var dmg_label: Sprite3D = $damage_number if has_node("damage_number") else null
 @onready var mesh: MeshInstance3D = $enemy/Armature/Skeleton3D/Ch25 if has_node("enemy/Armature/Skeleton3D/Ch25") else null
+@onready var effect_marker: Marker3D = $effect_marker
 
 # === STATE MACHINE ===
-enum State { IDLE, CHASE, WALK, WINDUP, ATTACKING, RECOVERY, HURT, DEAD }
+enum State { IDLE, CHASE, WALK, WINDUP, ATTACKING, RECOVERY, HURT, DEAD, STUNNED }
 var state: State = State.IDLE
 
 # === ATTACK STATE ===
@@ -79,10 +80,15 @@ var flash_original_color: Color = Color.WHITE
 var flash_material: StandardMaterial3D
 var is_flashing: bool = false
 
+# === VISUAL EFFECTS ===
+var exec_tween: Tween
+var executable: bool = false
+
 # === KNOCKBACK STATE ===
 var knockback_timer: float = 0.0
 var knockback_velocity: Vector3 = Vector3.ZERO
 var hit_stun_timer: float = 0.0
+var stunned: bool = false
 
 # === NAVIGATION ===
 var path_update_timer: float = 0.0
@@ -96,6 +102,7 @@ var health: float
 # =====================================================================
 
 func _ready() -> void:
+	effect_marker.visible = false
 	health = max_health
 	arc_direction = 1 if randf() < 0.5 else -1
 	add_to_group("enemies")
@@ -210,6 +217,8 @@ func _update_ai(delta: float) -> void:
 			_state_recovery(delta)
 		State.HURT:
 			_state_hurt(delta)
+		State.STUNNED:
+			_state_stunned()
 
 # === STATE: IDLE ===
 func _state_idle(distance: float) -> void:
@@ -220,6 +229,14 @@ func _state_idle(distance: float) -> void:
 		_transition_to(State.CHASE)
 	else:
 		_play_animation("Idle")
+
+# === STATE: STUNNED ===
+func _state_stunned():
+	velocity.x = 0
+	velocity.z = 0
+	nav_agent.velocity = Vector3.ZERO
+	if stunned == false:
+		_transition_to(State.IDLE)
 
 # === STATE: CHASE ===
 func _state_chase(distance: float, delta: float) -> void:
@@ -327,6 +344,10 @@ func _transition_to(new_state: State) -> void:
 	# Always disable hitbox when leaving attack states
 	if state in [State.WINDUP, State.ATTACKING, State.RECOVERY]:
 		_disable_hitbox()
+	if state in [State.HURT] and stunned == true:
+		if new_state != State.DEAD:
+			new_state = State.STUNNED
+		
 	
 	# Re-enable collision mask if leaving lunge attack
 	if state == State.ATTACKING and current_attack == AttackType.LUNGE_STRIKE:
@@ -350,7 +371,10 @@ func _transition_to(new_state: State) -> void:
 			_rotate_towards_player(0.016)
 			locked_rotation = rotation.y
 			_play_animation(_get_attack_animation())
-		
+		State.STUNNED:
+			_disable_hitbox()
+			_stop_flash()
+			_play_animation("Crawl")
 		State.ATTACKING:
 			pass  # No animation change - continue from windup
 		
@@ -364,6 +388,9 @@ func _transition_to(new_state: State) -> void:
 			_play_animation("Hit")
 		
 		State.DEAD:
+			if effect_marker.visible == true:
+				_exec_done()
+			effect_marker.visible = false
 			_stop_flash()
 			_disable_hitbox()
 			_play_animation("Die")
@@ -373,9 +400,18 @@ func _transition_to(new_state: State) -> void:
 # =====================================================================
 # ANIMATION CALLBACKS
 # =====================================================================
-
-func act_die():
+func _exec_tween_done():
+	effect_marker.visible = false
+func _exec_done():
+	exec_tween = create_tween().set_loops(1)
+	exec_tween.tween_property(effect_marker,'position',Vector3(0.0,0.5,0.0), 0.2)
+	exec_tween.finished.connect(_exec_tween_done)
+func _exec_ready():
+	effect_marker.visible = true
+func exec_die():
 	take_damage(max_health, Vector3.ZERO)
+	_exec_done()
+	
 	
 
 func _on_attack_start() -> void:
@@ -500,7 +536,6 @@ func _on_hitbox_entered(area: Area3D) -> void:
 	var knockback: Vector3 = (player_node.global_position - global_position).normalized()
 	player_node.take_damage(_get_attack_damage(), knockback)
 	
-	print("Enemy hit player for ", _get_attack_damage(), " damage!")
 
 # =====================================================================
 # NAVIGATION
@@ -575,10 +610,7 @@ func _rotate_towards_player(delta: float) -> void:
 # =====================================================================
 # VISUAL EFFECTS
 # =====================================================================
-func _start_flash_exec() -> void:
-	if not flash_material:
-		return
-	flash_material.albedo_color = Color(0.0, 11.27, 19.093, 1.0) 
+
 
 func _start_flash() -> void:
 	if not flash_material or is_flashing:
@@ -627,7 +659,6 @@ func take_damage(damage: float, knockback_dir: Vector3) -> void:
 		return
 	
 	health -= damage
-	print("Enemy took ", damage, " damage! Health: ", health, "/", max_health)
 	
 	if health_bar:
 		health_bar.set_health(damage)
@@ -652,6 +683,7 @@ func _die() -> void:
 	collision_layer = 0
 	collision_mask = 0
 	nav_agent.avoidance_enabled = false
+	$Hurtbox/CollisionShape3D.set_deferred('disabled', true)
 	
 	await get_tree().create_timer(10.0).timeout
 	queue_free()

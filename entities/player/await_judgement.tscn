@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://683rthte6ka"]
+
+[ext_resource type="Shader" uid="uid://bxnx1da80ctv2" path="res://Assets/circle.gdshader" id="1_7ufrp"]
+[ext_resource type="Script" uid="uid://cf07e018e6fxn" path="res://entities/player/await_judgement.gd" id="1_85iwg"]
+[ext_resource type="Texture2D" uid="uid://bcadhrrfgb5qq" path="res://Assets/circles/Big_Circle-removebg-preview.png" id="2_7ufrp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ufrp"]
+render_priority = 0
+shader = ExtResource("1_7ufrp")
+shader_parameter/magic_circle_tex = ExtResource("2_7ufrp")
+shader_parameter/radius = 0.45
+shader_parameter/tex_scale = 0.9
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fe4tb"]
+material = SubResource("ShaderMaterial_7ufrp")
+flip_faces = true
+size = Vector2(1, 1)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_7ufrp"]
+height = 0.07775879
+radius = 0.35888672
+
+[node name="await_judgement" type="Node3D"]
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0)
+script = ExtResource("1_85iwg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_fe4tb")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 512
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.054256707, 0)
+shape = SubResource("CylinderShape3D_7ufrp")
+debug_color = Color(0, 0.6, 0.69803923, 1)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

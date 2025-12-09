@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://ddgfi5vn8fttw"]
+[gd_scene load_steps=19 format=4 uid="uid://ddgfi5vn8fttw"]
 
 [ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/judge.tscn" id="1_xersf"]
 [ext_resource type="PackedScene" uid="uid://co40qlblv3tjg" path="res://camera_3d.tscn" id="2_8uh7m"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bx2douy6lyhxx" path="res://tiles/Floor/8/8_smoothness.bmp" id="8_b0q6j"]
 [ext_resource type="PackedScene" uid="uid://1fpbgm5usmiw" path="res://UI/ui.tscn" id="10_00tp4"]
 [ext_resource type="PackedScene" uid="uid://bd22nw3xibvr0" path="res://entities/enemies/enemy_1/enemy_1.tscn" id="10_77dp3"]
+[ext_resource type="PackedScene" uid="uid://683rthte6ka" path="res://entities/player/await_judgement.tscn" id="11_77dp3"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_ppyta"]
 vertices = PackedVector3Array(-54.17545, 0.35586268, -47.26291, -54.17545, 0.35586268, 46.98709, 54.07455, 0.35586268, 46.98709, 54.07455, 0.35586268, -47.26291)
@@ -124,3 +125,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6074476, 0, -15.354299)
 
 [node name="enemy_4" parent="." instance=ExtResource("10_77dp3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2872086, 0, -20.120005)
+
+[node name="await_judgement" parent="." instance=ExtResource("11_77dp3")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -2.3608265, 0, 0)

@@ -37,6 +37,10 @@ extends CharacterBody3D
 @export var hits_to_judgment:int = 0
 @export var executables:Array[CharacterBody3D] = []
 @export var exec_percentage:float = 30.0
+@export var awaiting_judgment: bool = false
+@export var a_j_timer: float = 4.0
+@export var execute_cost:int = 1
+@export var await_cost:int = 2
 
 @export_group("Dodge")
 @export var dodge_duration: float = 1.49/2.5
@@ -54,6 +58,7 @@ extends CharacterBody3D
 @onready var anim_state: AnimationNodeStateMachinePlayback = anim_tree.get("parameters/playback")
 @onready var hitbox: Area3D = $Hitbox
 @onready var hitbox_collision: CollisionShape3D = $Hitbox/AttackHitbox
+@onready var circle: PackedScene = preload('res://entities/player/await_judgement.tscn')
 
 # === STATE MACHINE ===
 enum PlayerState { IDLE, WALK, RUN, ATTACK, DODGE, HIT, DEAD, HEAVY_WINDUP, HEAVY_ATTACK }
@@ -89,6 +94,7 @@ var is_invulnerable: bool = false
 
 # === INITIALIZATION ===
 func _ready():
+	print(circle)
 	add_to_group("player")
 	current_health = max_health
 	anim_state.travel("Idle")
@@ -104,12 +110,10 @@ func _setup_hitbox():
 
 # === MAIN LOOP ===
 func _physics_process(delta):
-	if not executables.is_empty() and Input.is_action_just_pressed("ability_1") and judgment>0:
-		judgment -= 1
-		get_tree().get_first_node_in_group('UI')._update_judgment_bars()
-		for i in executables:
-			i.act_die()
-		executables.clear()
+	if Input.is_action_just_pressed("ability_1"):
+		_execute()
+	if Input.is_action_just_pressed("ability_2"):
+		_await_judgment()
 	velocity.y = -5  # Gravity
 	
 	# Update systems
@@ -118,6 +122,26 @@ func _physics_process(delta):
 	
 	# Movement
 	move_and_slide()
+
+# === Judgment abilites ===
+func _await_judgment():
+	if awaiting_judgment == false and judgment >= await_cost:
+		judgment -= await_cost
+		get_tree().get_first_node_in_group('UI')._update_judgment_bars()
+		var pos = get_mouse_position()
+		var new_instance = circle.instantiate()
+		new_instance.position = pos+Vector3(0,0.1,0)
+		get_parent().add_child(new_instance)
+
+func _execute():
+	if not executables.is_empty() and judgment>=execute_cost :
+		judgment -= execute_cost
+		get_tree().get_first_node_in_group('UI')._update_judgment_bars()
+		for i in executables:
+			print(i, ' has been executed')
+			i.exec_die()
+		executables.clear()
+		print('executable empty :', executables)
 
 # === STATE MACHINE ===
 func _update_state_machine(delta: float):
@@ -422,7 +446,6 @@ func _start_attack():
 
 
 func _continue_combo():
-	print('combo continuing')
 	is_attacking = true
 
 	# Deactivate any lingering hitbox and cleanup old particle so we start fresh
@@ -468,7 +491,6 @@ func _end_attack():
 	attack_index = 0
 	combo_queued = false
 	_deactivate_hitbox()
-	print('SHIT HAPPENING')
 
 	var input = _get_movement_input()
 	if input.length() < idle_threshold:
@@ -634,8 +656,6 @@ func _on_hitbox_area_entered(area: Area3D):
 	
 	hit_enemies.append(enemy)
 	_generate_judgment(hit_enemies.size())
-	print(judgment)
-	print(hits_to_judgment)
 	get_tree().get_first_node_in_group('UI')._update_judgment_bars()
 	# Use heavy_attack_damage if in heavy attack state, otherwise use normal attack damage
 	var damage: float
@@ -653,10 +673,11 @@ func _on_hitbox_area_entered(area: Area3D):
 	
 	enemy.take_damage(damage, knockback_dir * knockback_strength)
 	_spawn_hit_particle(area.global_position)
-	if enemy.health <= (exec_percentage*enemy.max_health)/100:
+	if enemy.health <= (exec_percentage*enemy.max_health)/100 and enemy.health > 0:
 		if enemy not in executables:
 			executables.append(enemy)
-			enemy._start_flash_exec()
+			print('new enemy added :',enemy,'  executables :', executables)
+			enemy._exec_ready()
 
 
 
@@ -725,7 +746,6 @@ func _on_attack_complete() -> void:
 	if combo_queued:
 		_continue_combo()
 		return
-	print('no combo wagwan')
 	_end_attack()
 
 
@@ -824,6 +844,20 @@ func smooth_rotate_toward(direction: Vector3, delta: float):
 	var current_dir = -global_transform.basis.z.normalized()
 	var smoothed_dir = current_dir.slerp(direction, rotation_speed * delta)
 	look_at(global_position + smoothed_dir, Vector3.UP)
+
+func get_mouse_position() -> Vector3:
+	var camera = get_viewport().get_camera_3d()
+	var mouse_pos = get_viewport().get_mouse_position()
+	var from = camera.project_ray_origin(mouse_pos)
+	var to = from + camera.project_ray_normal(mouse_pos) * 1000.0
+	
+	var space_state = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(from, to,2)
+	var result = space_state.intersect_ray(query)
+	if result:
+		return result.position
+	else:
+		return Vector3.ZERO
 
 func get_mouse_direction() -> Vector3:
 	var camera = get_viewport().get_camera_3d()
