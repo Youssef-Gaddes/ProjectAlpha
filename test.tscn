@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://ddgfi5vn8fttw"]
+[gd_scene load_steps=19 format=4 uid="uid://ddgfi5vn8fttw"]
 
 [ext_resource type="Script" uid="uid://byvh1vkuefrb1" path="res://combat_map.gd" id="1_00tp4"]
 [ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/judge.tscn" id="1_xersf"]
@@ -74,6 +74,8 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_frfwh")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_00tp4"]
+
 [node name="Test" type="Node3D"]
 script = ExtResource("1_00tp4")
 
@@ -147,3 +149,11 @@ gizmo_extents = 1.7
 [node name="SpawnPoint4" type="Marker3D" parent="SpawPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.330636, 1, -9.113)
 gizmo_extents = 1.7
+
+[node name="EnemySpawnArea" type="Area3D" parent="."]
+
+[node name="EntryBox" type="CollisionShape3D" parent="EnemySpawnArea"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -16.859102, 0, 0)
+shape = SubResource("BoxShape3D_00tp4")
+
+[connection signal="body_entered" from="EnemySpawnArea" to="." method="_on_enemy_spawn_body_entered"]
