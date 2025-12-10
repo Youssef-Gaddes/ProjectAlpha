@@ -4,7 +4,7 @@ extends Node3D
 @onready var spawn_points : Array[Marker3D]
 @onready var enemies: Array[CharacterBody3D]
 @onready var player: CharacterBody3D
-@export var enemy_number: int = 1
+@export var enemy_number: int = 3
 @export var downed: Array[CharacterBody3D] = []
 @export var spared:int = 0
 @export var killed:int = 0
@@ -43,6 +43,7 @@ func _spare_all():
 
 func _on_enemy_spawn_body_entered(body: Node3D) -> void:
 	enemy_spawn()
+	$EnemySpawnArea.set_deferred("monitoring",false ) 
 			
 func enemy_spawn():
 	var sp = $SpawPoints.get_children()
