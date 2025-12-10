@@ -42,8 +42,9 @@ func _spare_all():
 
 
 func _on_enemy_spawn_body_entered(body: Node3D) -> void:
-	enemy_spawn()
-	$EnemySpawnArea/EntryBox.disabled = true 
+	if body.is_in_group("player"):
+		enemy_spawn()
+		$EnemySpawnArea/EntryBox.disabled = true 
 			
 func enemy_spawn():
 	var sp = $SpawPoints.get_children()
