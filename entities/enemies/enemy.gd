@@ -292,9 +292,11 @@ func _state_windup(_delta: float) -> void:
 	nav_agent.velocity = Vector3.ZERO
 	
 	
-	rotation.y = locked_rotation
-	rotation.x = 0
-	rotation.z = 0
+	if current_attack == AttackType.LUNGE_STRIKE:
+		_rotate_towards_player(0.16)       # Keep rotating to face player
+		locked_rotation = rotation.y         # Update locked rotation every frame
+	else:
+		rotation.y = locked_rotation
 	
 	# Animation calls _on_windup_complete() to transition
 
@@ -613,7 +615,7 @@ func _rotate_towards_direction(direction: Vector3, delta: float) -> void:
 	
 	if state in [State.WINDUP]:
 		var target_angle: float = atan2(direction.x, direction.z)
-		rotation.y = lerp_angle(rotation.y, target_angle, rotation_speed * delta * 3.5)
+		rotation.y = lerp_angle(rotation.y, target_angle, rotation_speed * delta )
 		rotation.x = 0
 		rotation.z = 0
 	else:

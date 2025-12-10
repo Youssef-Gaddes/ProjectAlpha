@@ -4,7 +4,7 @@ extends Node3D
 @onready var spawn_points : Array[Marker3D]
 @onready var enemies: Array[CharacterBody3D]
 @onready var player: CharacterBody3D
-@export var enemy_number: int = 5
+@export var enemy_number: int = 1
 @export var downed: Array[CharacterBody3D] = []
 @export var spared:int = 0
 @export var killed:int = 0

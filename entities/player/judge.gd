@@ -9,7 +9,7 @@ extends CharacterBody3D
 @export var idle_threshold: float = 0.1
 
 @export_group("Combat")
-@export var attack_damage: Array[float] = [200.0, 30.0, 50.0]
+@export var attack_damage: Array[float] = [1000.0, 30.0, 50.0]
 @export var attack_duration: Array[float] = [3, 2.98, 3]
 @export var attack_speed: float = 2
 @export var attack_speed_multiplier: float = 0.4
