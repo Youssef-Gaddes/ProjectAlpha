@@ -75,21 +75,13 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_frfwh")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_00tp4"]
-<<<<<<< HEAD
-size = Vector3(1, 0.30249023, 1)
-=======
 size = Vector3(1, 0.2397461, 1)
->>>>>>> nadim
 
 [node name="Test" type="Node3D"]
 script = ExtResource("1_00tp4")
 
 [node name="Judge" parent="." instance=ExtResource("1_xersf")]
-<<<<<<< HEAD
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.144139)
-=======
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6.1122403)
->>>>>>> nadim
 
 [node name="Camera3D" parent="." node_paths=PackedStringArray("target") groups=["camera"] instance=ExtResource("2_8uh7m")]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.6819984, 0.7313537, 0, -0.7313537, 0.6819984, 0, 7, 0)
@@ -163,11 +155,7 @@ gizmo_extents = 1.7
 [node name="EnemySpawnArea" type="Area3D" parent="."]
 
 [node name="EntryBox" type="CollisionShape3D" parent="EnemySpawnArea"]
-<<<<<<< HEAD
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -0.94297266, 1.4294434, 0)
-=======
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0.119319916, 0.7495117, 0)
->>>>>>> nadim
 shape = SubResource("BoxShape3D_00tp4")
 
 [connection signal="body_entered" from="EnemySpawnArea" to="." method="_on_enemy_spawn_body_entered"]
