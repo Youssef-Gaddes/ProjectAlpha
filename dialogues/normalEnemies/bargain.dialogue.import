@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://8whj2f2q28fd"
+path="res://.godot/imported/bargain.dialogue-f80ada92445ac4bb32f1e8e77abfafe3.tres"
+
+[deps]
+
+source_file="res://dialogues/normalEnemies/bargain.dialogue"
+dest_files=["res://.godot/imported/bargain.dialogue-f80ada92445ac4bb32f1e8e77abfafe3.tres"]
+
+[params]
+
+defaults=true

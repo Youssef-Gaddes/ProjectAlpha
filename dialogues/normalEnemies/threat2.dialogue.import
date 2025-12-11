@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://ciehbhjc7d6jf"
+path="res://.godot/imported/threat2.dialogue-d6abacefe65c56dcb70db8a5dd76ee38.tres"
+
+[deps]
+
+source_file="res://dialogues/normalEnemies/threat2.dialogue"
+dest_files=["res://.godot/imported/threat2.dialogue-d6abacefe65c56dcb70db8a5dd76ee38.tres"]
+
+[params]
+
+defaults=true

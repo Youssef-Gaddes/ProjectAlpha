@@ -66,11 +66,12 @@ var verdict:bool = false
 var detected_entities: Array[CharacterBody3D] = []
 var current_verdict: CharacterBody3D
 var held_timer: float = 0.0
-const TAP_DURATION_THRESHOLD: float = 0.6 # Seconds to differentiate tap from hold
+const TAP_DURATION_THRESHOLD: float = 0.2 # Seconds to differentiate tap from hold
 
 # === STATE MACHINE ===
 enum PlayerState { IDLE, WALK, RUN, ATTACK, DODGE, HIT, DEAD, HEAVY_WINDUP, HEAVY_ATTACK }
 var current_state: PlayerState = PlayerState.IDLE
+var talking:bool = false
 
 # === COMBAT STATE ===
 var attack_index: int = 0
@@ -102,6 +103,8 @@ var is_invulnerable: bool = false
 
 # === INITIALIZATION ===
 func _ready():
+	DialogueManager.dialogue_started.connect(_on_dialogue_started)
+	DialogueManager.dialogue_ended.connect(_on_dialogue_finished)
 	ui = get_tree().get_first_node_in_group('UI')
 	verdict = false
 	add_to_group("player")
@@ -119,6 +122,8 @@ func _setup_hitbox():
 
 # === MAIN LOOP ===
 func _physics_process(delta):
+	if talking:
+		return
 	if verdict and not detected_entities.is_empty():
 		if current_verdict != get_closest_entity() and current_verdict != null:
 			current_verdict.verdict_indicator.visible = false
@@ -196,7 +201,13 @@ func _execute():
 func _verdict_start():
 	$VerdictArea/CollisionShape3D.set_deferred('disabled',false)
 	verdict = true
-	
+
+func _on_dialogue_started(_x):
+	talking = true # Disable player movement
+
+func _on_dialogue_finished(_x):
+	set_deferred('talking', false) # Re-enable player movement
+
 func _on_verdict_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("enemy"):  # Filter by group
 		detected_entities.append(body)

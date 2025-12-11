@@ -66,7 +66,11 @@ extends CharacterBody3D
 @onready var ui:CanvasLayer
 @onready var verdict_indicator: MeshInstance3D = $verdict_indicator
 
-# === VERDICT ===
+# === DIALOGUE ===
+@export_group("Dialogue")
+@export var dialogue_array: Array[DialogueResource] = []
+@export var chosen_dialogue: DialogueResource
+@export var DIR_PATH = "res://dialogues/normalEnemies/" # Define the directory path
 
 # === STATE MACHINE ===
 enum State { IDLE, CHASE, WALK, WINDUP, ATTACKING, RECOVERY, HURT, DEAD, STUNNED, DOWNED, SPARED }
@@ -107,6 +111,8 @@ var health: float
 # =====================================================================
 
 func _ready() -> void:
+	if chosen_dialogue == null:
+		load_resources_from_folder()
 	ui=get_tree().get_first_node_in_group('UI')
 	effect_marker.visible = false
 	health = max_health
@@ -164,11 +170,41 @@ func _setup_material() -> void:
 # =====================================================================
 # MAIN LOOP
 # =====================================================================
+func load_resources_from_folder():
+	var dir = DirAccess.open(DIR_PATH)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			# Skip hidden files and folders like .import, .gdignore, .DS_Store
+			if file_name.begins_with("."):
+				file_name = dir.get_next()
+				continue
+			# Skip import metadata files
+			if file_name.ends_with(".import"):
+				file_name = dir.get_next()
+				continue
+			# Only load real resource types
+			var ext := file_name.get_extension().to_lower()
+			if ext in ["dialogue", "tres", "res"]:
+				var full_path = DIR_PATH + file_name
+				var resource: DialogueResource = load(full_path)
+				if resource:
+					dialogue_array.append(resource)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+		chosen_dialogue = dialogue_array.pick_random()
+	else:
+		print("Could not open directory: ", DIR_PATH)
+
 
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
 		return
 	if state == State.DOWNED:
+		if Input.is_action_just_pressed("interact") and player.current_verdict == self:
+			print('yup')
+			DialogueManager.show_dialogue_balloon(chosen_dialogue, "start")
 		return
 	if state == State.SPARED:
 		return
@@ -405,6 +441,7 @@ func _transition_to(new_state: State) -> void:
 			_disable_hitbox()
 			_disable_hurtbox()
 			_play_animation("Kneel")
+			
 		
 		State.DEAD:
 			_play_animation("Die")

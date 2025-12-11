@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://ddepok5k36f0k"
+path="res://.godot/imported/normalDialogue.dialogue-4287175eb1f8941f0e67e0922ddc78c7.tres"
+
+[deps]
+
+source_file="res://dialogues/normalEnemies/normalDialogue.dialogue"
+dest_files=["res://.godot/imported/normalDialogue.dialogue-4287175eb1f8941f0e67e0922ddc78c7.tres"]
+
+[params]
+
+defaults=true

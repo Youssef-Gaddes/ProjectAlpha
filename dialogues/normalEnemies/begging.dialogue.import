@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://d02yowu4ayfhw"
+path="res://.godot/imported/begging.dialogue-f3feb038a7d95ddab5edf4ec1984ed1a.tres"
+
+[deps]
+
+source_file="res://dialogues/normalEnemies/begging.dialogue"
+dest_files=["res://.godot/imported/begging.dialogue-f3feb038a7d95ddab5edf4ec1984ed1a.tres"]
+
+[params]
+
+defaults=true

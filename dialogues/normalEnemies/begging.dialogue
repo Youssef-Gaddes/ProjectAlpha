@@ -1,0 +1,6 @@
+~ start
+Enemy: Please, I don't want to die.
+- You shall.
+	Enemy: No... Please... => END
+- You shall not.
+	Enemy: I shall remember your kindness. => END
