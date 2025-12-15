@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Project Alpha"
-run/main_scene="uid://ddgfi5vn8fttw"
+run/main_scene="uid://db4ckhibsu8fa"
 config/features=PackedStringArray("4.5", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
+Stats="*res://stats.gd"
 
 [display]
 
@@ -106,7 +107,9 @@ locale/translations_pot_files=PackedStringArray("res://test_dialogue.dialogue", 
 3d_physics/layer_1="player"
 3d_physics/layer_2="ground"
 3d_physics/layer_3="entities"
+3d_physics/layer_4="objects"
 3d_physics/layer_9="player_attack"
 3d_physics/layer_10="enemy_hurtbox"
 3d_physics/layer_11="player_hurtbox"
 3d_physics/layer_12="enemy_attack"
+3d_physics/layer_13="interactables"

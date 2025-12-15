@@ -1,0 +1,141 @@
+[gd_scene load_steps=6 format=4 uid="uid://bf3kd0jyfs76o"]
+
+[ext_resource type="PackedScene" uid="uid://delu2qjrw6teu" path="res://addons/Mirror3D/Mirror3D.tscn" id="1_0weg5"]
+[ext_resource type="Script" uid="uid://bf7eiekca2tb3" path="res://interactables/mirror.gd" id="1_8mm88"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_bf68v"]
+_surfaces = [{
+"aabb": AABB(-0.9613037, 14.44389, -65.40769, 2.548523, 4.7307777, 0.47802734),
+"attribute_data": PackedByteArray("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AAAAPwAAAAAY9hU+AAAAAAAAAD8AAAA/AAAAPwAAAAAAAAA/AAAAP3iCWj8AAAAAAABgPwAAAAAAAGA/8T0+PwAAQD/xPT4/AAAgPwAAAAAAACA/8T0+PwAAAD/xPT4/AAAgPwAAAAAAAAA/8T0+PwAAAD8AAAAAGPYVPgAAAAAAAAAAAAAAAAAAAD8AAAA/AABgPwAAAAAAAAAAAAAAAAAAYD/xPT4/eIJaPwAAAAAAAAA/AAAAPwAAgD8AAAAAAAAAAAAAAAAAAAAA8T0+PwAAYD/xPT4/AAAAAAAAAAAa9hU+AAAAAAAAAD8AAAA/AAAAPwAAAAAAAMA+8T0+PwAAwD4AAAAAAAAAPwAAAAAAAAA/8T0+PwAAwD7xPT4/AAAAPwAAAD96glo/AAAAAAAAgD8AAAAAAAAAAAAAAAAAAAA+AAAAAAAAAADxPT4/AAAAPgAAAAAAAAA+8T0+PwAAAADxPT4/AAAAPwAAAD8a9hU+AAAAAP///z4AAAAAAAAAPwAAAD////8+AAAAAHqCWj8AAAAAAADAPgAAAAAAAMA+8T0+PwAAgD7xPT4/AADAPgAAAAAAAIA+8T0+PwAAgD4AAAAAAACAPgAAAAAAAIA+8T0+PwAAAD7xPT4/AAAAPgAAAAAAAIA+AAAAAAAAAD7xPT4/"),
+"format": 34359738391,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 288,
+"vertex_data": PackedByteArray("ABh2vzBSa0G90ILC+ccMvzBSa0FVfoLCjKrvvjBSa0Gwj4LCABh2vzBSa0G90ILCRnUVvzBSa0FwVILC+ccMvzBSa0FVfoLCABh2vzBSa0G90ILCAMItv5DYbkG90ILCABh2v7hlmUG90ILCABh2vzBSa0G90ILCABh2v7hlmUG90ILCABh2vzBSa0H924HCAMItv5DYbkG90ILCAMItv5DYbkHQQILCAMItvyhfl0HQQILCABh2vzBSa0G90ILCAJOmP5DYbkG90ILCAMItv5DYbkG90ILCAMItv5DYbkG90ILCAJOmP5DYbkG90ILCAMItv5DYbkHQQILCABh2vzBSa0G90ILCjKrvvjBSa0Gwj4LCACrLPzBSa0G90ILCACrLPzBSa0G90ILCjKrvvjBSa0Gwj4LCJ8XFvjBSa0FVfoLCACrLPzBSa0G90ILCJ8XFvjBSa0FVfoLCjGq0vjBSa0FwVILCACrLPzBSa0G90ILCjGq0vjBSa0FwVILCJ8XFvjBSa0GLKoLCACrLPzBSa0G90ILCJ8XFvjBSa0GLKoLCjKrvvjBSa0EwGYLCABh2vzBSa0G90ILCABh2vzBSa0H924HCRnUVvzBSa0FwVILCABh2vzBSa0H924HC+ccMvzBSa0GLKoLCRnUVvzBSa0FwVILCABh2vzBSa0H924HCjKrvvjBSa0EwGYLC+ccMvzBSa0GLKoLCABh2vzBSa0H924HCACrLPzBSa0G90ILCjKrvvjBSa0EwGYLCAMItv5DYbkG90ILCAMItvyhfl0G90ILCABh2v7hlmUG90ILCAMItv5DYbkG90ILCAMItvyhfl0HQQILCAMItvyhfl0G90ILCABh2v7hlmUG90ILCAMItvyhfl0G90ILCACrLP7hlmUG90ILCAMItvyhfl0G90ILCAMItvyhfl0HQQILCAJOmPyhfl0HQQILCABh2vzBSa0H924HCABh2v7hlmUG90ILCABh2v7hlmUH924HCAMItv5DYbkHQQILCAJOmPyhfl0HQQILCAMItvyhfl0HQQILCABh2vzBSa0H924HCABh2v7hlmUH924HCACrLP7hlmUH924HCABh2v7hlmUG90ILCACrLP7hlmUH924HCABh2v7hlmUH924HCABh2vzBSa0G90ILCACrLPzBSa0G90ILCAJOmP5DYbkG90ILCABh2vzBSa0H924HCcdCIPzBSa0Gwj4LCACrLPzBSa0G90ILCAMItv5DYbkHQQILCAJOmP5DYbkG90ILCAJOmP5DYbkHQQILCACrLPzBSa0G90ILCcdCIPzBSa0Gwj4LCykmTPzBSa0FVfoLCACrLPzBSa0G90ILCykmTPzBSa0FVfoLCcaCXPzBSa0FwVILCAJOmP5DYbkG90ILCACrLPzBSa0G90ILCAJOmPyhfl0G90ILCAJOmP5DYbkG90ILCAJOmPyhfl0G90ILCAJOmP5DYbkHQQILCABh2vzBSa0H924HCL658PzBSa0FVfoLCcdCIPzBSa0Gwj4LCABh2vzBSa0H924HC4gB0PzBSa0FwVILCL658PzBSa0FVfoLCABh2vzBSa0H924HCL658PzBSa0GLKoLC4gB0PzBSa0FwVILCABh2vzBSa0H924HCcdCIPzBSa0EwGYLCL658PzBSa0GLKoLCABh2vzBSa0H924HCACrLPzBSa0H924HCcdCIPzBSa0EwGYLCAMItv5DYbkHQQILCAJOmP5DYbkHQQILCAJOmPyhfl0HQQILCABh2vzBSa0H924HCACrLP7hlmUH924HCACrLPzBSa0H924HCACrLPzBSa0G90ILCcaCXPzBSa0FwVILCACrLPzBSa0H924HCACrLPzBSa0H924HCcaCXPzBSa0FwVILCykmTPzBSa0GLKoLCACrLPzBSa0H924HCykmTPzBSa0GLKoLCcdCIPzBSa0EwGYLCACrLPzBSa0G90ILCACrLPzBSa0H924HCACrLP7hlmUH924HCAMItvyhfl0G90ILCAJOmPyhfl0G90ILCACrLP7hlmUG90ILCAMItvyhfl0G90ILCAJOmPyhfl0HQQILCAJOmPyhfl0G90ILCABh2v7hlmUG90ILCACrLP7hlmUG90ILCACrLP7hlmUH924HCACrLPzBSa0G90ILCACrLP7hlmUG90ILCAJOmPyhfl0G90ILCACrLPzBSa0G90ILCACrLP7hlmUH924HCACrLP7hlmUG90ILCAJOmP5DYbkHQQILCAJOmPyhfl0G90ILCAJOmPyhfl0HQQILCjKrvviwaZ0Gwj4LCjKrvvjBSa0Gwj4LC+ccMvzBSa0FVfoLCjKrvviwaZ0Gwj4LC+ccMvzBSa0FVfoLC+ccMvywaZ0FVfoLCjKrvviwaZ0Gwj4LC+ccMvywaZ0FVfoLCjKrvviwaZ0FwVILCjKrvviwaZ0Gwj4LCJ8XFviwaZ0FVfoLCjKrvvjBSa0Gwj4LCjKrvviwaZ0Gwj4LCjKrvviwaZ0FwVILCJ8XFviwaZ0FVfoLCJ8XFviwaZ0FVfoLCJ8XFvjBSa0FVfoLCjKrvvjBSa0Gwj4LC+ccMvywaZ0FVfoLC+ccMvzBSa0FVfoLCRnUVvzBSa0FwVILC+ccMvywaZ0FVfoLCRnUVvzBSa0FwVILCRnUVvywaZ0FwVILC+ccMvywaZ0FVfoLCRnUVvywaZ0FwVILCjKrvviwaZ0FwVILCJ8XFviwaZ0FVfoLCjGq0viwaZ0FwVILCJ8XFvjBSa0FVfoLCJ8XFviwaZ0FVfoLCjKrvviwaZ0FwVILCjGq0viwaZ0FwVILCjGq0viwaZ0FwVILCjGq0vjBSa0FwVILCJ8XFvjBSa0FVfoLCRnUVvywaZ0FwVILCRnUVvzBSa0FwVILC+ccMvzBSa0GLKoLCRnUVvywaZ0FwVILC+ccMvywaZ0GLKoLCjKrvviwaZ0FwVILCRnUVvywaZ0FwVILC+ccMvzBSa0GLKoLC+ccMvywaZ0GLKoLCjKrvviwaZ0FwVILCJ8XFviwaZ0GLKoLCjGq0viwaZ0FwVILCjGq0viwaZ0FwVILCJ8XFviwaZ0GLKoLCjGq0vjBSa0FwVILCJ8XFviwaZ0GLKoLCJ8XFvjBSa0GLKoLCjGq0vjBSa0FwVILCjKrvviwaZ0FwVILC+ccMvywaZ0GLKoLCjKrvviwaZ0EwGYLC+ccMvywaZ0GLKoLCjKrvvjBSa0EwGYLCjKrvviwaZ0EwGYLC+ccMvywaZ0GLKoLC+ccMvzBSa0GLKoLCjKrvvjBSa0EwGYLCjKrvviwaZ0FwVILCjKrvviwaZ0EwGYLCJ8XFviwaZ0GLKoLCJ8XFviwaZ0GLKoLCjKrvviwaZ0EwGYLCJ8XFvjBSa0GLKoLCjKrvviwaZ0EwGYLCjKrvvjBSa0EwGYLCJ8XFvjBSa0GLKoLCcdCIPywaZ0Gwj4LCykmTPywaZ0FVfoLCcdCIPzBSa0Gwj4LCcdCIPywaZ0Gwj4LCcdCIPzBSa0Gwj4LCL658PzBSa0FVfoLCcdCIPywaZ0Gwj4LCL658PzBSa0FVfoLCL658PywaZ0FVfoLCcdCIPywaZ0Gwj4LCL658PywaZ0FVfoLCcdCIPywaZ0FwVILCcdCIPywaZ0Gwj4LCcdCIPywaZ0FwVILCykmTPywaZ0FVfoLCykmTPywaZ0FVfoLCykmTPzBSa0FVfoLCcdCIPzBSa0Gwj4LCL658PywaZ0FVfoLCL658PzBSa0FVfoLC4gB0PzBSa0FwVILCL658PywaZ0FVfoLC4gB0PzBSa0FwVILC4gB0PywaZ0FwVILCL658PywaZ0FVfoLC4gB0PywaZ0FwVILCcdCIPywaZ0FwVILCykmTPywaZ0FVfoLCcaCXPywaZ0FwVILCykmTPzBSa0FVfoLCykmTPywaZ0FVfoLCcdCIPywaZ0FwVILCcaCXPywaZ0FwVILCcaCXPywaZ0FwVILCcaCXPzBSa0FwVILCykmTPzBSa0FVfoLC4gB0PywaZ0FwVILCL658PywaZ0GLKoLCcdCIPywaZ0FwVILC4gB0PywaZ0FwVILCL658PzBSa0GLKoLCL658PywaZ0GLKoLC4gB0PywaZ0FwVILC4gB0PzBSa0FwVILCL658PzBSa0GLKoLCcdCIPywaZ0FwVILCykmTPywaZ0GLKoLCcaCXPywaZ0FwVILCcaCXPywaZ0FwVILCykmTPywaZ0GLKoLCcaCXPzBSa0FwVILCykmTPywaZ0GLKoLCykmTPzBSa0GLKoLCcaCXPzBSa0FwVILCcdCIPywaZ0FwVILCL658PywaZ0GLKoLCcdCIPywaZ0EwGYLCcdCIPywaZ0FwVILCcdCIPywaZ0EwGYLCykmTPywaZ0GLKoLCL658PywaZ0GLKoLCL658PzBSa0GLKoLCcdCIPzBSa0EwGYLCL658PywaZ0GLKoLCcdCIPzBSa0EwGYLCcdCIPywaZ0EwGYLCcdCIPywaZ0EwGYLCcdCIPzBSa0EwGYLCykmTPzBSa0GLKoLCykmTPywaZ0GLKoLCcdCIPywaZ0EwGYLCykmTPzBSa0GLKoLC/38AAAAAAAD/fwAAAAAAAP9/AAAAAAAA/38AAAAAAAD/fwAA//8AAP9/AAAAAAAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5/////f/9/AID///9//38AgP///3//fwCA/////wAA/z//////AAD/P/////8AAP8//3//////////f/////////9//////////38AAAAAAAD/fwAAAAAAAP9/AAD//wAA/38AAP//AAD/fwAAAAAAAP9/AAAAAAAA/38AAP//AAD/fwAAAAAAAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAAAAAAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/////f/9/AID///9//38AgP///3//fwCA/////wAA/z//////AAD/P/////8AAP8//38AAP//////fwAA//////9/AAD/////AAD/f/9//n8AAP9//3/+fwAA/3//f/5//////wAA/7//////AAD/v/////8AAP+//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/////wAA/z//////AAD/P/////8AAP8//38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//////////f/////////9//////////38AAP//AAD/fwAA//8AAP9/AAAAAAAA/38AAP//AAD/fwAAAAAAAP9/AAAAAAAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9/AIAAAP9//38AgAAA/3//fwCA/38AAP//AAD/fwAAAAAAAP9/AAD//wAA/38AAP//AAD/fwAAAAAAAP9/AAAAAAAA/38AAP//AAD/fwAA//8AAP9/AAAAAAAA/38AAP//AAD/fwAAAAAAAP9/AAD//wAA/38AAP//AAD/fwAAAAAAAP9/AAAAAAAA/////wAA/7//////AAD/v/////8AAP+//3//fwAA/z//f/9/AAD/P/9//38AAP8//38AAP//AAD/fwAAAAAAAP9/AAAAAAAA/38AAAAAAAD/fwAAAAAAAP9/AAD//wAA/38AAAAAAAD/fwAA//8AAP9/AAAAAAAA////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//38AAP//////fwAA//////9/AAD//////3//////AAD/f/////8AAP9//////wAA/////wAA/z//////AAD/P/////8AAP8/////f/9//n////9//3/+f////3//f/5/AAD/f/9/AIAAAP9//38AgAAA/3//fwCAAAB38P//w8f//3fwd/D/vwAA1cj//5TbAAB38P//w8cAANXI//+U2wAAKbf//2rk/38AAP///z//fwAA////H/9/AAD+//8/AAB38P//w8f//9XI1cj/v///d/B38P+//38AAP///z//fwAA/v//P/9/AAD/v/8////VyNXI/7///ym3Kbf/v///d/B38P+/AAApt///auQAANXI//+U2wAAho///zv4AAApt///auQAAIaP//87+IcP/38AADv4/38AAP///x//fwAA//++Ev9/AAD+//8////VyAAAaiT//4aPAADDB///KbcAAJQb/38AAP+//z//fwAA/v//P/9/AAB9pf8///+GjwAAwwd38P9////DB///KbcAAJQbhw//fwAAO/gAAIaP//87+Ck3/38AAGrk/38AAH2l/7//fwAA/7//v/9/AAD///+/hw//fwAAO/gpN/9/AABq5NVI/38AAJTb/38AAP///7//fwAA////3/9/AAD//0Dt//+Gj4aP/7/VyP9/1Uj/v3fw/394cP+/1cj/f9VI/78pt/9/KTf/v3fw/394cP+//38AAP///7//fwAA/7//v/9/AAD///+/1Uj/fwAAlNt3cP9/AADDx4eP/3+HD/+/1Uj/fwAAlNspN/9/AABq5Hdw/38AAMPH/38AAP///7//fwAA////v/9/AAD////f1cj/f9VI/7+Hj/9/hw//vym3/38pN/+/h4//f4cP/793cP9/AADDxym3/38pN/+/AAB38P//w8f//9XI1cj/v///d/B38P+/AAB38P//w8f//3fwd/D/vwAA1cj//5TbAAB38P//w8cAANXI//+U2wAAKbf//2rk/38AAP7//z//fwAA////H/9/AAD+//8//38AAP7//z//fwAA/v//P/9/AAD/v/8////VyNXI/7///ym3Kbf/v///d/B38P+/AAApt///auQAANXI//+U2wAAho///zv4AAApt///auQAAIaP//87+IcP/38AADv4/38AAP///x//fwAA//++Ev9/AAD+//8////VyAAAaiT//4aPAADDB///KbcAAJQb/38AAP+//z//fwAA/v//P/9/AAB9pf8///+GjwAAwwd38P9////DB///KbcAAJQb/38AAH2l/7//fwAA/7//v/9/AAD///+/hw//fwAAO/gpN/9/AABq5NVI/38AAJTbhw//fwAAO/gAAIaP//87+Ck3/38AAGrk/38AAP///7//fwAA////3/9/AAD//0Dt//+Gj4aP/7/VyP9/1Uj/v3fw/394cP+/1cj/f9VI/78pt/9/KTf/v3fw/394cP+//38AAP///7//fwAA/7//v/9/AAD///+//38AAP///7//fwAA////v/9/AAD////f1Uj/fwAAlNspN/9/AABq5Hdw/38AAMPH1Uj/fwAAlNt3cP9/AADDx4eP/3+HD/+/h4//f4cP/793cP9/AADDxym3/38pN/+/1cj/f9VI/7+Hj/9/hw//vym3/38pN/+/")
+}]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0weg5"]
+size = Vector3(2.5891266, 4.702759, 0.48527145)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_8mm88"]
+radius = 4.1833296
+
+[node name="ArchetypeMirror" type="StaticBody3D" groups=["interactable"]]
+collision_layer = 4104
+collision_mask = 0
+script = ExtResource("1_8mm88")
+
+[node name="Mirror" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.37132454, -14.474031, 65.30195)
+mesh = SubResource("ArrayMesh_bf68v")
+
+[node name="Mirror3D" parent="Mirror" instance=ExtResource("1_0weg5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30711293, 16.930744, -65.3857)
+size = Vector2(2, 4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05934906, 2.3513794, 0.13865852)
+shape = SubResource("BoxShape3D_0weg5")
+
+[node name="statsInfoUi" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="statsInfoUi"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="statsInfoUi/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 60
+
+[node name="Panel" type="Panel" parent="statsInfoUi/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="statsInfoUi/Control/MarginContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Godhood Status"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="deathLabel" type="Label" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Death: "
+vertical_alignment = 1
+
+[node name="mercyLabel" type="Label" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mercy: "
+vertical_alignment = 1
+
+[node name="orderLabel" type="Label" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Order: "
+vertical_alignment = 1
+
+[node name="chaosLabel" type="Label" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Chaos: "
+vertical_alignment = 1
+
+[node name="killLabel" type="Label" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Beaten Enemies: "
+vertical_alignment = 1
+
+[node name="completeRunsLabel" type="Label" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Completed Runs: "
+vertical_alignment = 1
+
+[node name="deahtsLabel" type="Label" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Deaths: "
+vertical_alignment = 1
+
+[node name="interactionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="interactionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4933758, 0)
+shape = SubResource("SphereShape3D_8mm88")
+
+[connection signal="body_entered" from="interactionArea" to="." method="_on_interaction_area_body_entered"]

@@ -1,7 +1,7 @@
 extends Camera3D
 
 @export var target: Node3D
-@export var offset: Vector3 = Vector3(0, 7, 5)
+@export var offset: Vector3 = Vector3(0,10, 5)
 @export var smooth_speed: float = 20
 
 @export var period = 0.025

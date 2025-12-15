@@ -2,34 +2,70 @@ extends Node3D
 
 @onready var enemy: PackedScene = preload("res://entities/enemies/enemy_1/enemy_1.tscn")
 @onready var spawn_points : Array[Marker3D]
-@onready var enemies: Array[CharacterBody3D]
+@onready var enemies: Array[CharacterBody3D] = []
 @onready var player: CharacterBody3D
 @export var enemy_number: int = 3
-@export var downed: Array[CharacterBody3D] = []
+@onready var downed: Array[CharacterBody3D] = []
 @export var spared:int = 0
 @export var killed:int = 0
+@export var total:int = 0
 @export var all:bool = false
+@onready var tp: Node3D = $Tp
+
+
+
+signal done
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group('player')
+	if Stats.in_run == false:
+		Stats.in_run = true
+		Stats.player_health = player.max_health
+	else:
+		player.current_health = Stats.player_health
+	spared = 0
+	killed =0
+	total =0
+	done.connect(_verdict_done)
 	
+
+func _verdict_done():
+	player.collision_shape_3d.set_deferred('disabled', false)
+	tp.activate()
+	Stats.player_health = player.current_health
+	print('Verdict DONE')
+
+func _add_total():
+	total +=1
+	if total == enemy_number:
+		done.emit()
+
+
+		
+
 func _on_enemy_downed(x:CharacterBody3D):
 	downed.append(x)
+	Stats.beaten_enemies +=1
 	if downed.size() == enemy_number:
 		player._verdict_start()
 func _on_enemy_killed(x:CharacterBody3D):
 	if !all:
 		downed.erase(x)
 	killed += 1
+	_add_total()
+	Stats.advance_death()
 func _on_enemy_spared(x:CharacterBody3D):
 	if !all:
 		downed.erase(x)
 	spared += 1
+	_add_total()
+	Stats.advance_mercy()
 
 func _kill_all():
 	all = true
 	for i in downed:
 		killed += 1
+		_add_total()
 		i._transition_to(i.State.DEAD)
 	downed.clear()
 
@@ -37,6 +73,7 @@ func _spare_all():
 	all = true
 	for i in downed:
 		spared += 1
+		_add_total()
 		i._transition_to(i.State.SPARED)
 	downed.clear()
 

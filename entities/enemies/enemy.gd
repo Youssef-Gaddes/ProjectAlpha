@@ -437,6 +437,7 @@ func _transition_to(new_state: State) -> void:
 		State.DOWNED:
 			if effect_marker.visible == true:
 				_exec_done()
+			$enemy.position.z = -0.285
 			_stop_flash()
 			_disable_hitbox()
 			_disable_hurtbox()
@@ -753,7 +754,7 @@ func _die() -> void:
 	collision_layer = 0
 	collision_mask = 0
 	nav_agent.avoidance_enabled = false
-	$Hurtbox/CollisionShape3D.set_deferred('disabled', true)
+	
 	
 	await get_tree().create_timer(10.0).timeout
 	queue_free()

@@ -9,7 +9,7 @@ extends CharacterBody3D
 @export var idle_threshold: float = 0.1
 
 @export_group("Combat")
-@export var attack_damage: Array[float] = [1000.0, 30.0, 50.0]
+@export var attack_damage: Array[float] = [50.0, 30.0, 50.0]
 @export var attack_duration: Array[float] = [3, 2.98, 3]
 @export var attack_speed: float = 2
 @export var attack_speed_multiplier: float = 0.4
@@ -60,6 +60,8 @@ extends CharacterBody3D
 @onready var hitbox_collision: CollisionShape3D = $Hitbox/AttackHitbox
 @onready var circle: PackedScene = preload('res://entities/player/await_judgement.tscn')
 @onready var ui: CanvasLayer
+@onready var collision_shape_3d: CollisionShape3D = $CollisionShape3D
+
 
 # === VERDICT ===
 var verdict:bool = false
@@ -467,6 +469,7 @@ func _change_state(new_state: PlayerState):
 		PlayerState.DODGE:
 			# Re-enable collisions when leaving dodge
 			set_collision_mask_value(3, true)
+			set_collision_layer_value(1, true)
 			if has_node("Hurtbox"):
 				$Hurtbox.set_collision_layer_value(6, true)
 		
@@ -697,6 +700,8 @@ func _end_dodge():
 	# Re-enable collisions
 	set_collision_mask_value(3, true)
 	set_collision_layer_value(1, true)
+	# TODO: make sure it come sback
+	print('back')
 	$Hurtbox.set_collision_layer_value(6, true)
 	velocity = Vector3.ZERO
 	var input = _get_movement_input()
@@ -907,6 +912,8 @@ func flash_red(duration := 0.15):
 
 func die():
 	_change_state(PlayerState.DEAD)
+	await get_tree().create_timer(5).timeout
+	get_tree().call_deferred("change_scene_to_file","res://Maps/DivinePalace/divine_palace.tscn")
 
 
 # === MOVEMENT HELPERS ===
