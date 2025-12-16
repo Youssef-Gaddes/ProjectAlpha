@@ -27,8 +27,6 @@ extends CharacterBody3D
 @export var heavy_attack_max_damage: float = 120.0  # Maximum damage (full charge)
 @export var heavy_attack_max_charge_time: float = 2.0  # Max time to charge
 @export var heavy_attack_windup_duration: float = 2  # Duration of windup animation
-@export var heavy_attack_release_duration: float = 1.25  # Duration of heavy attack animation
-@export var heavy_attack_hitbox_active_duration: float = 2.95/2  # Hitbox active for 1 full second
 @export var heavy_attack_buffer_window: float = 0.5  # How long before attack ends can you buffer heavy attack
 
 @export_group("Judgment")
@@ -90,14 +88,13 @@ var attack_movement_timer: float = 0.0
 # === HEAVY ATTACK STATE ===
 var heavy_charge_timer: float = 0.0  # Tracks how long heavy attack has been charging
 var heavy_attack_damage: float = 0.0  # Calculated damage based on charge time
-var heavy_attack_timer: float = 0.0  # Tracks duration of heavy attack animation
 var is_charging_heavy: bool = false  # Flag for whether currently in windup
 var heavy_attack_buffered: bool = false  # Flag for buffered heavy attack input
 var is_heavy_attack: bool = false  # Flag to track if current attack is heavy (for hitbox logic)
 
 # === DODGE STATE ===
 var dodge_dir: Vector3 = Vector3.ZERO
-var dodge_timer: float = 0.0
+
 
 # === HEALTH STATE ===
 var current_health: float
@@ -377,10 +374,9 @@ func _state_attack(_ddelta: float):
 
 
 func _state_heavy_windup(delta: float):
-	# Increment charge timer
 	heavy_charge_timer += delta
 	
-	# CHANGED: Auto-release when reaching max charge time
+	# Auto-release when reaching max charge time
 	if heavy_charge_timer >= heavy_attack_max_charge_time:
 		heavy_charge_timer = heavy_attack_max_charge_time
 		_change_state(PlayerState.HEAVY_ATTACK)
@@ -390,16 +386,18 @@ func _state_heavy_windup(delta: float):
 	var charge_percent = heavy_charge_timer / heavy_attack_max_charge_time
 	heavy_attack_damage = lerp(heavy_attack_min_damage, heavy_attack_max_damage, charge_percent)
 	
-	# Lock rotation towards attack direction during windup
-	look_at(global_position - get_mouse_direction(), Vector3.UP)
-	rotation.x = 0
-	rotation.z = 0
+	# CONTINUOUSLY track mouse direction during windup
+	var mouse_dir = get_mouse_direction()
+	if mouse_dir != Vector3.ZERO:
+		look_at(global_position - mouse_dir, Vector3.UP)
+		rotation.x = 0
+		rotation.z = 0
 	
-	# Slight movement restriction during windup (can move slowly)
+	# Slight movement restriction during windup
 	var input = _get_movement_input()
 	if input.length() > 0:
 		var dir = Vector3(input.x, 0, input.y).normalized()
-		velocity.x = dir.x * speed * 0.1  # 10% movement speed during windup
+		velocity.x = dir.x * speed * 0.1
 		velocity.z = dir.z * speed * 0.1
 	else:
 		_apply_friction(delta)
@@ -415,41 +413,23 @@ func _state_heavy_windup(delta: float):
 		_change_state(PlayerState.HEAVY_ATTACK)
 		return
 
-func _state_heavy_attack(delta: float):
-	heavy_attack_timer -= delta
-	
-	# LOCK rotation (same as normal attack)
+func _state_heavy_attack(_delta: float):
+	  # LOCK rotation to attack_dir (set during _release_heavy_attack)
 	look_at(global_position - attack_dir, Vector3.UP)
 	rotation.x = 0
 	rotation.z = 0
-	
-	# Movement during heavy attack (strong forward lunge)
-	if heavy_attack_timer >= heavy_attack_release_duration - 0.3:
-		velocity.x = attack_dir.x * 9  # Strong forward movement
-		velocity.z = attack_dir.z * 9
-	else:
-		velocity.x = attack_dir.x * 1.0  # Slow down after impact
-		velocity.z = attack_dir.z * 1.0
 	
 	# Check for dodge interrupt (can cancel heavy attack)
 	if Input.is_action_just_pressed("dodge"):
 		_cancel_heavy_attack()
 		_change_state(PlayerState.DODGE)
 		return
-	
-	# End heavy attack
-	if heavy_attack_timer <= 0:
-		_end_heavy_attack()
 
-func _state_dodge(delta: float):
-	dodge_timer -= delta
-	
-	# Locked movement during dodge
+func _state_dodge(_delta: float):
+	 # Locked movement during dodge
 	velocity.x = dodge_dir.x * dodging_speed
 	velocity.z = dodge_dir.z * dodging_speed
-	
-	if dodge_timer <= 0:
-		_end_dodge()
+	# State exit now handled by _on_dodge_complete() notify
 
 func _state_hit(delta: float):
 	# Slow movement during hitstun
@@ -602,29 +582,23 @@ func _start_heavy_windup():
 	heavy_charge_timer = 0.0
 	is_charging_heavy = true
 	
-	# Lock attack direction (same as normal attack)
-	attack_dir = get_mouse_direction()
-	if attack_dir == Vector3.ZERO:
-		attack_dir = -global_transform.basis.z
-	
-	# Instantly face attack direction
-	look_at(global_position - attack_dir, Vector3.UP)
-	rotation.x = 0
-	rotation.z = 0
+	# DON'T lock attack_dir here - it will track mouse during windup
+	# and be locked when releasing
 	
 	# Play windup animation
 	_play_animation("Windup")
 	
 
 func _release_heavy_attack():
+	# Called when transitioning from HEAVY_WINDUP to HEAVY_ATTACK state
 	is_charging_heavy = false
 	is_heavy_attack = true
-	heavy_attack_timer = heavy_attack_release_duration
 	
-	# Keep facing same direction as windup
+	# LOCK direction at the moment of release (capture final mouse position)
 	attack_dir = get_mouse_direction()
 	if attack_dir == Vector3.ZERO:
 		attack_dir = -global_transform.basis.z
+	
 	look_at(global_position - attack_dir, Vector3.UP)
 	rotation.x = 0
 	rotation.z = 0
@@ -632,29 +606,25 @@ func _release_heavy_attack():
 	# Play heavy attack animation
 	_play_animation("Heavy")
 	
-	# Activate hitbox immediately for 1 second
-	hitbox_timer = heavy_attack_hitbox_active_duration
-	_activate_hitbox()
-	
-	# Spawn visual effect
-	_spawn_swing_particle()
+	# NOTE: Hitbox activation now handled by _on_heavy_hitbox_start() notify
 	
 
 func _cancel_heavy_attack():
 	# Reset heavy attack state
 	heavy_charge_timer = 0.0
 	heavy_attack_damage = 0.0
-	heavy_attack_timer = 0.0
 	is_charging_heavy = false
 	heavy_attack_buffered = false
 	is_heavy_attack = false
 	_deactivate_hitbox()
+	if attack_particle and is_instance_valid(attack_particle):
+		attack_particle.queue_free()
+		attack_particle = null
 
 func _end_heavy_attack():
 	# Clean up heavy attack state
 	heavy_charge_timer = 0.0
 	heavy_attack_damage = 0.0
-	heavy_attack_timer = 0.0
 	is_charging_heavy = false
 	is_heavy_attack = false
 	_deactivate_hitbox()
@@ -669,6 +639,50 @@ func _end_heavy_attack():
 	else:
 		_change_state(PlayerState.WALK)
 
+# === WINDUP ANIMATION NOTIFIES ===
+func _on_windup_start() -> void:
+	# Called at the start of Windup animation
+	is_charging_heavy = true
+	# DON'T lock direction - tracking mouse continuously during windup
+
+# Note: Windup animation does NOT have a complete callback
+# It transitions to HEAVY_ATTACK state via input release or max charge
+
+# === HEAVY ATTACK ANIMATION NOTIFIES ===
+func _on_heavy_attack_start() -> void:
+	# Called at the start of Heavy animation
+	is_heavy_attack = true
+	is_charging_heavy = false
+	
+	velocity.x = attack_dir.x * 7
+	velocity.z = attack_dir.z * 7
+	
+	# Maintain locked direction from release
+	look_at(global_position - attack_dir, Vector3.UP)
+	rotation.x = 0
+	rotation.z = 0
+
+func _on_heavy_hitbox_start() -> void:
+	# Called when the strike portion begins
+	# Strong forward lunge
+	velocity.x = attack_dir.x * 1.0
+	velocity.z = attack_dir.z * 1.0
+	
+	_activate_hitbox()
+	_spawn_swing_particle()
+
+func _on_heavy_hitbox_end() -> void:
+	# Called when hitbox should deactivate
+	# Slow down after impact
+
+	
+	_despawn_swing_particles()
+	_deactivate_hitbox()
+
+func _on_heavy_attack_complete() -> void:
+	# Called at the end of Heavy animation
+	_end_heavy_attack()
+
 # === DODGE SYSTEM ===
 func _start_dodge():
 	var input = _get_movement_input()
@@ -676,6 +690,7 @@ func _start_dodge():
 	_deactivate_hitbox()
 	if attack_particle:
 		attack_particle.queue_free()
+	
 	# Set dodge direction
 	if input.length() > 0:
 		dodge_dir = Vector3(input.x, 0, input.y).normalized()
@@ -687,22 +702,22 @@ func _start_dodge():
 	rotation.x = 0
 	rotation.z = 0
 	
-	dodge_timer = dodge_duration
-	
 	# Disable collisions during dodge (i-frames)
-	set_collision_mask_value(3, false)  # Enemy bodies (layer 3)
+	set_collision_mask_value(3, false)
 	set_collision_layer_value(1, false)
-	$Hurtbox.set_collision_layer_value(6, false)  # Player hurtbox (layer 6) - can't be hit
+	$Hurtbox.set_collision_layer_value(6, false)
 	
 	_play_animation("Roll")
+
+func _on_dodge_complete() -> void:
+	_end_dodge()
 
 func _end_dodge():
 	# Re-enable collisions
 	set_collision_mask_value(3, true)
 	set_collision_layer_value(1, true)
-	# TODO: make sure it come sback
-	print('back')
 	$Hurtbox.set_collision_layer_value(6, true)
+	
 	velocity = Vector3.ZERO
 	var input = _get_movement_input()
 	if input.length() < idle_threshold:
@@ -713,15 +728,8 @@ func _end_dodge():
 		_change_state(PlayerState.WALK)
 
 # === HITBOX SYSTEM ===
-func _update_hitbox(delta: float):
+func _update_hitbox(_delta: float):
 	# heavy attack hitbox timing (preserve timer behavior)
-	if is_heavy_attack and hitbox_timer > 0:
-		hitbox_timer -= delta
-		if hitbox_timer <= 0:
-			_deactivate_hitbox()
-			hitbox_timer = 0
-	
-	# Cleanup fallback: if somehow hitbox is active but we're not in any attacking states, turn it off
 	if hitbox_active and not is_attacking and not is_heavy_attack:
 		_deactivate_hitbox()
 
@@ -1014,15 +1022,6 @@ func _spawn_swing_particle():
 	add_child(particle)
 	attack_particle = particle
 	particle.position = Vector3(0, 1, 1.5)
-	
-	# Schedule cleanup without await
-	var cleanup_time: float
-	if current_state == PlayerState.HEAVY_ATTACK:
-		cleanup_time = heavy_attack_release_duration
-		get_tree().create_timer(max(cleanup_time - hitbox_activation_delay, 0.1)).timeout.connect(func():
-			if is_instance_valid(particle):
-				particle.queue_free()
-	)
 
 func _despawn_swing_particles():
 	if attack_particle and attack_particle.is_inside_tree():

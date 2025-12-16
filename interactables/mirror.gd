@@ -24,7 +24,7 @@ func _ready() -> void:
 	complete_runs_label.text = complete_runs_label.text + str(Stats.completed_runs)
 	deahts_label.text = deahts_label.text + str(Stats.deaths)
 	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if on and Input.is_action_just_pressed('interact'):
 		interact()
 	get_distance_to_player()

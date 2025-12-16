@@ -9,7 +9,7 @@ extends CharacterBody3D
 @export var idle_threshold: float = 0.1
 
 @export_group("Combat")
-@export var attack_damage: Array[float] = [20.0, 30.0, 50.0]
+@export var attack_damage: Array[float] = [50.0, 30.0, 50.0]
 @export var attack_duration: Array[float] = [3, 2.98, 3]
 @export var attack_speed: float = 2
 @export var attack_speed_multiplier: float = 0.4
@@ -32,8 +32,15 @@ extends CharacterBody3D
 @export var heavy_attack_buffer_window: float = 0.5  # How long before attack ends can you buffer heavy attack
 
 @export_group("Judgment")
-@export var max_judgment: int = 5
+@export var max_judgment: int = 10
 @export var judgment:int = 0
+@export var hits_to_judgment:int = 0
+@export var executables:Array[CharacterBody3D] = []
+@export var exec_percentage:float = 30.0
+@export var awaiting_judgment: bool = false
+@export var a_j_timer: float = 4.0
+@export var execute_cost:int = 1
+@export var await_cost:int = 2
 
 @export_group("Dodge")
 @export var dodge_duration: float = 1.49/2.5
@@ -51,10 +58,22 @@ extends CharacterBody3D
 @onready var anim_state: AnimationNodeStateMachinePlayback = anim_tree.get("parameters/playback")
 @onready var hitbox: Area3D = $Hitbox
 @onready var hitbox_collision: CollisionShape3D = $Hitbox/AttackHitbox
+@onready var circle: PackedScene = preload('res://entities/player/await_judgement.tscn')
+@onready var ui: CanvasLayer
+@onready var collision_shape_3d: CollisionShape3D = $CollisionShape3D
+
+
+# === VERDICT ===
+var verdict:bool = false
+var detected_entities: Array[CharacterBody3D] = []
+var current_verdict: CharacterBody3D
+var held_timer: float = 0.0
+const TAP_DURATION_THRESHOLD: float = 0.2 # Seconds to differentiate tap from hold
 
 # === STATE MACHINE ===
 enum PlayerState { IDLE, WALK, RUN, ATTACK, DODGE, HIT, DEAD, HEAVY_WINDUP, HEAVY_ATTACK }
 var current_state: PlayerState = PlayerState.IDLE
+var talking:bool = false
 
 # === COMBAT STATE ===
 var attack_index: int = 0
@@ -78,7 +97,7 @@ var is_heavy_attack: bool = false  # Flag to track if current attack is heavy (f
 
 # === DODGE STATE ===
 var dodge_dir: Vector3 = Vector3.ZERO
-var dodge_timer: float = 0.0
+
 
 # === HEALTH STATE ===
 var current_health: float
@@ -86,6 +105,10 @@ var is_invulnerable: bool = false
 
 # === INITIALIZATION ===
 func _ready():
+	DialogueManager.dialogue_started.connect(_on_dialogue_started)
+	DialogueManager.dialogue_ended.connect(_on_dialogue_finished)
+	ui = get_tree().get_first_node_in_group('UI')
+	verdict = false
 	add_to_group("player")
 	current_health = max_health
 	anim_state.travel("Idle")
@@ -101,6 +124,54 @@ func _setup_hitbox():
 
 # === MAIN LOOP ===
 func _physics_process(delta):
+	if talking:
+		return
+	if verdict and not detected_entities.is_empty():
+		if current_verdict != get_closest_entity() and current_verdict != null:
+			current_verdict.verdict_indicator.visible = false
+		current_verdict = get_closest_entity()
+		current_verdict.verdict_indicator.visible = true
+		ui.show_verdict()
+	elif detected_entities.is_empty() and current_verdict != null:
+		current_verdict.verdict_indicator.visible = false
+		current_verdict = null
+		ui.hide_verdict()
+	
+	if Input.is_action_pressed("kill"):
+		held_timer += delta
+	
+	if verdict and current_verdict != null and Input.is_action_just_pressed("kill"):
+		held_timer = 0.0 # Reset timer for a new press
+	
+	if Input.is_action_just_released("kill"):
+		if held_timer < TAP_DURATION_THRESHOLD and current_verdict != null:
+			current_verdict._transition_to(current_verdict.State.DEAD)
+		# Add your single-press logic here (e.g., shoot, use item once)
+		else:
+			get_parent()._kill_all()
+			# Logic for when a hold action concludes (e.g., place building)
+		held_timer = 0.0 # Reset timer after deciding
+	
+	if Input.is_action_pressed("spare"):
+		held_timer += delta
+	
+	if verdict and current_verdict != null and Input.is_action_just_pressed("spare"):
+		held_timer = 0.0 # Reset timer for a new press
+	
+	if Input.is_action_just_released("spare"):
+		if held_timer < TAP_DURATION_THRESHOLD and current_verdict != null:
+			current_verdict._transition_to(current_verdict.State.SPARED)
+		# Add your single-press logic here (e.g., shoot, use item once)
+		else:
+			get_parent()._spare_all()
+
+			# Logic for when a hold action concludes (e.g., place building)
+		held_timer = 0.0 # Reset timer after deciding
+		
+	if Input.is_action_just_pressed("ability_1"):
+		_execute()
+	if Input.is_action_just_pressed("ability_2"):
+		_await_judgment()
 	velocity.y = -5  # Gravity
 	
 	# Update systems
@@ -109,6 +180,63 @@ func _physics_process(delta):
 	
 	# Movement
 	move_and_slide()
+
+# === Judgment abilites ===
+func _await_judgment():
+	if awaiting_judgment == false and judgment >= await_cost:
+		judgment -= await_cost
+		get_tree().get_first_node_in_group('UI')._update_judgment_bars()
+		var pos = get_mouse_position()
+		var new_instance = circle.instantiate()
+		new_instance.position = pos+Vector3(0,0.1,0)
+		get_parent().add_child(new_instance)
+
+func _execute():
+	if (executables.is_empty() == false) and judgment>=execute_cost :
+		judgment -= execute_cost
+		get_tree().get_first_node_in_group('UI')._update_judgment_bars()
+		for i in executables:
+			i.exec_die()
+		executables.clear()
+
+# === VERDICT ===
+func _verdict_start():
+	$VerdictArea/CollisionShape3D.set_deferred('disabled',false)
+	verdict = true
+
+func _on_dialogue_started(_x):
+	talking = true # Disable player movement
+
+func _on_dialogue_finished(_x):
+	set_deferred('talking', false) # Re-enable player movement
+
+func _on_verdict_area_body_entered(body: Node3D) -> void:
+	if body.is_in_group("enemy"):  # Filter by group
+		detected_entities.append(body)
+func _on_verdict_area_body_exited(body: Node3D) -> void:
+	if body.is_in_group("enemy"):
+		var idx := detected_entities.find(body)
+		if idx != -1:
+			detected_entities.remove_at(idx)
+
+
+func get_closest_entity() -> CharacterBody3D:
+	if detected_entities.is_empty():
+		return null
+	
+	var closest: CharacterBody3D = null
+	var closest_distance: float = INF
+	
+	for entity in detected_entities:
+		if not is_instance_valid(entity):  # Safety check
+			continue
+		
+		var distance: float = global_position.distance_to(entity.global_position)
+		if distance < closest_distance:
+			closest_distance = distance
+			closest = entity
+	
+	return closest
 
 # === STATE MACHINE ===
 func _update_state_machine(delta: float):
@@ -207,7 +335,7 @@ func _state_run(delta: float):
 	# Movement
 	_move_with_input(input, running_speed, delta)
 
-func _state_attack(delta: float):
+func _state_attack(_ddelta: float):
 	# Stay facing locked direction
 	look_at(global_position - attack_dir, Vector3.UP)
 	rotation.x = 0
@@ -235,16 +363,7 @@ func _state_attack(delta: float):
 	rotation.z = 0
 
 	# Movement during attack (driven by attack_movement_timer set from notify)
-	if attack_movement_timer > 0 and attack_index > 0 and attack_index <= attack_duration.size():
-		attack_movement_timer -= delta
-		var total_dur = attack_duration[attack_index-1]
-		# replicate previous behavior: small forward move during windup -> bigger lunge
-		if attack_movement_timer >= total_dur - 0.6:
-			velocity.x = attack_dir.x * 0.6
-			velocity.z = attack_dir.z * 0.6
-		else:
-			velocity.x = attack_dir.x * 2
-			velocity.z = attack_dir.z * 2
+	
 
 	# Dodge cancels attack
 	if Input.is_action_just_pressed("dodge"):
@@ -323,14 +442,10 @@ func _state_heavy_attack(delta: float):
 		_end_heavy_attack()
 
 func _state_dodge(delta: float):
-	dodge_timer -= delta
-	
-	# Locked movement during dodge
+	 # Locked movement during dodge
 	velocity.x = dodge_dir.x * dodging_speed
 	velocity.z = dodge_dir.z * dodging_speed
-	
-	if dodge_timer <= 0:
-		_end_dodge()
+	# State exit now handled by _on_dodge_complete() notify
 
 func _state_hit(delta: float):
 	# Slow movement during hitstun
@@ -350,6 +465,7 @@ func _change_state(new_state: PlayerState):
 		PlayerState.DODGE:
 			# Re-enable collisions when leaving dodge
 			set_collision_mask_value(3, true)
+			set_collision_layer_value(1, true)
 			if has_node("Hurtbox"):
 				$Hurtbox.set_collision_layer_value(6, true)
 		
@@ -398,6 +514,7 @@ func _change_state(new_state: PlayerState):
 		
 		PlayerState.HEAVY_ATTACK:
 			_release_heavy_attack()
+	
 
 # === COMBAT SYSTEM ===
 func _start_attack():
@@ -555,6 +672,7 @@ func _start_dodge():
 	_deactivate_hitbox()
 	if attack_particle:
 		attack_particle.queue_free()
+	
 	# Set dodge direction
 	if input.length() > 0:
 		dodge_dir = Vector3(input.x, 0, input.y).normalized()
@@ -566,20 +684,22 @@ func _start_dodge():
 	rotation.x = 0
 	rotation.z = 0
 	
-	dodge_timer = dodge_duration
-	
 	# Disable collisions during dodge (i-frames)
-	set_collision_mask_value(3, false)  # Enemy bodies (layer 3)
+	set_collision_mask_value(3, false)
 	set_collision_layer_value(1, false)
-	$Hurtbox.set_collision_layer_value(6, false)  # Player hurtbox (layer 6) - can't be hit
+	$Hurtbox.set_collision_layer_value(6, false)
 	
 	_play_animation("Roll")
+
+func _on_dodge_complete() -> void:
+	_end_dodge()
 
 func _end_dodge():
 	# Re-enable collisions
 	set_collision_mask_value(3, true)
 	set_collision_layer_value(1, true)
 	$Hurtbox.set_collision_layer_value(6, true)
+	
 	velocity = Vector3.ZERO
 	var input = _get_movement_input()
 	if input.length() < idle_threshold:
@@ -615,6 +735,12 @@ func _deactivate_hitbox():
 
 
 
+func _generate_judgment(number: int):
+	hits_to_judgment += number
+	if hits_to_judgment >= 10:
+		hits_to_judgment = 0
+		judgment = min(max_judgment, judgment+number)
+
 func _on_hitbox_area_entered(area: Area3D):
 	if not area.is_in_group("enemy_hurtbox"):
 		return
@@ -624,7 +750,8 @@ func _on_hitbox_area_entered(area: Area3D):
 		return
 	
 	hit_enemies.append(enemy)
-	
+	_generate_judgment(hit_enemies.size())
+	get_tree().get_first_node_in_group('UI')._update_judgment_bars()
 	# Use heavy_attack_damage if in heavy attack state, otherwise use normal attack damage
 	var damage: float
 	if current_state == PlayerState.HEAVY_ATTACK:
@@ -641,6 +768,13 @@ func _on_hitbox_area_entered(area: Area3D):
 	
 	enemy.take_damage(damage, knockback_dir * knockback_strength)
 	_spawn_hit_particle(area.global_position)
+	if enemy.health <= (exec_percentage*enemy.max_health)/100 and enemy.health > 0:
+		if enemy not in executables:
+			executables.append(enemy)
+			enemy._exec_ready()
+
+
+
 
 # === ANIMATION NOTIFY CALLBACKS ===
 # make attack start defensive: clear any previous hit state/particles and set movement timer
@@ -666,17 +800,23 @@ func _on_attack_start() -> void:
 	# Setup attack movement timer so state can drive forward motion consistently
 	if attack_index > 0 and attack_index <= attack_duration.size():
 		attack_movement_timer = attack_duration[attack_index-1]
+	velocity.x = attack_dir.x * 0.6
+	velocity.z = attack_dir.z * 0.6
 
 
-	
+
 
 
 func _on_hitbox_start() -> void:
+	velocity.x = attack_dir.x * 5
+	velocity.z = attack_dir.z * 5
 	_spawn_swing_particle()
 	_activate_hitbox()
 
 
 func _on_hitbox_end() -> void:
+	velocity.x = attack_dir.x * 0.6
+	velocity.z = attack_dir.z * 0.6
 	_despawn_swing_particles()
 	_deactivate_hitbox()
 
@@ -700,7 +840,6 @@ func _on_attack_complete() -> void:
 	if combo_queued:
 		_continue_combo()
 		return
-
 	_end_attack()
 
 
@@ -712,7 +851,7 @@ func take_damage(damage: float, knockback_dir: Vector3):
 
 	# short "hit stop" and camera shake
 	freeze_frame(0.4, 0.3)
-	$"../Camera3D"._camera_shake()
+	get_tree().get_first_node_in_group('camera')._camera_shake()
 
 	# apply damage
 	current_health -= damage
@@ -770,7 +909,9 @@ func flash_red(duration := 0.15):
 
 func die():
 	_change_state(PlayerState.DEAD)
-	print("Player died!")
+	await get_tree().create_timer(5).timeout
+	get_tree().call_deferred("change_scene_to_file","res://Maps/DivinePalace/divine_palace.tscn")
+
 
 # === MOVEMENT HELPERS ===
 func _get_movement_input() -> Vector2:
@@ -799,6 +940,20 @@ func smooth_rotate_toward(direction: Vector3, delta: float):
 	var current_dir = -global_transform.basis.z.normalized()
 	var smoothed_dir = current_dir.slerp(direction, rotation_speed * delta)
 	look_at(global_position + smoothed_dir, Vector3.UP)
+
+func get_mouse_position() -> Vector3:
+	var camera = get_viewport().get_camera_3d()
+	var mouse_pos = get_viewport().get_mouse_position()
+	var from = camera.project_ray_origin(mouse_pos)
+	var to = from + camera.project_ray_normal(mouse_pos) * 1000.0
+	
+	var space_state = get_world_3d().direct_space_state
+	var query = PhysicsRayQueryParameters3D.create(from, to,2)
+	var result = space_state.intersect_ray(query)
+	if result:
+		return result.position
+	else:
+		return Vector3.ZERO
 
 func get_mouse_direction() -> Vector3:
 	var camera = get_viewport().get_camera_3d()
