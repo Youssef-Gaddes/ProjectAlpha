@@ -1,10 +1,12 @@
 extends Node3D
 
-@onready var enemy: PackedScene = preload("res://entities/enemies/enemy_1/enemy_1.tscn")
+
+
+@onready var enemy: PackedScene = preload("res://entities/NPCs/enemies/enemy_1/enemy_1.tscn")
 @onready var spawn_points : Array[Marker3D]
 @onready var enemies: Array[CharacterBody3D] = []
 @onready var player: CharacterBody3D
-@export var enemy_number: int = 3
+@export var enemy_number: int = 5
 @onready var downed: Array[CharacterBody3D] = []
 @export var spared:int = 0
 @export var killed:int = 0
@@ -66,7 +68,7 @@ func _kill_all():
 	for i in downed:
 		killed += 1
 		_add_total()
-		i._transition_to(i.State.DEAD)
+		i.Combat_Module._transition_to(i.Combat_Module.State.DEAD)
 	downed.clear()
 
 func _spare_all():
@@ -74,7 +76,7 @@ func _spare_all():
 	for i in downed:
 		spared += 1
 		_add_total()
-		i._transition_to(i.State.SPARED)
+		i.Combat_Module._transition_to(i.Combat_Module.State.SPARED)
 	downed.clear()
 
 
@@ -97,7 +99,7 @@ func enemy_spawn():
 			new_instance.position = pos
 			add_child(new_instance)
 			enemies.append(new_instance)
-			new_instance.downed.connect(_on_enemy_downed)
+			new_instance.Combat_Module.downed.connect(_on_enemy_downed)
 			spawn_points.erase(picked_spawn)
 		else: 
 			return

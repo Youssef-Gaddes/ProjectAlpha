@@ -1,0 +1,56 @@
+[gd_scene load_steps=10 format=3 uid="uid://bs5go5v7ynou"]
+
+[ext_resource type="PackedScene" uid="uid://edmbov1tpdms" path="res://UI/damage_number.tscn" id="1_ml3v5"]
+[ext_resource type="Script" uid="uid://b5eftm6lyy2m5" path="res://entities/NPCs/combat_module.gd" id="1_tswa6"]
+[ext_resource type="PackedScene" uid="uid://clavheqhxclwi" path="res://UI/health_bar.tscn" id="2_tswa6"]
+[ext_resource type="PackedScene" uid="uid://duadulcdbmflk" path="res://entities/NPCs/verdict_indicator.tscn" id="3_f8e8s"]
+[ext_resource type="PackedScene" uid="uid://b5u116wireqx8" path="res://entities/player/shortsword.tscn" id="4_f8e8s"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4mp5u"]
+radius = 0.68066406
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tswa6"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_m8wf8"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_e4gck"]
+viewport_path = NodePath("SubViewport")
+
+[node name="CombatModule" type="Node3D"]
+script = ExtResource("1_tswa6")
+
+[node name="HurtBox" type="Area3D" parent="." groups=["enemy_hurtbox"]]
+collision_layer = 512
+collision_mask = 256
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99438477, 0.09526372)
+shape = SubResource("CapsuleShape3D_4mp5u")
+
+[node name="HitBox" type="Area3D" parent="."]
+collision_layer = 2048
+collision_mask = 1024
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9706366, 0)
+shape = SubResource("BoxShape3D_tswa6")
+
+[node name="damage_number" parent="." instance=ExtResource("1_ml3v5")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 2.6, 0)
+texture = SubResource("ViewportTexture_m8wf8")
+
+[node name="Sprite3D" parent="." instance=ExtResource("2_tswa6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.030229092, 2.0644145, 0.01345855)
+texture = SubResource("ViewportTexture_e4gck")
+
+[node name="effectMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+visible = false
+
+[node name="Shortsword" parent="effectMarker" instance=ExtResource("4_f8e8s")]
+
+[node name="verdict_indicator" parent="." instance=ExtResource("3_f8e8s")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.8, 0)

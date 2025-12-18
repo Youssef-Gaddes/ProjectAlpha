@@ -1,7 +1,7 @@
 [gd_scene load_steps=157 format=4 uid="uid://dgedk3le4bn82"]
 
 [ext_resource type="Script" uid="uid://geepoo4xwusf" path="res://entities/player/player_2.gd" id="1_wkcja"]
-[ext_resource type="PackedScene" uid="uid://brccmg6kep042" path="res://entities/enemies/hit_impact.tscn" id="2_8xjnt"]
+[ext_resource type="PackedScene" uid="uid://brccmg6kep042" path="res://entities/NPCs/enemies/hit_impact.tscn" id="2_8xjnt"]
 [ext_resource type="PackedScene" uid="uid://c0msqplnxbih7" path="res://entities/player/weapon_trail.tscn" id="3_ufh5k"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h7pka"]

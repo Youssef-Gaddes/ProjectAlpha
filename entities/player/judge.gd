@@ -125,12 +125,12 @@ func _physics_process(delta):
 		return
 	if verdict and not detected_entities.is_empty():
 		if current_verdict != get_closest_entity() and current_verdict != null:
-			current_verdict.verdict_indicator.visible = false
+			current_verdict.Combat_Module.verdict_indicator.visible = false
 		current_verdict = get_closest_entity()
-		current_verdict.verdict_indicator.visible = true
+		current_verdict.Combat_Module.verdict_indicator.visible = true
 		ui.show_verdict()
 	elif detected_entities.is_empty() and current_verdict != null:
-		current_verdict.verdict_indicator.visible = false
+		current_verdict.Combat_Module.verdict_indicator.visible = false
 		current_verdict = null
 		ui.hide_verdict()
 	
@@ -142,7 +142,7 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_released("kill"):
 		if held_timer < TAP_DURATION_THRESHOLD and current_verdict != null:
-			current_verdict._transition_to(current_verdict.State.DEAD)
+			current_verdict.Combat_Module._transition_to(current_verdict.Combat_Module.State.DEAD)
 		# Add your single-press logic here (e.g., shoot, use item once)
 		else:
 			get_parent()._kill_all()
@@ -157,7 +157,7 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_released("spare"):
 		if held_timer < TAP_DURATION_THRESHOLD and current_verdict != null:
-			current_verdict._transition_to(current_verdict.State.SPARED)
+			current_verdict.Combat_Module._transition_to(current_verdict.Combat_Module.State.SPARED)
 		# Add your single-press logic here (e.g., shoot, use item once)
 		else:
 			get_parent()._spare_all()
@@ -193,7 +193,7 @@ func _execute():
 		judgment -= execute_cost
 		get_tree().get_first_node_in_group('UI')._update_judgment_bars()
 		for i in executables:
-			i.exec_die()
+			i.Combat_Module.exec_die()
 		executables.clear()
 
 # === VERDICT ===
@@ -779,9 +779,9 @@ func _on_hitbox_area_entered(area: Area3D):
 	
 	enemy.take_damage(damage, knockback_dir * knockback_strength)
 	_spawn_hit_particle(area.global_position)
-	if enemy.health <= (exec_percentage*enemy.max_health)/100 and enemy.health > 0:
-		if enemy not in executables:
-			executables.append(enemy)
+	if enemy.health <= (exec_percentage*enemy.data.max_health)/100 and enemy.health > 0:
+		if enemy.npc not in executables:
+			executables.append(enemy.npc)
 			enemy._exec_ready()
 
 

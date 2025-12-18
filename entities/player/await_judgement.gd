@@ -1,7 +1,7 @@
 extends Node3D
 
 @onready var timer = $Timer
-@onready var stunned_enemies: Array[CharacterBody3D] = []
+@onready var stunned_enemies: Array[Node3D] = []
 @onready var player: CharacterBody3D 
 
 func _ready() -> void:

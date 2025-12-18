@@ -2,34 +2,35 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cyvuohfk14fyp"
-path="res://.godot/imported/NPC_Paladin_specular.png-e9e3dbd42be4734a7913e41513a23268.ctex"
+uid="uid://cgxiy7o122ank"
+path.s3tc="res://.godot/imported/soldier_Fight_Paladin_normal.png-dfe3f95fbf7299bfdcbdc840ce169e25.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
-"md5": "962b1421aaea77bc700e817f8bc098a1"
+"md5": "4b301f962a8310e25aec237e0d41c8d7"
 }
 
 [deps]
 
-source_file="res://entities/NPCs/NPC_Paladin_specular.png"
-dest_files=["res://.godot/imported/NPC_Paladin_specular.png-e9e3dbd42be4734a7913e41513a23268.ctex"]
+source_file="res://entities/NPCs/soldier/assets/soldier_Fight_Paladin_normal.png"
+dest_files=["res://.godot/imported/soldier_Fight_Paladin_normal.png-dfe3f95fbf7299bfdcbdc840ce169e25.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=0
-roughness/src_normal=""
+roughness/mode=1
+roughness/src_normal="res://entities/NPCs/soldier/assets/soldier_Fight_Paladin_normal.png"
 process/channel_remap/red=0
 process/channel_remap/green=1
 process/channel_remap/blue=2
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

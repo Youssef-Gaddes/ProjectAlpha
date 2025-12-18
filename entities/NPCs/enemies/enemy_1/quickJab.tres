@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3 uid="uid://cmvmsgwhvrkth"]
+
+[ext_resource type="Script" uid="uid://b14gugdy3golt" path="res://entities/NPCs/AttackData.gd" id="1_tmjwd"]
+
+[resource]
+script = ExtResource("1_tmjwd")
+max_range = 3.0
+metadata/_custom_type_script = "uid://b14gugdy3golt"

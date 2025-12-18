@@ -1,6 +1,6 @@
 extends Node3D
 
-@onready var enemy: PackedScene = preload("res://entities/enemies/enemy_1/enemy_1.tscn")
+@onready var enemy: PackedScene = preload("res://entities/NPCs/enemies/enemy_1/enemy_1.tscn")
 @onready var spawn_points : Array[Marker3D]
 @onready var enemies: Array[CharacterBody3D] = []
 @onready var player: CharacterBody3D

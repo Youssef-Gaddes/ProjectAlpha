@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=6 format=3 uid="uid://cw850vg5ij123"]
+
+[ext_resource type="Script" uid="uid://b14gugdy3golt" path="res://entities/NPCs/AttackData.gd" id="1_k3f8u"]
+[ext_resource type="Resource" uid="uid://cmvmsgwhvrkth" path="res://entities/NPCs/enemies/enemy_1/quickJab.tres" id="2_wo8o3"]
+[ext_resource type="Resource" uid="uid://qicjifnjvnvh" path="res://entities/NPCs/enemies/enemy_1/HeavySwing.tres" id="3_32318"]
+[ext_resource type="Resource" uid="uid://dxpu1kjpiiapk" path="res://entities/NPCs/enemies/enemy_1/LungeStrike.tres" id="4_0bx38"]
+[ext_resource type="Script" uid="uid://e3mk4v0c7apw" path="res://entities/NPCs/NPCData.gd" id="5_lu3tt"]
+
+[resource]
+script = ExtResource("5_lu3tt")
+npc_name = "Corrupted Ghoul"
+npc_id = "0"
+faction = "Corruption"
+can_fight = true
+fight_mode = true
+is_hostile = true
+attacks = Array[ExtResource("1_k3f8u")]([ExtResource("2_wo8o3"), ExtResource("3_32318"), ExtResource("4_0bx38")])
+metadata/_custom_type_script = "uid://e3mk4v0c7apw"

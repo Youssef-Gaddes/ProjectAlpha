@@ -1,6 +1,6 @@
 [gd_scene load_steps=90 format=4 uid="uid://bilfcbv2i3nhq"]
 
-[ext_resource type="Script" uid="uid://dirtfwl4bk6nq" path="res://entities/enemies/enemy.gd" id="1_7k104"]
+[ext_resource type="Script" uid="uid://dirtfwl4bk6nq" path="res://entities/NPCs/enemies/enemy.gd" id="1_7k104"]
 [ext_resource type="PackedScene" uid="uid://clavheqhxclwi" path="res://UI/health_bar.tscn" id="2_wqcwe"]
 [ext_resource type="PackedScene" uid="uid://edmbov1tpdms" path="res://UI/damage_number.tscn" id="3_5lf1o"]
 

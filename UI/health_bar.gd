@@ -3,13 +3,13 @@ extends Sprite3D
 @onready var health_bar: ProgressBar = $SubViewport/healthBar
 @onready var timer: Timer = $SubViewport/healthBar/Timer
 @onready var damage_bar: ProgressBar = $SubViewport/healthBar/damageBar
-@onready var entity: CharacterBody3D = get_parent()
+@onready var entity: CharacterBody3D = get_parent().get_parent()
 var dmg: int = 0
 
 var health = 0
 
 func _ready() -> void:
-	health = entity.max_health
+	health = entity.NPC_Data.max_health
 	health_bar.max_value = health
 	health_bar.value = health
 	damage_bar.max_value = health

@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://co40qlblv3tjg" path="res://camera_3d.tscn" id="1_lquwl"]
 [ext_resource type="MeshLibrary" uid="uid://bb1bkwyubgc76" path="res://tiles/library_cube.tres" id="3_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://dgedk3le4bn82" path="res://entities/player/player_2.tscn" id="3_h2yge"]
-[ext_resource type="PackedScene" uid="uid://bilfcbv2i3nhq" path="res://entities/enemies/enemy.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://bilfcbv2i3nhq" path="res://entities/NPCs/enemies/enemy.tscn" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://1fpbgm5usmiw" path="res://UI/ui.tscn" id="5_lquwl"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_1bvp3"]

@@ -2,55 +2,35 @@ extends CharacterBody3D
 
 # === COMBAT STATS ===
 @export_group("Combat")
-@export var max_health: float = 200.0
-@export var defense: float = 0.0
+@export var max_health: float 
+@export var defense: float
 
 # === MOVEMENT ===
 @export_group("Movement")
-@export var run_speed: float = 6.0
-@export var walk_speed: float = 3.0
-@export var rotation_speed: float = 8
+@export var run_speed: float 
+@export var walk_speed: float 
+@export var rotation_speed: float 
 
 # === AI RANGES ===
 @export_group("Detection")
-@export var detection_range: float = 15.0
-@export var walk_range: float = 6.0
-@export var stop_distance: float = 2.0
+@export var detection_range: float 
 
-# === ATTACK SYSTEM ===
+# === ATTACK SYSTEM === 
 @export_group("Attacks")
-@export var quick_jab_range: float = 2.0
-@export var heavy_swing_range: float = 4
-@export var lunge_strike_range: float = 9
-
-@export var quick_jab_damage: float = 10.0
-@export var heavy_swing_damage: float = 20.0
-@export var lunge_strike_damage: float = 30.0
-@export var lunging:bool = false
-
-@export var quick_jab_hitbox_size: Vector3 = Vector3(2.44, 1.77, 1.27)      # Small, close-range jab
-@export var quick_jab_hitbox_pos: Vector3 = Vector3(0.01, 0.88, 1.43) 
-@export var heavy_swing_hitbox_size: Vector3 = Vector3(2.82, 1.77, 1.94)       # Wide arc swing
-@export var heavy_swing_hitbox_pos: Vector3 = Vector3(0.01, 0.88, 1.95) 
-@export var lunge_strike_hitbox_size: Vector3 = Vector3(2.12, 1.77, 1.28)    # Long forward reac
-@export var lunge_strike_hitbox_pos: Vector3 = Vector3(0.01, 0.88, 1.44) 
-
-
-@export var attack_cooldown: float = 0.5
+@export var attack_cooldown: float 
 
 # === KNOCKBACK ===
 @export_group("Knockback")
-@export var knockback_strength: float = 10.0
-@export var knockback_duration: float = 0.4
-@export var hit_stun_duration: float = 1.0
+@export var knockback_strength: float 
+@export var knockback_duration: float 
+@export var hit_stun_duration: float 
 
 # === NAVIGATION ===
 @export_group("Navigation")
-@export var path_update_rate: float = 0.2
-@export var avoidance_enabled: bool = true
-@export var avoidance_radius: float = 0.4
-@export var arc_strength: float = 0.2
-
+@export var path_update_rate: float 
+@export var avoidance_enabled: bool 
+@export var avoidance_radius: float 
+@export var arc_strength: float 
 # === NODES ===
 @onready var player: CharacterBody3D = get_tree().get_first_node_in_group("player")
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
@@ -61,7 +41,8 @@ extends CharacterBody3D
 @onready var hurtbox_shape: CollisionShape3D = $Hurtbox/CollisionShape3D
 @onready var health_bar: Sprite3D = $Sprite3D if has_node("Sprite3D") else null
 @onready var dmg_label: Sprite3D = $damage_number if has_node("damage_number") else null
-@onready var mesh: MeshInstance3D = $enemy/Armature/Skeleton3D/Ch25 if has_node("enemy/Armature/Skeleton3D/Ch25") else null
+#INHERIT VALUE IN CHILD :
+@onready var mesh: MeshInstance3D = $enemy/Armature/Skeleton3D/Ch25 if has_node("enemy/Armature/Skeleton3D/Ch25") else null 
 @onready var effect_marker: Marker3D = $effect_marker
 @onready var ui:CanvasLayer
 @onready var verdict_indicator: MeshInstance3D = $verdict_indicator
@@ -70,45 +51,50 @@ extends CharacterBody3D
 @export_group("Dialogue")
 @export var dialogue_array: Array[DialogueResource] = []
 @export var chosen_dialogue: DialogueResource
-@export var DIR_PATH = "res://dialogues/normalEnemies/" # Define the directory path
+@export var DIR_PATH: String  # Define in child
 
 # === STATE MACHINE ===
 enum State { IDLE, CHASE, WALK, WINDUP, ATTACKING, RECOVERY, HURT, DEAD, STUNNED, DOWNED, SPARED }
-var state: State = State.IDLE
+var state: State = State.IDLE 
 
-# === ATTACK STATE ===
-enum AttackType { QUICK_JAB, HEAVY_SWING, LUNGE_STRIKE }
-var current_attack: AttackType = AttackType.QUICK_JAB
-var attack_cooldown_timer: float = 0.0
-var locked_rotation: float = 0.0
-var hit_player_this_attack: bool = false
+# === ATTACK STATE === Values change in child
+
+# enum AttackType { QUICK_JAB, HEAVY_SWING, LUNGE_STRIKE } declare in chils
+# var current_attack: AttackType = AttackType.QUICK_JAB declare in child
+var attack_cooldown_timer: float
+var locked_rotation: float 
+var hit_player_this_attack: bool 
+
+
 
 # === FLASH STATE ===
 var flash_tween: Tween
 var flash_original_color: Color = Color.WHITE
 var flash_material: StandardMaterial3D
-var is_flashing: bool = false
+var is_flashing: bool 
 
 # === VISUAL EFFECTS ===
 var exec_tween: Tween
-var executable: bool = false
+var executable: bool 
 
 # === KNOCKBACK STATE ===
-var knockback_timer: float = 0.0
-var knockback_velocity: Vector3 = Vector3.ZERO
-var hit_stun_timer: float = 0.0
-var stunned: bool = false
+var knockback_timer: float 
+var knockback_velocity: Vector3 
+var hit_stun_timer: float 
+var stunned: bool 
 
 # === NAVIGATION ===
-var path_update_timer: float = 0.0
-var arc_direction: int = 1
+var path_update_timer: float
+var arc_direction: int 
 
 # === HEALTH ===
 var health: float
 
+
 # =====================================================================
 # INITIALIZATION
 # =====================================================================
+
 
 func _ready() -> void:
 	if chosen_dialogue == null:
@@ -127,50 +113,12 @@ func _ready() -> void:
 		push_error("No player in scene! Add player to 'player' group")
 	
 	call_deferred("_post_ready")
-
+	
 func _post_ready() -> void:
-	await get_tree().physics_frame
-	if player:
-		nav_agent.target_position = player.global_position
+	pass #define in child
 
-func _setup_navigation() -> void:
-	nav_agent.path_desired_distance = 0.5
-	nav_agent.target_desired_distance = 0.1
-	nav_agent.max_speed = run_speed
-	nav_agent.path_max_distance = 3.0
-	
-	if avoidance_enabled:
-		nav_agent.avoidance_enabled = true
-		nav_agent.radius = avoidance_radius
-		nav_agent.neighbor_distance = 1.3
-		nav_agent.max_neighbors = 10
-		nav_agent.time_horizon_agents = 1.0
-		nav_agent.avoidance_layers = 1
-		nav_agent.avoidance_mask = 1
-	
-	nav_agent.velocity_computed.connect(_on_velocity_computed)
-
-func _setup_hitbox() -> void:
-	if hitbox_shape:
-		hitbox_shape.set_deferred('disabled', true)
-	if hitbox_area:
-		hitbox_area.area_entered.connect(_on_hitbox_entered)
-
-func _setup_material() -> void:
-	if not mesh:
-		return
-	
-	var mat: StandardMaterial3D = mesh.get_active_material(0)
-	if mat:
-		mat = mat.duplicate()
-		mesh.set_surface_override_material(0, mat)
-		flash_material = mat
-		flash_original_color = mat.albedo_color
-
-# =====================================================================
-# MAIN LOOP
-# =====================================================================
 func load_resources_from_folder():
+	
 	var dir = DirAccess.open(DIR_PATH)
 	if dir:
 		dir.list_dir_begin()
@@ -195,8 +143,35 @@ func load_resources_from_folder():
 		dir.list_dir_end()
 		chosen_dialogue = dialogue_array.pick_random()
 	else:
-		print("Could not open directory: ", DIR_PATH)
+		print("Could not open directory: ", DIR_PATH)	
+		
 
+func _setup_navigation() -> void:
+	nav_agent.velocity_computed.connect(_on_velocity_computed)
+func _on_velocity_computed(safe_velocity: Vector3) -> void:
+	if state in [State.WINDUP, State.ATTACKING, State.RECOVERY, State.HURT, State.DEAD, State.DOWNED]:
+		return
+	
+	velocity.x = safe_velocity.x
+	velocity.z = safe_velocity.z
+	
+	if safe_velocity.length() > 0.1:
+		_rotate_towards_direction(safe_velocity.normalized(), get_physics_process_delta_time())
+
+	
+
+func _setup_hitbox() -> void:
+	pass
+func _setup_material() -> void:
+	if not mesh:
+		return
+	
+	var mat: StandardMaterial3D = mesh.get_active_material(0)
+	if mat:
+		mat = mat.duplicate()
+		mesh.set_surface_override_material(0, mat)
+		flash_material = mat
+		flash_original_color = mat.albedo_color
 
 func _physics_process(delta: float) -> void:
 	if state == State.DEAD:
@@ -264,8 +239,7 @@ func _update_ai(delta: float) -> void:
 			_state_hurt(delta)
 		State.STUNNED:
 			_state_stunned()
-
-# === STATE: IDLE ===
+			
 func _state_idle(distance: float) -> void:
 	velocity.x = 0
 	velocity.z = 0
@@ -274,6 +248,7 @@ func _state_idle(distance: float) -> void:
 		_transition_to(State.CHASE)
 	else:
 		_play_animation("Idle")
+	
 
 # === STATE: STUNNED ===
 func _state_stunned():
@@ -285,41 +260,11 @@ func _state_stunned():
 
 # === STATE: CHASE ===
 func _state_chase(distance: float, delta: float) -> void:
-	if _can_attack() and distance <= lunge_strike_range and player.current_health > 0:
-		_choose_attack(distance)
-		_transition_to(State.WINDUP)
-		return
-	
-	if distance <= walk_range and player.current_health > 0:
-		_transition_to(State.WALK)
-		return
-	
-	if distance > detection_range:
-		_transition_to(State.IDLE)
-		return
-	
-	_follow_path(run_speed, delta)
-	_play_animation("Run")
+	pass
 
 # === STATE: WALK ===
 func _state_walk(distance: float, delta: float) -> void:
-	if _can_attack() and distance <= lunge_strike_range and player.current_health > 0:
-		_choose_attack(distance)
-		_transition_to(State.WINDUP)
-		return
-	
-	if distance > walk_range and player.current_health > 0:
-		_transition_to(State.CHASE)
-		return
-	
-	if distance <= stop_distance:
-		velocity.x = 0
-		velocity.z = 0
-		_rotate_towards_player(delta)
-		_play_animation("Idle")
-	else:
-		_follow_path(walk_speed, delta)
-		_play_animation("Walk")
+	pass
 
 # === STATE: WINDUP ===
 func _state_windup(_delta: float) -> void:
@@ -328,11 +273,6 @@ func _state_windup(_delta: float) -> void:
 	nav_agent.velocity = Vector3.ZERO
 	
 	
-	if current_attack == AttackType.LUNGE_STRIKE:
-		_rotate_towards_player(0.16)       # Keep rotating to face player
-		locked_rotation = rotation.y         # Update locked rotation every frame
-	else:
-		rotation.y = locked_rotation
 	
 	# Animation calls _on_windup_complete() to transition
 
@@ -345,15 +285,6 @@ func _state_attacking(_delta: float) -> void:
 	rotation.z = 0
 	
 	# Lunge movement (will be stopped by _on_lunge_end() callback)
-	if current_attack == AttackType.LUNGE_STRIKE and lunging == true:
-		var forward: Vector3 = -global_basis.z
-		velocity.x = forward.x * -8.0
-		velocity.z = forward.z * -8.0
-		set_collision_mask_value(3, false)  # Disable enemy collision during lunge
-	else:
-		velocity.x = 0
-		velocity.z = 0
-	
 	# Animation calls  to stop lunge
 	# Animation calls _on_attack_complete() to transition
 
@@ -373,16 +304,7 @@ func _state_hurt(delta: float) -> void:
 	knockback_velocity.x = move_toward(knockback_velocity.x, 0, 20.0 * delta)
 	knockback_velocity.z = move_toward(knockback_velocity.z, 0, 20.0 * delta)
 	
-	if hit_stun_timer <= 0:
-		if player:
-			var distance: float = global_position.distance_to(player.global_position)
-			if distance <= walk_range:
-				_transition_to(State.WALK)
-			else:
-				_transition_to(State.CHASE)
-		else:
-			_transition_to(State.IDLE)
-
+	
 # =====================================================================
 # STATE TRANSITIONS
 # =====================================================================
@@ -397,9 +319,6 @@ func _transition_to(new_state: State) -> void:
 		
 	
 	# Re-enable collision mask if leaving lunge attack
-	if state == State.ATTACKING and current_attack == AttackType.LUNGE_STRIKE:
-		set_collision_mask_value(3, true)
-	
 	state = new_state
 	
 	match new_state:
@@ -437,7 +356,6 @@ func _transition_to(new_state: State) -> void:
 		State.DOWNED:
 			if effect_marker.visible == true:
 				_exec_done()
-			$enemy.position.z = -0.285
 			_stop_flash()
 			_disable_hitbox()
 			_disable_hurtbox()
@@ -452,6 +370,7 @@ func _transition_to(new_state: State) -> void:
 			_play_animation("Idle")
 			_spare()
 signal downed
+
 
 # =====================================================================
 # ANIMATION CALLBACKS
@@ -468,9 +387,8 @@ func exec_die():
 	take_damage(max_health, Vector3.ZERO)
 	_exec_done()
 	
-	
-
 func _on_attack_start() -> void:
+	print("Helloooo")
 	_rotate_towards_player(0.16)
 	"""Called at frame 0 of attack animation"""
 	_start_flash()
@@ -490,35 +408,19 @@ func _on_hitbox_end() -> void:
 	"""Called when damage frames end"""
 	_disable_hitbox()
 
+
 func _on_lunge_end() -> void:
 	"""Called when lunge movement should stop (only for lunge attack)"""
-	lunging = false
+	
 	velocity.x = 0
 	velocity.z = 0
 	set_collision_mask_value(3, true)  # Re-enable enemy collision
-
 
 func _on_attack_complete() -> void:
 	"""Called when attack animation ends - return to movement"""
 	_disable_hitbox()
 	
-	# Re-enable collision if was lunging
-	if current_attack == AttackType.LUNGE_STRIKE:
-		set_collision_mask_value(3, true)
 	
-	# Start cooldown
-	attack_cooldown_timer = attack_cooldown
-	
-	# Return to movement
-	if state in [State.ATTACKING, State.RECOVERY, State.WINDUP]:
-		if player:
-			var distance: float = global_position.distance_to(player.global_position)
-			if distance <= walk_range:
-				_transition_to(State.WALK)
-			else:
-				_transition_to(State.CHASE)
-		else:
-			_transition_to(State.IDLE)
 
 # =====================================================================
 # ATTACK SYSTEM
@@ -528,40 +430,15 @@ func _can_attack() -> bool:
 	return attack_cooldown_timer <= 0 and state not in [State.WINDUP, State.ATTACKING, State.RECOVERY, State.HURT]
 
 func _choose_attack(distance: float) -> void:
-	if distance <= quick_jab_range:
-		current_attack = AttackType.QUICK_JAB
-		$Hitbox/CollisionShape3D.shape.size = quick_jab_hitbox_size
-		$Hitbox/CollisionShape3D.position = quick_jab_hitbox_pos
-	elif distance <= heavy_swing_range and distance >= quick_jab_range:
-		current_attack = AttackType.HEAVY_SWING
-		$Hitbox/CollisionShape3D.shape.size = heavy_swing_hitbox_size
-		$Hitbox/CollisionShape3D.position = heavy_swing_hitbox_pos
-	elif distance <= lunge_strike_range and distance >= heavy_swing_range:
-		current_attack = AttackType.LUNGE_STRIKE
-		$Hitbox/CollisionShape3D.shape.size = lunge_strike_hitbox_size
-		$Hitbox/CollisionShape3D.position = lunge_strike_hitbox_pos
-		lunging = true
-	
+	pass
+
+
 
 
 func _get_attack_animation() -> String:
-	match current_attack:
-		AttackType.QUICK_JAB:
-			return "Attack1"
-		AttackType.HEAVY_SWING:
-			return "Attack2"
-		AttackType.LUNGE_STRIKE:
-			return "Attack3"
-	return "Attack1"
+	return ""
 
 func _get_attack_damage() -> float:
-	match current_attack:
-		AttackType.QUICK_JAB:
-			return quick_jab_damage
-		AttackType.HEAVY_SWING:
-			return heavy_swing_damage
-		AttackType.LUNGE_STRIKE:
-			return lunge_strike_damage
 	return 10.0
 
 # =====================================================================
@@ -596,7 +473,6 @@ func _on_hitbox_entered(area: Area3D) -> void:
 	var knockback: Vector3 = (player_node.global_position - global_position).normalized()
 	player_node.take_damage(_get_attack_damage(), knockback)
 	
-
 # =====================================================================
 # NAVIGATION
 # =====================================================================
@@ -622,9 +498,7 @@ func _follow_path(speed: float, delta: float) -> void:
 	var final_dir: Vector3 = (nav_dir * 0.6 + curved_dir * 0.4).normalized()
 	
 	var distance: float = global_position.distance_to(player.global_position)
-	if distance < 3.0 and distance > lunge_strike_range:
-		var orbit_dir: Vector3 = (global_position - player.global_position).normalized().rotated(Vector3.UP, deg_to_rad(90) * arc_direction)
-		final_dir = (final_dir * 0.3 + orbit_dir * 0.7).normalized()
+	
 	
 	var desired_velocity: Vector3 = final_dir * speed
 	
@@ -635,15 +509,6 @@ func _follow_path(speed: float, delta: float) -> void:
 		velocity.z = desired_velocity.z
 		_rotate_towards_direction(final_dir, delta)
 
-func _on_velocity_computed(safe_velocity: Vector3) -> void:
-	if state in [State.WINDUP, State.ATTACKING, State.RECOVERY, State.HURT, State.DEAD, State.DOWNED]:
-		return
-	
-	velocity.x = safe_velocity.x
-	velocity.z = safe_velocity.z
-	
-	if safe_velocity.length() > 0.1:
-		_rotate_towards_direction(safe_velocity.normalized(), get_physics_process_delta_time())
 
 # =====================================================================
 # ROTATION
@@ -754,14 +619,10 @@ func _die() -> void:
 	collision_layer = 0
 	collision_mask = 0
 	nav_agent.avoidance_enabled = false
-	
+	$Hurtbox/CollisionShape3D.set_deferred('disabled', true)
 	
 	await get_tree().create_timer(10.0).timeout
 	queue_free()
-
-# =====================================================================
-# ANIMATION
-# =====================================================================
 
 func _play_animation(anim_name: String) -> void:
 	if anim_state and anim_state.get_current_node() != anim_name:

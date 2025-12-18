@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3 uid="uid://cnruhddqxyw1c"]
+
+[ext_resource type="Script" uid="uid://b14gugdy3golt" path="res://entities/NPCs/AttackData.gd" id="1_h30bp"]
+
+[resource]
+script = ExtResource("1_h30bp")
+attack_name = "Soldier Slash"
+animation_name = "Attack2"
+min_range = 1.5
+max_range = 2.5
+hitbox_size = Vector3(2.3041382, 1.3807373, 1.3419533)
+hitbox_position = Vector3(0.08015168, 0.6875018, 1.7331808)
+metadata/_custom_type_script = "uid://b14gugdy3golt"

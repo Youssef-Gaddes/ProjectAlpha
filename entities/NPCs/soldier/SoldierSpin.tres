@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3 uid="uid://hufciabvv0me"]
+
+[ext_resource type="Script" uid="uid://b14gugdy3golt" path="res://entities/NPCs/AttackData.gd" id="1_ek15m"]
+
+[resource]
+script = ExtResource("1_ek15m")
+attack_name = "Soldier Spin"
+min_range = 3.0
+max_range = 4.0
+attack_cooldown = 1.0
+damage = 35.0
+hitbox_size = Vector3(1.8510742, 1.3807373, 1.9321976)
+hitbox_position = Vector3(0.040997624, 0.6875018, 2.2617297)
+metadata/_custom_type_script = "uid://b14gugdy3golt"

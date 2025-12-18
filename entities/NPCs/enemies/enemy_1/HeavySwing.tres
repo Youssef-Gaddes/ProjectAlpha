@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3 uid="uid://qicjifnjvnvh"]
+
+[ext_resource type="Script" uid="uid://b14gugdy3golt" path="res://entities/NPCs/AttackData.gd" id="1_vodw4"]
+
+[resource]
+script = ExtResource("1_vodw4")
+attack_name = "Heavy Swing"
+animation_name = "Attack2"
+min_range = 3.0
+max_range = 4.5
+damage = 20.0
+hitbox_size = Vector3(2.82, 1.77, 1.94)
+hitbox_position = Vector3(0.01, 0.88, 1.95)
+metadata/_custom_type_script = "uid://b14gugdy3golt"

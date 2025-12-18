@@ -1,6 +1,6 @@
 extends Sprite3D
 
-@onready var entity: CharacterBody3D = get_parent()
+@onready var entity: CharacterBody3D = get_parent().npc
 @onready var label: Label = $SubViewport/Label
 @export var time: float = 0.5
 var total: int = 0

@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://x82pisafjy14" path="res://Assets/Judge/judge_in_place_texture_pbr_20250901_4.png" id="1_4vfmq"]
 [ext_resource type="Script" uid="uid://cyh4tb7ryt5ul" path="res://entities/player/judge.gd" id="1_bn5hv"]
 [ext_resource type="Texture2D" uid="uid://df3ii757sta3m" path="res://Assets/Judge/judge_in_place_texture_pbr_20250901_metallic.png-texture_pbr_20250901_roughness_5.png" id="2_bn5hv"]
-[ext_resource type="PackedScene" uid="uid://brccmg6kep042" path="res://entities/enemies/hit_impact.tscn" id="2_k725b"]
+[ext_resource type="PackedScene" uid="uid://brccmg6kep042" path="res://entities/NPCs/enemies/hit_impact.tscn" id="2_k725b"]
 [ext_resource type="Texture2D" uid="uid://7gffh87a7p1v" path="res://Assets/Judge/judge_in_place_texture_pbr_20250901_normal_3.png" id="3_7grbc"]
 [ext_resource type="PackedScene" uid="uid://c0msqplnxbih7" path="res://entities/player/weapon_trail.tscn" id="3_qwjsu"]
 [ext_resource type="Texture2D" uid="uid://fx360wov2csj" path="res://Assets/Judge/judge_in_place_texture_pbr_20250901.png" id="4_iuuio"]
