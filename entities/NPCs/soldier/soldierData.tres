@@ -12,7 +12,6 @@ npc_id = "1"
 faction = "Knights"
 can_fight = true
 fight_mode = true
-is_hostile = true
 max_health = 300.0
 run_speed = 5.0
 walk_speed = 2.0

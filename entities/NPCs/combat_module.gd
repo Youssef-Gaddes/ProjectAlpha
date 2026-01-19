@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 func _state_chase(distance: float, delta: float) -> void:
 	
 	
-	if distance <= data.walk_range and npc.player.current_health > 0:
+	if distance <= data.walk_range and npc.player.health > 0:
 		print("yemchi")
 		_transition_to(State.WALK)
 		return
@@ -62,12 +62,12 @@ func _state_chase(distance: float, delta: float) -> void:
 
 # === STATE: WALK ===
 func _state_walk(distance: float, delta: float) -> void:
-	if _can_attack() and distance <= data.walk_range and npc.player.current_health > 0:
+	if _can_attack() and distance <= data.walk_range and npc.player.health > 0:
 		_choose_attack(distance)
 		_transition_to(State.WINDUP)
 		return
 	
-	if distance > data.walk_range and npc.player.current_health > 0:
+	if distance > data.walk_range and npc.player.health > 0:
 		_transition_to(State.CHASE)
 		return
 	
@@ -116,8 +116,7 @@ func _state_hurt(delta: float) -> void:
 			_transition_to(State.IDLE)
 func _choose_attack(distance: float) -> void:
 	for i in data.attacks:
-		print(i.attack_name)
-		if i.min_range <= distance and distance <= i.max_range:
+		if i.min_range <= distance and distance < i.max_range:
 			current_attack = data.attacks.find(i)
 			hitbox_shape.shape.size = data.attacks[current_attack].hitbox_size
 			hitbox_shape.position = data.attacks[current_attack].hitbox_position
@@ -126,7 +125,7 @@ func _choose_attack(distance: float) -> void:
 
 
 func _get_attack_animation() -> String:
-	if current_attack:
+	if current_attack != null :
 		return data.attacks[current_attack].animation_name
 	else:
 		return "Attack1"

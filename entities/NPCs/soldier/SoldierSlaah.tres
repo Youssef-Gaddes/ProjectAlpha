@@ -6,8 +6,7 @@
 script = ExtResource("1_h30bp")
 attack_name = "Soldier Slash"
 animation_name = "Attack2"
-min_range = 1.5
-max_range = 2.5
+max_range = 3.0
 hitbox_size = Vector3(2.3041382, 1.3807373, 1.3419533)
 hitbox_position = Vector3(0.08015168, 0.6875018, 1.7331808)
 metadata/_custom_type_script = "uid://b14gugdy3golt"

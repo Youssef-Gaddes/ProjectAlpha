@@ -176,6 +176,6 @@ transform = Transform3D(0.2, 0, 0, 0, 0.2, -4.440892e-15, 0, 4.440892e-15, 0.2, 
 where = "res://Maps/Combat maps/test2.tscn"
 
 [node name="Soldier" parent="." instance=ExtResource("13_ox1a2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 14.283125)
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 5.2497263)
 
 [connection signal="body_entered" from="EnemySpawnArea" to="." method="_on_enemy_spawn_body_entered"]

@@ -6,7 +6,7 @@ extends Node3D
 @onready var spawn_points : Array[Marker3D]
 @onready var enemies: Array[CharacterBody3D] = []
 @onready var player: CharacterBody3D
-@export var enemy_number: int = 5
+@export var enemy_number: int = 1
 @onready var downed: Array[CharacterBody3D] = []
 @export var spared:int = 0
 @export var killed:int = 0
@@ -24,7 +24,7 @@ func _ready() -> void:
 		Stats.in_run = true
 		Stats.player_health = player.max_health
 	else:
-		player.current_health = Stats.player_health
+		player.health = Stats.player_health
 	spared = 0
 	killed =0
 	total =0
@@ -34,7 +34,7 @@ func _ready() -> void:
 func _verdict_done():
 	player.collision_shape_3d.set_deferred('disabled', false)
 	tp.activate()
-	Stats.player_health = player.current_health
+	Stats.player_health = player.health
 	print('Verdict DONE')
 
 func _add_total():

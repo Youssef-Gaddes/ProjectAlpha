@@ -9,6 +9,7 @@ var data: NPCData
 @onready var hitbox_area: Area3D = $HitBox
 @onready var hitbox_shape: CollisionShape3D = $HitBox/CollisionShape3D
 @onready var hurtbox_shape: CollisionShape3D = $HurtBox/CollisionShape3D
+@onready var hurtbox_area: Area3D = $HurtBox
 @onready var dmg_label: Sprite3D = $damage_number
 @onready var health_bar: Sprite3D = $Sprite3D
 @onready var verdict_indicator: MeshInstance3D = $verdict_indicator
@@ -59,6 +60,28 @@ func initialize(parent_npc: CharacterBody3D, npc_data: NPCData):
 	npc = parent_npc
 	data = npc_data
 
+func set_boxes():
+	if data.is_hostile:
+		hitbox_area.set_collision_layer_value(12, true)
+		hitbox_area.set_collision_layer_value(9, false)
+		hitbox_area.set_collision_mask_value(11, true)
+		hitbox_area.set_collision_mask_value(10, false)
+		
+		hurtbox_area.set_collision_layer_value(10, true)
+		hurtbox_area.set_collision_mask_value(9, true)
+		hurtbox_area.set_collision_layer_value(11, false)
+		hurtbox_area.set_collision_mask_value(12, false)
+	elif data.is_hostile == false:
+		hitbox_area.set_collision_layer_value(12, false)
+		hitbox_area.set_collision_layer_value(9, true)
+		hitbox_area.set_collision_mask_value(11, false)
+		hitbox_area.set_collision_mask_value(10, true)
+		
+		hurtbox_area.set_collision_layer_value(10, false)
+		hurtbox_area.set_collision_mask_value(9, false)
+		hurtbox_area.set_collision_layer_value(11, true)
+		hurtbox_area.set_collision_mask_value(12, true)
+
 func _ready() -> void:
 	initialize(get_parent(), get_parent().NPC_Data)
 	health = data.max_health
@@ -66,6 +89,7 @@ func _ready() -> void:
 	if data.is_hostile:
 		npc.add_to_group("enemy")
 	
+	set_boxes()
 	_setup_navigation()
 	_setup_hitbox()
 	_setup_material()
@@ -106,9 +130,20 @@ func _setup_material() -> void:
 		flash_material = mat
 		flash_original_color = mat.albedo_color
 
+func activate():
+	if data.fight_mode:
+		self.visible = true
+		hurtbox_shape.set_deferred('disabled', false)
+
+func deactivate():
+	if data.fight_mode == false:
+		self.visible = false
+		_disable_hurtbox()
+
 func _physics_process(delta: float) -> void:
 	if data.fight_mode == false:
 		return
+		
 	if state == State.DEAD:
 		return
 	if state == State.SPARED:
@@ -148,7 +183,7 @@ func _update_ai(delta: float) -> void:
 	if data.is_hostile:
 		distance = npc.global_position.distance_to(npc.player.global_position)
 	else:
-		distance = 0
+		distance = npc.global_position.distance_to(npc.player.global_position)
 	
 	path_update_timer -= delta
 	if path_update_timer <= 0:
@@ -178,7 +213,7 @@ func _state_idle(distance: float) -> void:
 	npc.velocity.x = 0
 	npc.velocity.z = 0
 	
-	if distance <= data.detection_range and npc.player.current_health > 0:
+	if distance <= data.detection_range and npc.player.health > 0:
 		_transition_to(State.CHASE)
 	else:
 		_play_animation("Idle")
@@ -397,8 +432,7 @@ func _on_hitbox_entered(area: Area3D) -> void:
 	if hit_player_this_attack:
 		return
 	
-	if not area.is_in_group("player_hurtbox"):
-		return
+
 	
 	var player_node: Node = area.get_parent()
 	if not player_node.has_method("take_damage"):

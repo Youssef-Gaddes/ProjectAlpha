@@ -97,7 +97,7 @@ var dodge_dir: Vector3 = Vector3.ZERO
 
 
 # === HEALTH STATE ===
-var current_health: float
+var health: float
 var is_invulnerable: bool = false
 
 # === INITIALIZATION ===
@@ -107,7 +107,7 @@ func _ready():
 	ui = get_tree().get_first_node_in_group('UI')
 	verdict = false
 	add_to_group("player")
-	current_health = max_health
+	health = max_health
 	anim_state.travel("Idle")
 	_setup_hitbox()
 	attack_duration[0] = attack_duration[0]/attack_speed
@@ -865,7 +865,7 @@ func take_damage(damage: float, knockback_dir: Vector3):
 	get_tree().get_first_node_in_group('camera')._camera_shake()
 
 	# apply damage
-	current_health -= damage
+	health -= damage
 	flash_red()
 
 
@@ -896,7 +896,7 @@ func take_damage(damage: float, knockback_dir: Vector3):
 	is_invulnerable = false
 
 	# Death check
-	if current_health <= 0:
+	if health <= 0:
 		die()
 
 func flash_red(duration := 0.15):

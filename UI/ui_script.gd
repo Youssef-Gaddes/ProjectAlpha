@@ -13,12 +13,12 @@ extends CanvasLayer
 func _ready() -> void:
 	kill_spare.visible = false
 	health_bar.max_value = player.max_health
-	health_bar.value = player.current_health
+	health_bar.value = player.health
 	for i in range(bars.size()):
 		bars[i].value = 0
 		bars[i].max_value = player.max_judgment
 func _process(_delta: float) -> void:
-	health_bar.value = player.current_health
+	health_bar.value = player.health
 
 func show_verdict():
 	kill_spare.visible = true

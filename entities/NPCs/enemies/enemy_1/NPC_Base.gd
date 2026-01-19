@@ -17,7 +17,7 @@ enum NPCState {
 	DEAD
 }
 var state: NPCState = NPCState.IDLE
-
+var health
 
 @onready var player: CharacterBody3D = get_tree().get_first_node_in_group("player")
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
@@ -40,7 +40,6 @@ func _on_hitbox_start():
 func _on_hitbox_end():
 	Combat_Module._on_hitbox_end()
 func _on_lunge_end():
-	print('why u still going')
 	Combat_Module._on_lunge_end()
 func _on_attack_complete():
 	Combat_Module._on_attack_complete()
@@ -49,6 +48,9 @@ func _on_attack_complete():
 func _setup_modules():
 	# Load combat module if needed
 	if NPC_Data.can_fight:
+		if NPC_Data.is_hostile == false:
+			await get_tree().create_timer(6.0).timeout
+			player = get_parent().enemies.pick_random()
 		Combat_Module_scene = load("res://entities/NPCs/combat_module.tscn")
 		Combat_Module = Combat_Module_scene.instantiate()
 		add_child(Combat_Module)
@@ -62,6 +64,7 @@ func _setup_modules():
 
 func _physics_process(delta: float):
 	if state == NPCState.DEAD or state == NPCState.COMBAT:
+		health = Combat_Module.health
 		return
 	
 	velocity.y = -9.8
@@ -96,7 +99,7 @@ func _state_idle(delta: float):
 	_play_animation("Idle")
 	
 	# Check for state transitions
-	if NPC_Data.can_fight and NPC_Data.is_hostile and player and NPC_Data.fight_mode:
+	if NPC_Data.can_fight  and player and NPC_Data.fight_mode:
 		var distance = global_position.distance_to(player.global_position)
 		if distance <= NPC_Data.detection_range:
 			transition_to(NPCState.COMBAT)
@@ -107,6 +110,7 @@ func transition_to(new_state: NPCState):
 		NPCState.COMBAT:
 			if Combat_Module:
 				NPC_Data.fight_mode = false
+				Combat_Module.deactivate()
 	
 	# Enter new state
 	state = new_state
@@ -121,6 +125,7 @@ func transition_to(new_state: NPCState):
 		
 		NPCState.COMBAT:
 			NPC_Data.fight_mode = true
+			Combat_Module.activate()
 		
 		NPCState.FLEEING:
 			_play_animation("Run")
