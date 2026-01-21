@@ -6,16 +6,17 @@
 [ext_resource type="Resource" uid="uid://hufciabvv0me" path="res://entities/NPCs/soldier/SoldierSpin.tres" id="3_d5ux6"]
 
 [resource]
+resource_local_to_scene = true
 script = ExtResource("2_il23u")
 npc_name = "Soldier"
 npc_id = "1"
 faction = "Knights"
 can_fight = true
-fight_mode = true
 max_health = 300.0
 run_speed = 5.0
 walk_speed = 2.0
 walk_range = 5.0
 stop_distance = 1.5
 attacks = Array[ExtResource("1_2sj4m")]([ExtResource("2_vyfx4"), ExtResource("3_d5ux6")])
+avoidance_radius = 1.5
 metadata/_custom_type_script = "uid://e3mk4v0c7apw"

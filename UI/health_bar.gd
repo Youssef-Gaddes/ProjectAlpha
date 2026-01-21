@@ -9,6 +9,10 @@ var dmg: int = 0
 var health = 0
 
 func _ready() -> void:
+	if entity.NPC_Data.is_hostile == false:
+		var new_stylebox_normal = health_bar.get_theme_stylebox("fill").duplicate()
+		new_stylebox_normal.bg_color = Color.LIME_GREEN
+		health_bar.add_theme_stylebox_override("fill", new_stylebox_normal)
 	health = entity.NPC_Data.max_health
 	health_bar.max_value = health
 	health_bar.value = health

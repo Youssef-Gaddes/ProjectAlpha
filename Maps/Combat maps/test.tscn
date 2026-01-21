@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://ddgfi5vn8fttw"]
+[gd_scene load_steps=22 format=4 uid="uid://ddgfi5vn8fttw"]
 
 [ext_resource type="Script" uid="uid://byvh1vkuefrb1" path="res://Maps/Combat maps/combat_map.gd" id="1_00tp4"]
 [ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/judge.tscn" id="1_xersf"]
@@ -12,7 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://1fpbgm5usmiw" path="res://UI/ui.tscn" id="10_00tp4"]
 [ext_resource type="Texture2D" uid="uid://bph5u02mx78b7" path="res://Assets/Altar_Altar_albedo_V2.png" id="10_77dp3"]
 [ext_resource type="PackedScene" uid="uid://cwbkbu26vsk38" path="res://interactables/tp.tscn" id="12_5tkv4"]
-[ext_resource type="PackedScene" uid="uid://de1vlmnbyhaqw" path="res://entities/NPCs/soldier/soldier.tscn" id="13_ox1a2"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_ppyta"]
 vertices = PackedVector3Array(-1.4254494, 0.57175446, 36.7371, -2.1754494, 0.82175446, 36.9871, -2.1754494, 0.82175446, 37.4871, -0.6754494, 0.57175446, 44.7371, -3.4254494, 0.57175446, 36.4871, -2.1754494, 0.82175446, 36.7371, -2.1754494, 0.57175446, 35.9871, 0.32455063, 0.32175446, 46.9871, 0.32455063, 0.57175446, 45.7371, -0.9254494, 0.32175446, 45.4871, -54.17545, 0.32175446, 46.9871, -1.6754494, 0.32175446, 35.9871, -1.6754494, 0.32175446, -47.2629, -3.4254494, 0.32175446, 37.2371, -3.6551247, 0.82175446, 42.25875, -5.190136, 0.32175446, 42.247765, -54.17545, 0.32175446, -47.2629, 1.0745506, 0.32175446, 45.7371, 54.07455, 0.32175446, 46.9871, 1.0745506, 0.57175446, 44.9871, 3.9455185, 0.32175446, 37.729034, 2.1551971, 0.82175446, 37.39839, 0.19955063, 0.82175446, 44.8621, 3.844757, 0.82175446, 42.24888, 5.329769, 0.32175446, 42.259865, 54.07455, 0.32175446, -47.2629)
@@ -174,8 +173,5 @@ debug_color = Color(0, 0, 0, 1)
 [node name="Tp" parent="." instance=ExtResource("12_5tkv4")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, -4.440892e-15, 0, 4.440892e-15, 0.2, 0.031594753, 0.017101169, -18.835033)
 where = "res://Maps/Combat maps/test2.tscn"
-
-[node name="Soldier" parent="." instance=ExtResource("13_ox1a2")]
-transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 5.2497263)
 
 [connection signal="body_entered" from="EnemySpawnArea" to="." method="_on_enemy_spawn_body_entered"]

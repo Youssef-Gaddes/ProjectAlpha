@@ -83,11 +83,16 @@ func set_boxes():
 		hurtbox_area.set_collision_mask_value(12, true)
 
 func _ready() -> void:
+
 	initialize(get_parent(), get_parent().NPC_Data)
+	npc._select_target()
 	health = data.max_health
 	arc_direction = 1 if randf() < 0.5 else -1
 	if data.is_hostile:
 		npc.add_to_group("enemy")
+	else:
+		npc.add_to_group("ally", true)
+	
 	
 	set_boxes()
 	_setup_navigation()
@@ -180,16 +185,15 @@ func _update_ai(delta: float) -> void:
 	if not npc.player:
 		return
 	var distance: float
-	if data.is_hostile:
-		distance = npc.global_position.distance_to(npc.player.global_position)
-	else:
-		distance = npc.global_position.distance_to(npc.player.global_position)
+	if npc.target:
+		distance = npc.global_position.distance_to(npc.target.global_position)
 	
 	path_update_timer -= delta
 	if path_update_timer <= 0:
 		path_update_timer = data.path_update_rate
-		if state in [State.CHASE, State.WALK]:
-			npc.nav_agent.target_position = npc.player.global_position
+		if state in [State.CHASE, State.WALK] and npc.target:
+			if distance > data.walk_range:
+				npc.nav_agent.target_position = npc.target.global_position
 	
 	match state:
 		State.IDLE:
@@ -213,7 +217,7 @@ func _state_idle(distance: float) -> void:
 	npc.velocity.x = 0
 	npc.velocity.z = 0
 	
-	if distance <= data.detection_range and npc.player.health > 0:
+	if distance <= data.detection_range and npc.target and npc.target.health > 0:
 		_transition_to(State.CHASE)
 	else:
 		_play_animation("Idle")
@@ -330,9 +334,14 @@ func _transition_to(new_state: State) -> void:
 			_disable_hitbox()
 			_disable_hurtbox()
 			_play_animation("Kneel")
+			data.fight_mode = false
+			if data.is_hostile == false:
+				_transition_to(State.DEAD)
+				dead.emit(npc)
 			
 		
 		State.DEAD:
+			print(self, 'got killed')
 			_play_animation("Die")
 			_die()
 		
@@ -340,6 +349,7 @@ func _transition_to(new_state: State) -> void:
 			_play_animation("Idle")
 			_spare()
 signal downed
+signal dead
 
 
 # =====================================================================
@@ -358,7 +368,6 @@ func exec_die():
 	_exec_done()
 	
 func _on_attack_start() -> void:
-	print("Helloooo")
 	_rotate_towards_player(0.16)
 	"""Called at frame 0 of attack animation"""
 	_start_flash()
@@ -381,7 +390,6 @@ func _on_hitbox_end() -> void:
 
 func _on_lunge_end() -> void:
 	"""Called when lunge movement should stop (only for lunge attack)"""
-	print('STOP')
 	lunging = false
 	npc.velocity.x = 0
 	npc.velocity.z = 0
@@ -457,8 +465,11 @@ func _follow_path(speed: float, delta: float) -> void:
 	var to_nav: Vector3 = next_pos - npc.global_position
 	to_nav.y = 0
 	var nav_dir: Vector3 = to_nav.normalized()
-	
-	var to_player: Vector3 = npc.player.global_position - npc.global_position
+	var to_player: Vector3
+	if npc.target:
+		to_player = npc.target.global_position - npc.global_position
+	else:
+		to_player = Vector3.ZERO
 	to_player.y = 0
 	var player_dir: Vector3 = to_player.normalized()
 	
@@ -467,8 +478,11 @@ func _follow_path(speed: float, delta: float) -> void:
 	
 	var final_dir: Vector3 = (nav_dir * 0.6 + curved_dir * 0.4).normalized()
 	
-	var _distance: float = npc.global_position.distance_to(npc.player.global_position)
-	
+	var _distance: float 
+	if npc.target:
+		_distance = npc.global_position.distance_to(npc.target.global_position)
+	else:
+		_distance = 0.0
 	
 	var desired_velocity: Vector3 = final_dir * speed
 	
@@ -498,7 +512,11 @@ func _rotate_towards_direction(direction: Vector3, delta: float) -> void:
 		npc.rotation.z = 0
 
 func _rotate_towards_player(delta: float) -> void:
-	var to_player: Vector3 = npc.player.global_position - npc.global_position
+	var to_player: Vector3 
+	if npc.target:
+		to_player = npc.target.global_position - npc.global_position
+	else:
+		to_player = Vector3.ZERO
 	to_player.y = 0
 	_rotate_towards_direction(to_player.normalized(), delta)
 
@@ -585,7 +603,8 @@ func _spare() -> void:
 
 
 func _die() -> void:
-	get_parent().get_parent()._on_enemy_killed(get_parent())
+	if data.is_hostile:
+		get_parent().get_parent()._on_enemy_killed(get_parent())
 	npc.collision_layer = 0
 	npc.collision_mask = 0
 	npc.nav_agent.avoidance_enabled = false

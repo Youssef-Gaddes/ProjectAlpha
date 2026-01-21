@@ -13,12 +13,13 @@ func _ready() -> void:
 	
 func _post_ready() -> void:
 	await get_tree().physics_frame
-	if npc.player:
-		npc.nav_agent.target_position = npc.player.global_position
+	if npc.target:
+		npc.nav_agent.target_position = npc.target.global_position
+
 
 func _setup_navigation() -> void:
 	npc.nav_agent.path_desired_distance = 0.5
-	npc.nav_agent.target_desired_distance = 0.1
+	npc.nav_agent.target_desired_distance = 0.5
 	npc.nav_agent.max_speed = data.run_speed
 	npc.nav_agent.path_max_distance = 3.0
 	
@@ -47,8 +48,7 @@ func _physics_process(delta: float) -> void:
 func _state_chase(distance: float, delta: float) -> void:
 	
 	
-	if distance <= data.walk_range and npc.player.health > 0:
-		print("yemchi")
+	if distance <= data.walk_range and npc.target and npc.target.health > 0:
 		_transition_to(State.WALK)
 		return
 	
@@ -62,12 +62,17 @@ func _state_chase(distance: float, delta: float) -> void:
 
 # === STATE: WALK ===
 func _state_walk(distance: float, delta: float) -> void:
-	if _can_attack() and distance <= data.walk_range and npc.player.health > 0:
+	if distance <= data.stop_distance:
+		npc.nav_agent.velocity = Vector3.ZERO
+		npc.velocity = Vector3.ZERO
+		npc.nav_agent.set_target_position(npc.global_position)
+
+	if _can_attack() and distance <= data.walk_range and npc.target and npc.target.health > 0:
 		_choose_attack(distance)
 		_transition_to(State.WINDUP)
 		return
 	
-	if distance > data.walk_range and npc.player.health > 0:
+	if distance > data.walk_range and npc.target and npc.target.health > 0:
 		_transition_to(State.CHASE)
 		return
 	
@@ -85,7 +90,7 @@ func _state_windup(_delta: float) -> void:
 	super._state_windup(_delta)
 	
 	if data.attacks[current_attack].attack_name == "Lunge Strike":
-		_rotate_towards_player(0.16)       # Keep rotating to face player
+		_rotate_towards_player(0.16)       # Keep rotating to face target
 		locked_rotation = npc.rotation.y         # Update locked rotation every frame
 	else:
 		npc.rotation.y = locked_rotation
@@ -106,8 +111,8 @@ func _state_attacking(_delta: float) -> void:
 func _state_hurt(delta: float) -> void:
 	super._state_hurt(delta)
 	if hit_stun_timer <= 0:
-		if npc.player:
-			var distance: float = global_position.distance_to(npc.player.global_position)
+		if npc.target:
+			var distance: float = global_position.distance_to(npc.target.global_position)
 			if distance <= data.walk_range:
 				_transition_to(State.WALK)
 			else:
@@ -144,8 +149,8 @@ func _on_attack_complete() -> void:
 	
 	# Return to movement
 	if state in [State.ATTACKING, State.RECOVERY, State.WINDUP]:
-		if npc.player:
-			var distance: float = npc.global_position.distance_to(npc.player.global_position)
+		if npc.target:
+			var distance: float = npc.global_position.distance_to(npc.target.global_position)
 			if distance <= data.walk_range:
 				_transition_to(State.WALK)
 			else:
