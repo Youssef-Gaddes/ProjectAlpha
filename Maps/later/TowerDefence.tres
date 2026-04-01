@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://ck6awaifnil0y"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_aq7d8"]
+
+[resource]
+script = ExtResource("1_aq7d8")
+map_id = "N-005"
+display_name = "Infighting"
+description = "simple combat map"
+scene_path = "res://Maps/Combat/BeastNest.tscn"
+primary_category = 2
+complexity_tier = 1
+emotional_weight = 3
+victory_condition = 2
+combat_type = 1
+combat_intensity = 2
+moral_choice = 2
+npc_presence = 5
+npc_death = 1
+map_duration = 3
+archetype_impact = Array[int]([1, 2])
+faction_trait_shift = Dictionary[int, int]({})
+can_appear_in = Array[int]([2])
+earliest_node = 6
+latest_node = 11
+max_per_run = 2
+min_nodes_between = 4
+corruption_cores = 1
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

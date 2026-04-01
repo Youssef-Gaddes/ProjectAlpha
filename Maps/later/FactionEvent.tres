@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://s27qjfctg6vq"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_xuy1u"]
+
+[resource]
+script = ExtResource("1_xuy1u")
+map_id = "N-007"
+display_name = "FactionEvent"
+description = "simple combat map"
+scene_path = "res://Maps/Combat/BeastNest.tscn"
+primary_category = 1
+emotional_weight = 3
+victory_condition = 2
+moral_choice = 3
+npc_presence = 2
+map_duration = 1
+archetype_impact = Array[int]([1, 2])
+faction_trait_shift = Dictionary[int, int]({})
+can_appear_in = Array[int]([1])
+earliest_node = 2
+latest_node = 6
+max_per_run = 0
+min_nodes_between = 0
+corruption_cores = 1
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

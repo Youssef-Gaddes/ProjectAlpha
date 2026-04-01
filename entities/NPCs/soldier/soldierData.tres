@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="NPCData" load_steps=5 format=3 uid="uid://cx6rbll14grai"]
+[gd_resource type="Resource" script_class="NPCData" load_steps=6 format=3 uid="uid://cx6rbll14grai"]
 
 [ext_resource type="Script" uid="uid://b14gugdy3golt" path="res://entities/NPCs/AttackData.gd" id="1_2sj4m"]
 [ext_resource type="Script" uid="uid://e3mk4v0c7apw" path="res://entities/NPCs/NPCData.gd" id="2_il23u"]
 [ext_resource type="Resource" uid="uid://cnruhddqxyw1c" path="res://entities/NPCs/soldier/SoldierSlaah.tres" id="2_vyfx4"]
 [ext_resource type="Resource" uid="uid://hufciabvv0me" path="res://entities/NPCs/soldier/SoldierSpin.tres" id="3_d5ux6"]
+[ext_resource type="Resource" uid="uid://cvdb10nklwyxa" path="res://dialogues/Allies/KnightPatrolRequest.dialogue" id="4_d5ux6"]
 
 [resource]
 resource_local_to_scene = true
@@ -11,10 +12,13 @@ script = ExtResource("2_il23u")
 npc_name = "Soldier"
 npc_id = "1"
 faction = "Knights"
+can_talk = true
 can_fight = true
 max_health = 300.0
 run_speed = 5.0
 walk_speed = 2.0
+dialogue_ressource = ExtResource("4_d5ux6")
+detection_range = 40.0
 walk_range = 5.0
 stop_distance = 1.5
 attacks = Array[ExtResource("1_2sj4m")]([ExtResource("2_vyfx4"), ExtResource("3_d5ux6")])

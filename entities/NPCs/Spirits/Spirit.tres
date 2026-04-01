@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=4 format=3 uid="uid://b3738bbk68aut"]
+
+[ext_resource type="Script" uid="uid://b14gugdy3golt" path="res://entities/NPCs/AttackData.gd" id="1_sr3k4"]
+[ext_resource type="Resource" uid="uid://c6bkc2jupbye1" path="res://dialogues/Spirits/KnightSpirit.dialogue" id="2_88vy2"]
+[ext_resource type="Script" uid="uid://e3mk4v0c7apw" path="res://entities/NPCs/NPCData.gd" id="5_gw1r6"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("5_gw1r6")
+npc_name = "Spirit"
+npc_id = "2"
+faction = "Knights"
+can_talk = true
+max_health = 300.0
+run_speed = 5.0
+walk_speed = 2.0
+dialogue_ressource = ExtResource("2_88vy2")
+walk_range = 5.0
+stop_distance = 1.5
+avoidance_radius = 1.5
+metadata/_custom_type_script = "uid://e3mk4v0c7apw"

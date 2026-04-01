@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://c5whsje2qw4ry"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_8vpeo"]
+
+[resource]
+script = ExtResource("1_8vpeo")
+map_id = "N-006"
+display_name = "Spirit"
+description = "meeting spirit"
+scene_path = "res://Maps/Combat/BeastNest.tscn"
+primary_category = 5
+emotional_weight = 1
+victory_condition = 5
+npc_presence = 4
+faction_opinion_magnitude = 1
+faction_trait_shift = Dictionary[int, int]({})
+spirit_impact = 1
+earliest_node = 3
+latest_node = 7
+max_per_run = 0
+min_nodes_between = 0
+spirit_boon = 1
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

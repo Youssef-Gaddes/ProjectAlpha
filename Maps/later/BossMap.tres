@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://capwojs7t3bw4"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_jrg54"]
+
+[resource]
+script = ExtResource("1_jrg54")
+map_id = "N-002"
+display_name = "BossMap"
+description = "simple combat map"
+scene_path = "res://Maps/Combat/BeastNest.tscn"
+complexity_tier = 1
+emotional_weight = 1
+victory_condition = 4
+combat_type = 2
+combat_intensity = 2
+npc_presence = 2
+map_duration = 2
+archetype_impact = Array[int]([1, 2])
+faction_trait_shift = Dictionary[int, int]({})
+can_appear_in = Array[int]([1, 2])
+earliest_node = 4
+latest_node = 16
+min_nodes_between = 6
+corruption_cores = 1
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

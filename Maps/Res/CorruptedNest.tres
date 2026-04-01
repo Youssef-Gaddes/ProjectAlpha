@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://bx4fdpbvwfqbl"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_82gdx"]
+
+[resource]
+script = ExtResource("1_82gdx")
+description = "simple combat map"
+scene_path = "res://Maps/tests/Blockout.tscn"
+script_path = "res://Maps/Combat/CombatMap.gd"
+combat_type = 2
+map_duration = 1
+archetype_impact = Array[int]([1, 2])
+faction_trait_shift = Dictionary[int, int]({})
+earliest_node = 0
+latest_node = 17
+min_nodes_between = 0
+corruption_cores = 1
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

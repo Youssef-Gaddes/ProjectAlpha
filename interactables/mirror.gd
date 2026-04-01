@@ -16,10 +16,10 @@ var on: bool = false
 
 func _ready() -> void:
 	stats_info_ui.visible = false
-	death_label.text = death_label.text + str(Stats.death_archetype)
-	mercy_label.text = mercy_label.text + str(Stats.mercy_archetype)
-	order_label.text = order_label.text + str(Stats.order_archetype)
-	chaos_label.text = chaos_label.text + str(Stats.chaos_archetype)
+	death_label.text = death_label.text + str(Stats.archetype.get('death'))
+	mercy_label.text = mercy_label.text + str(Stats.archetype.get('mercy'))
+	order_label.text = order_label.text + str(Stats.archetype.get('order'))
+	chaos_label.text = chaos_label.text + str(Stats.archetype.get('chaos'))
 	kill_label.text = kill_label.text + str(Stats.beaten_enemies)
 	complete_runs_label.text = complete_runs_label.text + str(Stats.completed_runs)
 	deahts_label.text = deahts_label.text + str(Stats.deaths)

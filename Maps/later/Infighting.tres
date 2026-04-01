@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://828pykfq61ur"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_pvpt1"]
+
+[resource]
+script = ExtResource("1_pvpt1")
+map_id = "N-003"
+display_name = "Defence"
+description = "simple combat map"
+scene_path = "res://Maps/Combat/BeastNest.tscn"
+primary_category = 1
+complexity_tier = 1
+emotional_weight = 2
+victory_condition = 1
+has_timer = true
+combat_type = 5
+combat_intensity = 2
+npc_presence = 2
+map_duration = 2
+archetype_impact = Array[int]([1, 2])
+faction_trait_shift = Dictionary[int, int]({})
+can_appear_in = Array[int]([1, 2])
+earliest_node = 2
+latest_node = 12
+corruption_cores = 1
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

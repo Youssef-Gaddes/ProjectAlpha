@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://cehh4dn3kvwjy"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_kkm8v"]
+
+[resource]
+script = ExtResource("1_kkm8v")
+map_id = "N-007"
+display_name = "Respite"
+description = "healing"
+scene_path = "res://Maps/Combat/Respite.tscn"
+script_path = "res://Maps/Special/respite.gd"
+primary_category = 4
+victory_condition = 5
+npc_presence = 4
+archetype_impact = Array[int]([])
+faction_affected = Array[int]([])
+faction_trait_shift = Dictionary[int, int]({})
+earliest_node = 6
+latest_node = 17
+max_per_run = 3
+min_nodes_between = 5
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

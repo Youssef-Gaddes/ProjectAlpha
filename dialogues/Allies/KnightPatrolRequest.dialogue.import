@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://cvdb10nklwyxa"
+path="res://.godot/imported/KnightPatrolRequest.dialogue-2a3f6bb31b87c8014c350c6709385187.tres"
+
+[deps]
+
+source_file="res://dialogues/Allies/KnightPatrolRequest.dialogue"
+dest_files=["res://.godot/imported/KnightPatrolRequest.dialogue-2a3f6bb31b87c8014c350c6709385187.tres"]
+
+[params]
+
+defaults=true

@@ -16,7 +16,7 @@ var data: NPCData
 # === STATE MACHINE ===
 enum State { IDLE, CHASE, WALK, WINDUP, ATTACKING, RECOVERY, HURT, DEAD, STUNNED, DOWNED, SPARED }
 var state: State = State.IDLE 
-
+var debug_jitter: bool = false
 # === ATTACK STATE === Values change in child
 
 # enum AttackType { QUICK_JAB, HEAVY_SWING, LUNGE_STRIKE } declare in chils
@@ -88,10 +88,11 @@ func _ready() -> void:
 	npc._select_target()
 	health = data.max_health
 	arc_direction = 1 if randf() < 0.5 else -1
+	path_update_timer = 0.0 
 	if data.is_hostile:
 		npc.add_to_group("enemy")
 	else:
-		npc.add_to_group("ally", true)
+		npc.add_to_group("ally")
 	
 	
 	set_boxes()
@@ -136,14 +137,14 @@ func _setup_material() -> void:
 		flash_original_color = mat.albedo_color
 
 func activate():
-	if data.fight_mode:
-		self.visible = true
-		hurtbox_shape.set_deferred('disabled', false)
+	data.fight_mode = true
+	self.visible = true
+	hurtbox_shape.set_deferred('disabled', false)
 
 func deactivate():
-	if data.fight_mode == false:
-		self.visible = false
-		_disable_hurtbox()
+	data.fight_mode = false
+	self.visible = false
+	_disable_hurtbox()
 
 func _physics_process(delta: float) -> void:
 	if data.fight_mode == false:
@@ -159,6 +160,9 @@ func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_update_ai(delta)
 	
+	if npc.velocity.length() < 0.05:
+		print('nope 4')
+		npc.velocity = Vector3.ZERO
 	npc.move_and_slide()
 
 # =====================================================================
@@ -191,9 +195,11 @@ func _update_ai(delta: float) -> void:
 	path_update_timer -= delta
 	if path_update_timer <= 0:
 		path_update_timer = data.path_update_rate
+		
+		# FIX: Always set navigation target when in movement states
 		if state in [State.CHASE, State.WALK] and npc.target:
-			if distance > data.walk_range:
-				npc.nav_agent.target_position = npc.target.global_position
+			npc.nav_agent.target_position = npc.target.global_position
+			# Remove the distance check - we need path for both chase AND walk
 	
 	match state:
 		State.IDLE:
@@ -232,12 +238,44 @@ func _state_stunned():
 		_transition_to(State.IDLE)
 
 # === STATE: CHASE ===
-func _state_chase(_distance: float, _delta: float) -> void:
-	pass
+func _state_chase(distance: float, delta: float) -> void:
+	if not npc.target:
+		return
+	
+	# If in attack range, don't move (just attack)
+	if distance <= 3:
+		npc.velocity.x = 0
+		npc.velocity.z = 0
+		if _can_attack():
+			_choose_attack(distance)
+		return
+	
+	if distance > data.walk_range:
+		_follow_path(data.chase_speed, delta)
+		_play_animation("Run")
+	else:
+		_transition_to(State.WALK)
+	
+	if distance <= 3 and _can_attack():
+		_choose_attack(distance)
 
 # === STATE: WALK ===
 func _state_walk(_distance: float, _delta: float) -> void:
-	pass
+	   # TEMP: Add actual movement  
+	if _distance <= 3:
+		npc.velocity.x = 0
+		npc.velocity.z = 0
+		if _can_attack():
+			_choose_attack(_distance)
+		return
+	_follow_path(data.walk_speed, 0.1)
+	_play_animation("Walk")
+	var distance: float
+	if npc.target:
+		distance = npc.global_position.distance_to(npc.target.global_position)
+	# Check attack
+	if distance <= 3 and _can_attack():
+		_choose_attack(distance)
 
 # === STATE: WINDUP ===
 func _state_windup(_delta: float) -> void:
@@ -300,9 +338,15 @@ func _transition_to(new_state: State) -> void:
 		
 		State.CHASE:
 			_play_animation("Run")
+			if npc.target:
+				npc.nav_agent.target_position = npc.target.global_position  # ← add this
+				path_update_timer = 0.0
 		
 		State.WALK:
 			_play_animation("Walk")
+			if npc.target:
+				npc.nav_agent.target_position = npc.target.global_position  # ← add this
+				path_update_timer = 0.0
 		
 		State.WINDUP:
 			hit_player_this_attack = false
@@ -341,6 +385,7 @@ func _transition_to(new_state: State) -> void:
 			
 		
 		State.DEAD:
+			npc.transition_to(npc.NPCState.DEAD)
 			print(self, 'got killed')
 			_play_animation("Die")
 			_die()
@@ -395,11 +440,28 @@ func _on_lunge_end() -> void:
 	npc.velocity.z = 0
 	npc.set_collision_mask_value(3, true)  # Re-enable enemy collision
 
+
 func _on_attack_complete() -> void:
 	"""Called when attack animation ends - return to movement"""
 	_disable_hitbox()
 	
+	if not npc.target:
+		_transition_to(State.IDLE)
+		return
 	
+	var distance = npc.global_position.distance_to(npc.target.global_position)
+	
+	# FIX: Force immediate path update after attack
+	path_update_timer = 0  # Force path update on next frame
+	npc.nav_agent.target_position = npc.target.global_position
+	
+	if distance <= data.detection_range:
+		if distance > data.walk_range:
+			_transition_to(State.CHASE)
+		else:
+			_transition_to(State.WALK)
+	else:
+		_transition_to(State.IDLE)
 
 # =====================================================================
 # ATTACK SYSTEM
@@ -456,43 +518,36 @@ func _on_hitbox_entered(area: Area3D) -> void:
 # =====================================================================
 
 func _follow_path(speed: float, delta: float) -> void:
-	if npc.nav_agent.is_navigation_finished():
+	if not npc.target:
+		print("STOP: no target")
 		npc.velocity.x = 0
 		npc.velocity.z = 0
 		return
-	
-	var next_pos: Vector3 = npc.nav_agent.get_next_path_position()
-	var to_nav: Vector3 = next_pos - npc.global_position
-	to_nav.y = 0
-	var nav_dir: Vector3 = to_nav.normalized()
-	var to_player: Vector3
-	if npc.target:
-		to_player = npc.target.global_position - npc.global_position
-	else:
-		to_player = Vector3.ZERO
-	to_player.y = 0
-	var player_dir: Vector3 = to_player.normalized()
-	
-	var angle_offset: float = deg_to_rad(30) * data.arc_strength * arc_direction
-	var curved_dir: Vector3 = player_dir.rotated(Vector3.UP, angle_offset)
-	
-	var final_dir: Vector3 = (nav_dir * 0.6 + curved_dir * 0.4).normalized()
-	
-	var _distance: float 
-	if npc.target:
-		_distance = npc.global_position.distance_to(npc.target.global_position)
-	else:
-		_distance = 0.0
-	
-	var desired_velocity: Vector3 = final_dir * speed
-	
-	if data.avoidance_enabled:
-		npc.nav_agent.velocity = desired_velocity
-	else:
-		npc.velocity.x = desired_velocity.x
-		npc.velocity.z = desired_velocity.z
-		_rotate_towards_direction(final_dir, delta)
 
+	var distance_to_target = npc.global_position.distance_to(npc.target.global_position)
+	if distance_to_target < 3:
+		print("STOP: within attack range, dist=%s range=%s" % [distance_to_target, 3])
+		npc.velocity.x = 0
+		npc.velocity.z = 0
+		return
+
+	if npc.nav_agent.is_navigation_finished():
+		print("STOP: nav finished | target_pos=%s | agent_pos=%s" % [npc.nav_agent.target_position, npc.global_position])
+		npc.velocity.x = 0
+		npc.velocity.z = 0
+		return
+
+	var next_pos: Vector3 = npc.nav_agent.get_next_path_position()
+	var to_next: Vector3 = next_pos - npc.global_position
+	to_next.y = 0
+	print("to_next length=%s | next_pos=%s | npc_pos=%s" % [to_next.length(), next_pos, npc.global_position])
+
+
+	var direction: Vector3 = to_next.normalized()
+	npc.velocity.x = direction.x * speed
+	npc.velocity.z = direction.z * speed
+	npc.nav_agent.velocity = direction * speed
+	_rotate_towards_direction(direction, delta)
 
 # =====================================================================
 # ROTATION

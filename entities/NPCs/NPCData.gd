@@ -6,6 +6,7 @@ extends Resource
 @export var npc_id: String = ""  # Unique identifier for save/load systems
 @export_enum("Scholars", "Warriors", "Exiles", "Merchants", "Knights", "Corruption", "None") var faction: String = "Scholars"
 @export var can_talk: bool
+@export var talk_mode: bool
 @export var can_fight: bool 
 @export var fight_mode: bool
 @export var is_hostile: bool 
@@ -18,6 +19,10 @@ extends Resource
 @export var run_speed: float = 6.0
 @export var walk_speed: float = 3.0
 @export var rotation_speed: float = 8.0
+
+# === DIALOGUE ===
+@export_group("Dialogue")
+@export var dialogue_ressource: DialogueResource
 
 # === AI RANGES ===
 @export_group("Detection")

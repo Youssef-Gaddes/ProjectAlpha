@@ -1,0 +1,36 @@
+~ exploration
+if 0 < Stats.faction_opinions.get("knights") and Stats.faction_opinions.get("knights") <= 25
+	=> allies
+elif 25 < Stats.faction_opinions.get("knights") and Stats.faction_opinions.get("knights") <= 50
+	=> friends
+elif 50 < Stats.faction_opinions.get("knights") and Stats.faction_opinions.get("knights") <= 75
+	=> reverent
+elif Stats.faction_opinions.get("knights") > 75
+	=> god
+
+
+
+~ allies
+Knight: Warrior! Corruption forces press our defenses! Stand with us—we must hold the line together!
+~ friends
+Knight: Holy guardian! The corrupted masses surge against our walls! Grace us with your presence—help us repel this tide of darkness!
+- I will help you.
+	Knight: With you on our side, they do not stand a chance.
+	do Stats._map_trans_diag_combat()
+	=> END
+- Deal with it yourslef.
+	Knight: No..
+	=> END
+~ reverent
+Knight: Divine protector! Corruption overwhelms our ranks! Descend and drive back these vile forces—only you can save us!
+~ god
+Knight: Most merciful deity! Your faithful knights are drowning in corruption's tide! We prostrate ourselves before you—smite our enemies and deliver your servants from annihilation!
+
+~ done
+Knight: Thank you mighty being for your help.
+Knight: We shall remember this.
+=> END
+
+~ combat
+Knight: Divine protector, smite these unholy beings and rid us of their existence
+=> END

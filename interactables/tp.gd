@@ -16,5 +16,11 @@ func activate():
 
 func _on_tp_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group('player'):
-		print('yup')
-		get_tree().call_deferred("change_scene_to_file",where)
+		match where:
+			"new_run":
+				RunManager.start_new_run()
+			"next_node":
+				print('lol')
+				RunManager.advance_node()
+			_:
+				push_error("TP has no 'where' value set: " % name)

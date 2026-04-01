@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://tvisqg1uhn00"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_y0tci"]
+
+[resource]
+script = ExtResource("1_y0tci")
+map_id = "N-004"
+display_name = "Survive"
+description = "simple combat map"
+scene_path = "res://Maps/Combat/BeastNest.tscn"
+complexity_tier = 1
+victory_condition = 1
+has_timer = true
+combat_type = 2
+combat_intensity = 2
+map_duration = 2
+archetype_impact = Array[int]([1, 2])
+faction_trait_shift = Dictionary[int, int]({})
+earliest_node = 3
+latest_node = 17
+min_nodes_between = 2
+corruption_cores = 1
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

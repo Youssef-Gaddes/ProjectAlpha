@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://b775ldgohbckd"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_yjw4c"]
+
+[resource]
+script = ExtResource("1_yjw4c")
+map_id = "N-009"
+display_name = "Patrol Request"
+description = "faction members ask for help clearing corruption"
+scene_path = "res://Maps/Combat/PatrolRequest.tscn"
+script_path = "res://Maps/Combat/CombatMap.gd"
+primary_category = 1
+emotional_weight = 1
+combat_type = 2
+moral_choice = 1
+npc_presence = 2
+npc_death = 1
+map_duration = 1
+archetype_impact = Array[int]([3, 4])
+faction_affected = Array[int]([5])
+faction_opinion_impact = 1
+can_appear_in = Array[int]([1])
+latest_node = 7
+min_nodes_between = 1
+required_faction = 5
+required_faction_opinion = 1
+corruption_cores = 1
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

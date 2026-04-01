@@ -29,10 +29,11 @@ func _ready():
 	if not NPC_Data:
 		push_error("NPC has no data resource assigned!")
 		return
-	if NPC_Data.is_hostile:
-		add_to_group('enemy')
-	else:
-		add_to_group('ally')
+	if NPC_Data.can_fight:
+		if NPC_Data.is_hostile:
+			add_to_group('enemy')
+		else:
+			add_to_group('ally')
 	_setup_modules()
 	
 
@@ -49,9 +50,12 @@ func _on_lunge_end():
 func _on_attack_complete():
 	Combat_Module._on_attack_complete()
 
+func _on_map_state_change(statee:String):
+	DialogueModule.next_diag(statee)
+
 func _select_target():
-	if NPC_Data.fight_mode == false:
-		pass
+	if NPC_Data.fight_mode == false or NPC_Data.can_fight == false:
+		return
 	if NPC_Data.is_hostile:
 		if randf() <0.8:
 			target = player
@@ -74,7 +78,10 @@ func _select_target():
 			elif global_position.distance_to(x.global_position) > global_position.distance_to(i.global_position):
 				x = i
 		target = x
-	await get_tree().create_timer(2).timeout
+	if target == null:
+		await get_tree().create_timer(0.5).timeout
+	else:
+		await get_tree().create_timer(4).timeout
 	_select_target()
 
 
@@ -86,19 +93,35 @@ func _setup_modules():
 		Combat_Module = Combat_Module_scene.instantiate()
 		add_child(Combat_Module)
 		Combat_Module.initialize(self, NPC_Data)
-		if get_parent().is_in_combat():
-			Combat_Module.activate()
+		if get_parent().has_method('is_in_combat'):
+			if get_parent().is_in_combat():
+				Combat_Module.activate()
+			else:
+				Combat_Module.deactivate()
+				print('not in combat')
 		else:
 			Combat_Module.deactivate()
+			print('not in combat')
 	
 	# Load dialogue module if needed
 	if NPC_Data.can_talk:
-		DialogueModule = load("res://modules/dialogue_module.gd").new()
+		DialogueModule_scene = load("res://entities/NPCs/dialogue_module.tscn")
+		DialogueModule = DialogueModule_scene.instantiate()
 		add_child(DialogueModule)
 		DialogueModule.initialize(self, NPC_Data)
+		if get_parent().has_method('is_in_combat'):
+			get_parent().combat_started.connect(DialogueModule.deactivate)
+			get_parent().combat_ended.connect(DialogueModule.activate)
+			if get_parent().is_in_combat():
+				DialogueModule.deactivate()
+			else:
+				DialogueModule.activate()
+		else:
+			DialogueModule.activate()
+		get_parent().state_changed.connect(_on_map_state_change)
 
 func _physics_process(delta: float):
-	if state == NPCState.DEAD or state == NPCState.COMBAT:
+	if state == NPCState.DEAD or state == NPCState.COMBAT or state == NPCState.TALKING:
 		return
 	velocity.y = -9.8
 	
@@ -142,29 +165,36 @@ func transition_to(new_state: NPCState):
 	match state:
 		NPCState.COMBAT:
 			if Combat_Module and new_state!=NPCState.COMBAT:
-				NPC_Data.fight_mode = false
 				Combat_Module.deactivate()
-				print("Help")
 	
 	# Enter new state
 	state = new_state
 	
 	match new_state:
 		NPCState.IDLE:
+			print('npc going idle')
 			_play_animation("Idle")
+			if NPC_Data.can_talk:
+				DialogueModule.activate()
 		
 		NPCState.TALKING:
-			if DialogueModule:
-				DialogueModule.start_dialogue()
+			print('npc going talking')
 		
 		NPCState.COMBAT:
-			NPC_Data.fight_mode = true
+			print('npc going combat')
+			Combat_Module.activate()
+			if NPC_Data.can_talk:
+				DialogueModule.deactivate()
 			
 		NPCState.FLEEING:
 			_play_animation("Run")
 		
 		NPCState.DEAD:
-			pass
+			print('npc going dead')
+			if NPC_Data.can_talk:
+				DialogueModule.deactivate()
+			if NPC_Data.can_fight:
+				Combat_Module.deactivate()
 
 func _state_combat(_delta: float):
 	health = Combat_Module.health
@@ -175,12 +205,15 @@ func _play_animation(anim_name: String):
 
 func force_enter_combat():
 	"""External call to make NPC hostile"""
-	if NPC_Data.can_fight and state == NPCState.IDLE:
+	print(self)
+	if NPC_Data.can_fight and (state == NPCState.IDLE or state == NPCState.TALKING):
+		print('about')
 		transition_to(NPCState.COMBAT)
 		_select_target()
 		Combat_Module.activate()
 
 func force_exit_combat():
+	print(self, "exiting combat")
 	if NPC_Data.can_fight and state == NPCState.COMBAT:
 		transition_to(NPCState.IDLE)
 		Combat_Module.deactivate()

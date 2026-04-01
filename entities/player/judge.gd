@@ -2,8 +2,9 @@ extends CharacterBody3D
 
 # === EXPORTS ===
 @export_group("Movement")
-@export var speed: float = 4
-@export var running_speed: float = 7
+@export var speed: float = 6
+@export var running_speed: float = 11
+
 @export var dodging_speed: float = 10.0
 @export var rotation_speed: float = 10.0
 @export var idle_threshold: float = 0.1
@@ -203,6 +204,7 @@ func _verdict_start():
 
 func _on_dialogue_started(_x):
 	talking = true # Disable player movement
+	_play_animation('Idle')
 
 func _on_dialogue_finished(_x):
 	set_deferred('talking', false) # Re-enable player movement
@@ -898,6 +900,9 @@ func take_damage(damage: float, knockback_dir: Vector3):
 	# Death check
 	if health <= 0:
 		die()
+
+func heal(x):
+	health+=x
 
 func flash_red(duration := 0.15):
    	# Get the mesh (adjust path to your mesh if needed)

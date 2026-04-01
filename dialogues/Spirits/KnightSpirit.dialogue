@@ -1,0 +1,80 @@
+~ exploration 
+Stranger: So... [wait=0.8]it is true after all.
+Stranger: The last god vanished centuries ago. No warning. No sign. One day the world simply grew quieter.
+Stranger: For a long time, we did not know if another would ever come.
+Stranger: Yet here you are.
+Stranger: I am called the Father Spirit.
+Father Spirit: I watch over families, neighbors, and communities — the small bonds that keep the world from falling apart.
+Father Spirit: Tell me, young god…
+Father Spirit: Do you know why you are here?
+- I want to understand.
+	Father Spirit: Good. Curiosity keeps power from becoming arrogance.
+	Father Spirit: The truth is… none of us know why the last god disappeared.
+	Father Spirit: That mystery has lingered like a storm that never quite arrived.
+	Father Spirit: And now you stand where they once did.
+	- Then we should find out what happened.
+		Father Spirit: Yes. That question should have been asked long ago.
+		Father Spirit: Perhaps you will be the one brave enough to ask it.
+	- Does the world still need gods?
+		Father Spirit: Some would say no.
+		Father Spirit: But I have seen what happens when guidance disappears for too long.
+	- That sounds dangerous.
+		Father Spirit: It probably is.
+		Father Spirit: Most important things are.
+- If the world needs a god, I’ll help.
+	Father Spirit: Helping the world is a heavier task than most gods expect.
+	Father Spirit: People are stubborn. Communities fragile. Trust… easily broken.
+	- Then I’ll protect them.
+		Father Spirit: Protection is good.
+		Father Spirit: Just remember. people must learn to stand too.
+	- Someone has to try.
+		Father Spirit: That may be the wisest thing you have said.
+	- I didn’t say it would be easy.
+		Father Spirit: Good.
+		Father Spirit: You may survive this role after all.
+- I don’t even know what I am.
+	Father Spirit: Then you are exactly what I expected.
+	Father Spirit: A god who arrives certain of everything is usually trouble.
+	- Will you help me?
+		Father Spirit: I can guide you.
+		Father Spirit: But the path will still be yours.
+	- So I really am a god?
+		Father Spirit: The world seems to think so.
+		Father Spirit: And the world rarely makes that mistake lightly.
+	- What happened to the last one?
+		Father Spirit: That is the question that has haunted us for centuries.
+- How do you know I’m really a god?
+	Father Spirit: When the last god disappeared… the world felt empty.
+	Father Spirit: When you arrived… something shifted again.
+	Father Spirit: Spirits notice these things.
+	- So you’re guessing
+		Father Spirit: All wisdom begins as an educated guess.
+	- Then prove it.
+		Father Spirit: Power will reveal itself soon enough.
+	- I didn’t ask for this.
+		Father Spirit: Neither did the last one.
+- Maybe the world will change now.
+	Father Spirit: Change is easy.
+	Father Spirit: Changing things without breaking them… that is difficult.
+	- Sometimes things need to break.
+		Father Spirit: That is what every reckless ruler has said.
+	- I’ll be careful.
+		Father Spirit: Good. Then perhaps this age will survive you.
+	- You sound worried.
+		Father Spirit: I have watched centuries of mistakes.
+		Father Spirit: Worry comes naturally.
+Father Spirit: Whether you are ready or not, the world has begun moving again.
+Father Spirit: Communities will look to you.
+Father Spirit: Some with hope. Others with fear.
+Father Spirit: I will watch. I will guide when I can.
+Father Spirit: But understand this, young god.
+Father Spirit: The last one disappeared without warning.
+Father Spirit: So let us both hope history is not repeating itself.
+Father Spirit: Here... Have this.
+Father Spirit: Consider it a token of friendship.#
+do Stats._map_trans_diag_done()
+=> END
+
+~ done
+Father Spirit: Go forth, young god.
+Father Spirit: I will be watching you closely.

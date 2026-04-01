@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://c6bkc2jupbye1"
+path="res://.godot/imported/KnightSpirit.dialogue-29ef4d5eb86de21de62b0b73a9b5933e.tres"
+
+[deps]
+
+source_file="res://dialogues/Spirits/KnightSpirit.dialogue"
+dest_files=["res://.godot/imported/KnightSpirit.dialogue-29ef4d5eb86de21de62b0b73a9b5933e.tres"]
+
+[params]
+
+defaults=true

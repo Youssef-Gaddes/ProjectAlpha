@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://db4ckhibsu8fa"]
+[gd_scene load_steps=11 format=3 uid="uid://db4ckhibsu8fa"]
 
+[ext_resource type="Script" uid="uid://cn8hj1el4ipx5" path="res://Maps/DivinePalace/main.gd" id="1_6fi30"]
 [ext_resource type="PackedScene" uid="uid://dnhtt7okf4h17" path="res://Maps/DivinePalace/ThroneRoomFullMesh.tscn" id="1_trf1l"]
 [ext_resource type="Script" uid="uid://dexe5rdbrnqsr" path="res://Maps/DivinePalace/divine_palace.gd" id="1_wmc0i"]
 [ext_resource type="PackedScene" uid="uid://cyasueb5t6spy" path="res://entities/player/God/god.tscn" id="2_4slk5"]
@@ -16,67 +17,71 @@ background_mode = 2
 sky = ExtResource("4_clp2n")
 sky_rotation = Vector3(1.5969763, 1.5707964, 0)
 
-[node name="DivinePalace" type="Node3D"]
+[node name="Main" type="Node3D"]
+script = ExtResource("1_6fi30")
+
+[node name="DivinePalace" type="Node3D" parent="."]
 script = ExtResource("1_wmc0i")
 
-[node name="DivinePalaceLayout" type="StaticBody3D" parent="."]
+[node name="DivinePalaceLayout" type="StaticBody3D" parent="DivinePalace"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.31683445, 0, -0.12113619)
 collision_layer = 2
 collision_mask = 0
 
-[node name="CSGBakedMeshInstance3D" parent="DivinePalaceLayout" instance=ExtResource("1_trf1l")]
+[node name="CSGBakedMeshInstance3D" parent="DivinePalace/DivinePalaceLayout" instance=ExtResource("1_trf1l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29624104, -1.1920929e-07, 2.3145568)
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DivinePalaceLayout"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DivinePalace/DivinePalaceLayout"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29624104, -1.1920929e-07, 2.3145568)
 shape = SubResource("ConcavePolygonShape3D_1udr4")
 
-[node name="God" parent="." instance=ExtResource("2_4slk5")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.989309e-07, 0.3184495, -3.419365)
+[node name="God" parent="DivinePalace" instance=ExtResource("2_4slk5")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.19398055e-05, 0.3184495, -136.57545)
 
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+[node name="Camera3D" type="Camera3D" parent="DivinePalace" node_paths=PackedStringArray("target")]
+keep_aspect = 0
 script = ExtResource("3_clp2n")
 target = NodePath("../God")
 
-[node name="Lights" type="Node3D" parent="."]
+[node name="Lights" type="Node3D" parent="DivinePalace"]
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights"]
+[node name="OmniLight3D" type="OmniLight3D" parent="DivinePalace/Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.1347, 0)
 light_energy = 8.625
 omni_range = 55.089
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="Lights"]
+[node name="OmniLight3D2" type="OmniLight3D" parent="DivinePalace/Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.333159, -37.203148)
 light_energy = 8.625
 omni_range = 55.089
 
-[node name="OmniLight3D3" type="OmniLight3D" parent="Lights"]
+[node name="OmniLight3D3" type="OmniLight3D" parent="DivinePalace/Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.157925, -69.499664)
 light_energy = 8.625
 omni_range = 55.089
 
-[node name="OmniLight3D4" type="OmniLight3D" parent="Lights"]
+[node name="OmniLight3D4" type="OmniLight3D" parent="DivinePalace/Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.64466, 22.103477, -107.71831)
 light_energy = 8.625
 omni_range = 55.089
 
-[node name="OmniLight3D5" type="OmniLight3D" parent="Lights"]
+[node name="OmniLight3D5" type="OmniLight3D" parent="DivinePalace/Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.295813, 24.671505, -105.39347)
 light_energy = 8.625
 omni_range = 55.089
 
-[node name="OmniLight3D6" type="OmniLight3D" parent="Lights"]
+[node name="OmniLight3D6" type="OmniLight3D" parent="DivinePalace/Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27888107, 18.73954, -133.4273)
 light_energy = 8.625
 omni_range = 55.089
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="DivinePalace"]
 environment = SubResource("Environment_lqedr")
 
-[node name="Tp" parent="." instance=ExtResource("5_lqedr")]
+[node name="Tp" parent="DivinePalace" instance=ExtResource("5_lqedr")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, -4.440892e-15, 0, 4.440892e-15, 0.2, 0, 0.11347902, -147.1287)
-where = "res://Maps/Combat maps/test.tscn"
+where = "new_run"
 
-[node name="ArchetypeMirror" parent="." instance=ExtResource("7_bf68v")]
+[node name="ArchetypeMirror" parent="DivinePalace" instance=ExtResource("7_bf68v")]
 transform = Transform3D(-0.9363049, 0, 0.35118803, 0, 1, 0, -0.35118803, 0, -0.9363049, 7.2036805, 0.10518098, -146.14612)

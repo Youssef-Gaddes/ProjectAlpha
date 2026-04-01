@@ -18,8 +18,8 @@ func _post_ready() -> void:
 
 
 func _setup_navigation() -> void:
-	npc.nav_agent.path_desired_distance = 0.5
-	npc.nav_agent.target_desired_distance = 0.5
+	npc.nav_agent.path_desired_distance = 1
+	npc.nav_agent.target_desired_distance = 3
 	npc.nav_agent.max_speed = data.run_speed
 	npc.nav_agent.path_max_distance = 3.0
 	

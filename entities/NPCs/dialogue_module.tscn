@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://cl1vujbtgdlt3"]
+
+[ext_resource type="Script" uid="uid://bx2l4aorfwnn7" path="res://entities/NPCs/dialogue_module.gd" id="1_kp6rf"]
+[ext_resource type="Texture2D" uid="uid://car17drb0r4ov" path="res://Assets/icons/icons8-typing-50.png" id="2_8rkii"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5bbtg"]
+height = 1.0039063
+radius = 2.2490234
+
+[node name="dialogue_module" type="Node3D"]
+script = ExtResource("1_kp6rf")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49804688, 0)
+shape = SubResource("CylinderShape3D_5bbtg")
+
+[node name="dialogue_indicator" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
+visible = false
+
+[node name="Sprite3D" type="Sprite3D" parent="dialogue_indicator"]
+billboard = 1
+texture = ExtResource("2_8rkii")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
