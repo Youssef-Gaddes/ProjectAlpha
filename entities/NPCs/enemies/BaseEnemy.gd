@@ -60,6 +60,16 @@ func initialize(parent_npc: CharacterBody3D, npc_data: NPCData):
 	npc = parent_npc
 	data = npc_data
 
+func set_hostile(hostile: bool) -> void:
+	data.is_hostile = hostile
+	set_boxes()
+	if hostile:
+		npc.remove_from_group("ally")
+		npc.add_to_group("enemy")
+	else:
+		npc.remove_from_group("enemy")
+		npc.add_to_group("ally")
+
 func set_boxes():
 	if data.is_hostile:
 		hitbox_area.set_collision_layer_value(12, true)
@@ -649,7 +659,7 @@ func take_damage(damage: float, knockback_dir: Vector3) -> void:
 		downed.emit(npc)
 
 func _spare() -> void:
-	get_parent().get_parent()._on_enemy_spared(get_parent())
+	get_tree().get_first_node_in_group('map')._on_enemy_spared(get_parent())
 	npc.collision_layer = 0
 	npc.collision_mask = 0
 	npc.nav_agent.avoidance_enabled = false
@@ -659,7 +669,7 @@ func _spare() -> void:
 
 func _die() -> void:
 	if data.is_hostile:
-		get_parent().get_parent()._on_enemy_killed(get_parent())
+		get_tree().get_first_node_in_group('map')._on_enemy_killed(get_parent())
 	npc.collision_layer = 0
 	npc.collision_mask = 0
 	npc.nav_agent.avoidance_enabled = false

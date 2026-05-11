@@ -13,6 +13,7 @@ var on: bool = false
 @onready var complete_runs_label: Label = $statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/completeRunsLabel
 @onready var deahts_label: Label = $statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/deahtsLabel
 @onready var chaos_label: Label = $statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/chaosLabel
+@onready var corruption_cores: Label = $statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/corruptionCores
 
 func _ready() -> void:
 	stats_info_ui.visible = false
@@ -23,6 +24,7 @@ func _ready() -> void:
 	kill_label.text = kill_label.text + str(Stats.beaten_enemies)
 	complete_runs_label.text = complete_runs_label.text + str(Stats.completed_runs)
 	deahts_label.text = deahts_label.text + str(Stats.deaths)
+	corruption_cores.text = corruption_cores.text + str(Stats.corruption_cores)
 	
 func _process(_delta: float) -> void:
 	if on and Input.is_action_just_pressed('interact'):

@@ -20,6 +20,7 @@ func _do_load_scene(scene_path: String, script: Script, map_data: MapData) -> vo
 
 	# Set map_data BEFORE add_child so it's available in _ready()
 	map_instance.set_meta("map_data", map_data)
+	map_instance.map_data = map_data
 
 	add_child(map_instance)
 	map_instance.map_completed.connect(RunManager._on_map_completed)

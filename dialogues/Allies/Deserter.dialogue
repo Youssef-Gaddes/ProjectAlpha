@@ -1,0 +1,47 @@
+~ start
+Knight: In the name of [color=Blue]High Inquisitor Damien[/color], I hereby sentence you to die.
+Knight: Our order does not take lightly to deserters. You had a duty as a knight. By forfeiting it, you also forfeit any right to your title, and to your life.
+Knight: You death will barely erase the stain you have put on our name. Three brothers have died when you abandonned your post. Three families weep the loss of their loved one.
+Knight: Do you understand the charged against you ?
+Deserter: No, please, you don't understand. They were already dead. That thing... I could not have done anything. Hell, thirty of us could not have done anything. Even Ellana the Fierce would have ran at the sight of that beast.
+Deserter: Bjorn and I were the last ones standing. He told me to escape and report back. Someone needed to warn the others. He... He gave his life so I could get away.
+Knight: (Noticing you) Warrior! I did not see you there.
+Knight: (Planting his sword in the dirt) You’ve walked the path of ash with us, traveler. You’ve earned the right to speak where others must remain silent. This man is a deserter. He claims a nightmare took his brothers, yet he stands before us without a scratch.
+Deserter: (Clutching your boots) Please, lord... you’ve seen the things that crawl in the deep. You know the world is breaking. I didn't run from a fight; I ran from an erasure.
+Knight: Give us your perspective, champion. Does the law of the Order hold weight in these dark times, or has the world truly changed?
+- He ran. A coward is not fit to be a knight. You should have been devoured by the beast, like your comrades.
+	do Stats.advance_fear('small')
+	Deserter: It... it didn't eat. It just unmade. It stood ten feet tall, a wolf’s frame with human-like hands, ribs splayed open like a cage of jagged bone. When it touched Bjorn, his armor didn't break—it just dissolved into black flakes. The thing has no face, only a pit of blinding light where a head should be.
+	Knight: If this creature can dissolve steel with a touch, this man is either a liar or a harbinger of our extinction.
+- Speak, deserter. What kind of horror made you break your oath and leave your sworn brothers behind ?
+	do Stats.advance_order('small')
+	Deserter: It brings the fog with it. Cold, thick fog that smells of wet earth and old copper. The trees don't break when it passes; they bend toward it, as if the beast is a drain for the world’s very air. It has antlers like twisted roots that pulse with a sick, white glow. It doesn't move fast, but you can’t run—the ground feels like it's pulling you back toward the light in its face.
+	Knight: A distortion of the natural world. If we are to stand against this, we need every sword... but we cannot build a defense on the foundations of a coward's testimony.
+- He isn't lying. Tell us about your commander's final moments.
+	do Stats.advance_mercy('tiny')
+	do Stats.advance_love('tiny')
+	Deserter: Bjorn... he saw the light from the beast’s face and he started laughing. He looked so... happy. He told me that "the burden of being" was finally over for him. He shoved me into the river because he wanted someone to remember that they existed. The beast makes you forget the faces of the dead. I’m all that’s left of their names!
+	Knight: He calls his survival a "burden of memory." I call it a failure of the soul. Yet, to kill him is to finish the beast's work and erase those men forever.
+- You argue over laws while a hole in reality marches toward your gates. Why does it matter if he ran?
+	do Stats.advance_chaos('medium')
+	Deserter: Exactly! That’s what it felt like! Like a wolf made of smoke and bone, stepping out of a world that’s already finished. It didn't scream with a throat; the scream just happened inside our heads. It’s a predator from a place where there are no knights and no laws. Whether you kill me or not, the sun won't rise tomorrow the way you expect it to.
+	Knight: (Unsettled) You speak as if our struggle is a joke. If you truly believe our laws are so fragile, why have you bothered to fight for us until now?
+Knight: The sun is dipping below the horizon. Your reputation precedes you, champion. Give us your verdict.
+- In times of chaos, the law is the only anchor. If he cannot be a knight, he can at least be an example. (EXECUTE)
+	do Stats.apply_faction_trait_shift('knights','militant',1)
+	do Stats.advance_fear('medium')
+	do Stats.advance_death('medium')
+	Knight: (Nods solemnly and executes him). A grim duty, but a necessary one. We prepare for the river shrine tonight. We will see if his "ash" still speaks.
+	do Stats._map_trans_diag_done()
+- Knowledge is more valuable than blood. He will lead your scouts to the shrine. If he survives the beast a second time, then his debt is paid. (SPARE)
+	do Stats.apply_faction_trait_shift('knights','militant',-1)
+	do Stats.advance_mercy('big')
+	do Stats.advance_love('medium')
+	Knight: I disagree with your leniency, but I respect your judgment. (To Deserter) Stand up. You are a prisoner-scout now. Pray your beast is as slow as you claim.
+	do Stats._map_trans_diag_done()
+- Why should we choose? Strip him of his title and cast him out. If the beast wants him, it will find him. If nature deems him worthy of life, he will survive the night. Let the world decide. (EXILE)
+	do Stats.advance_chaos('big')
+	Knight: (Taken aback) You would leave him to the elements? It is... unorthodox. But perhaps fitting. (To Deserter) Go. Run into the dark you fear so much. If you are still alive at dawn, stay far from our walls.
+	Deserter: (Stumbling away into the trees) The light... I can still see the light...
+	do Stats._map_trans_diag_done()
+=> END

@@ -1,4 +1,6 @@
+class_name NPCBase
 extends CharacterBody3D
+
 
 @export var NPC_Data: NPCData
 
@@ -8,6 +10,7 @@ extends CharacterBody3D
 
 @export var Combat_Module:Node3D
 @export var DialogueModule:Node3D
+@export var idle_animation:String
 
 enum NPCState {
 	IDLE,        # Just exists in world
@@ -60,11 +63,11 @@ func _select_target():
 		if randf() <0.8:
 			target = player
 		else:
-			if get_parent().allies.is_empty():
+			if get_tree().get_first_node_in_group('map').allies.is_empty():
 				target = player
 			else:
 				var x: CharacterBody3D = null
-				for i in get_parent().allies:
+				for i in get_tree().get_first_node_in_group('map').allies:
 					if x == null:
 						x = i
 					elif global_position.distance_to(x.global_position) > global_position.distance_to(i.global_position):
@@ -72,7 +75,7 @@ func _select_target():
 				target = x
 	elif NPC_Data.is_hostile == false:
 		var x: CharacterBody3D = null
-		for i in get_parent().enemies:
+		for i in get_tree().get_first_node_in_group('map').enemies:
 			if x == null:
 				x = i
 			elif global_position.distance_to(x.global_position) > global_position.distance_to(i.global_position):
@@ -88,13 +91,13 @@ func _select_target():
 func _setup_modules():
 	# Load combat module if needed
 	if NPC_Data.can_fight:
-
+		print('IM BEGGING')
 		Combat_Module_scene = load("res://entities/NPCs/combat_module.tscn")
 		Combat_Module = Combat_Module_scene.instantiate()
 		add_child(Combat_Module)
 		Combat_Module.initialize(self, NPC_Data)
-		if get_parent().has_method('is_in_combat'):
-			if get_parent().is_in_combat():
+		if get_tree().get_first_node_in_group('map').has_method('is_in_combat'):
+			if get_tree().get_first_node_in_group('map').is_in_combat():
 				Combat_Module.activate()
 			else:
 				Combat_Module.deactivate()
@@ -109,16 +112,16 @@ func _setup_modules():
 		DialogueModule = DialogueModule_scene.instantiate()
 		add_child(DialogueModule)
 		DialogueModule.initialize(self, NPC_Data)
-		if get_parent().has_method('is_in_combat'):
-			get_parent().combat_started.connect(DialogueModule.deactivate)
-			get_parent().combat_ended.connect(DialogueModule.activate)
-			if get_parent().is_in_combat():
+		if get_tree().get_first_node_in_group('map').has_method('is_in_combat'):
+			get_tree().get_first_node_in_group('map').combat_started.connect(DialogueModule.deactivate)
+			get_tree().get_first_node_in_group('map').combat_ended.connect(DialogueModule.activate)
+			if get_tree().get_first_node_in_group('map').is_in_combat():
 				DialogueModule.deactivate()
 			else:
 				DialogueModule.activate()
 		else:
 			DialogueModule.activate()
-		get_parent().state_changed.connect(_on_map_state_change)
+		get_tree().get_first_node_in_group('map').state_changed.connect(_on_map_state_change)
 
 func _physics_process(delta: float):
 	if state == NPCState.DEAD or state == NPCState.COMBAT or state == NPCState.TALKING:
@@ -152,7 +155,7 @@ func _state_idle(_delta: float):
 	velocity.x = 0
 	velocity.z = 0
 	
-	_play_animation("Idle")
+	_play_animation(idle_animation)
 	
 	# Check for state transitions
 	if NPC_Data.can_fight  and target and NPC_Data.fight_mode:
@@ -173,7 +176,7 @@ func transition_to(new_state: NPCState):
 	match new_state:
 		NPCState.IDLE:
 			print('npc going idle')
-			_play_animation("Idle")
+			_play_animation(idle_animation)
 			if NPC_Data.can_talk:
 				DialogueModule.activate()
 		
@@ -205,7 +208,7 @@ func _play_animation(anim_name: String):
 
 func force_enter_combat():
 	"""External call to make NPC hostile"""
-	print(self)
+	print('ENTERING COMBAT RN ')
 	if NPC_Data.can_fight and (state == NPCState.IDLE or state == NPCState.TALKING):
 		print('about')
 		transition_to(NPCState.COMBAT)

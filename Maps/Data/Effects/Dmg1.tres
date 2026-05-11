@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="UpgradeEffect" load_steps=2 format=3 uid="uid://dxojqfscorhuq"]
+
+[ext_resource type="Script" uid="uid://c0ang66g7bob5" path="res://Maps/Data/UpgradeEffect.gd" id="1_rgskl"]
+
+[resource]
+script = ExtResource("1_rgskl")
+stat_target = "damage"
+value = 0.1
+metadata/_custom_type_script = "uid://c0ang66g7bob5"

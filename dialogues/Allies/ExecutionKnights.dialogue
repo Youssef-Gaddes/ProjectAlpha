@@ -1,0 +1,80 @@
+~ start
+Preacher: Look at them.
+Preacher: Do not avert your eyes.
+Preacher: This is how corruption thrives. Not through monsters. Not through failed battles. But Through ordinary people, too weak to do what must be done.
+Peasant: Please... We didn't do anything.
+Preacher: Silence!
+Preacher: A corrupted soul enters a village. A family offers shelter. A neighbour stays quiet. A knight hesitates...
+Preacher: And by the time proof exists... There is no village left to save.
+Preacher: An outsider might call cruelty. Even go as far as calling it senseless violence. But I call it a needed sacrifice.
+Preacher: A knight's duty is not one of comfort and leniency. It is one of protection and infallible duty.
+Preacher: We live to protect the people, whatever the price of that protection is, we will pay it. we will pay it with steel. We will pay it with our very lives. And we will pay it with blood.
+Preacher: [i]Notices you in the crowd[/i]
+Preacher: Avatar. No one can understand this better than you. Tell them... Tell them the fate that awaits weak minded folk.
+Peasant: You have no proof!
+
+
+- ...
+	do set_outcome("watch")
+	=> watch_end
+- They deserve it. Make an example.
+	do set_outcome("agree")
+	=> agree_end_death
+- Hard decisions have to be made. Make it swift.
+	do set_outcome("agree")
+	=> agree_end
+- This is wrong. Release them.
+	=> stop_check
+
+~ watch_end
+Preacher: ...
+Preacher: A more sceptical person might take your silence as dissaproval... But we know better.
+Preacher: By the power given to me, I sentence all of you to die.
+Peasant: NO! PLEASE... You are killing an innocent man! Is this what the knights stand for nowadays?
+Peasant: [i]Looking at the crowd[/i] It is going to be you next! Do not let th...
+=> END
+
+~ agree_end_death
+Preacher: Ha. I knew your lordship would agree. 
+Preacher: Your wish is our command, Avatar. 
+Peasant: No... Please! I curse you fake god! I hope you vanish in oblivion like your predecessor did! I hope you that even in de...
+=> END
+
+~ agree_end
+Preacher: Yes... Of course.
+Preacher: [i]To the guards[/i] You heard him, make it quick!
+Peasant: [i]Sobs quietly[/i]
+=> END
+
+~ stop_check
+Preacher: What did you say ?
+- You have lost your way. This is not a sight worthy of your order. [if Stats.faction_opinions.get("knights", 0) >= 50]
+	=> convince_success
+- [INTIMIDATE] NOW! [if Stats.archetype.get('fear') >= 50]
+	=> fear_success
+- I ordered you to release them. Or suffer the consequences.
+	=> fight_start
+- Nevermind.
+	=> coward
+
+~ coward
+Preacher: That is what i thought. You might have some fame around here, but do not push your luck
+do set_outcome("coward")
+=> END
+~ convince_success
+Preacher: ...
+Preacher: Given your standing among us, I will consider mercy this once.
+Preacher: Release them.
+do set_outcome("convinced_opinion")
+=> END
+
+~ fear_success
+Preacher: I— forgive me. Release them! Release them now!
+do set_outcome("convinced_fear")
+=> END
+
+~ fight_start
+Preacher: You forget yourself! 
+Preacher: Knights! Seize the false god!
+do set_outcome("fight")
+=> END

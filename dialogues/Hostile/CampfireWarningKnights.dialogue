@@ -1,0 +1,10 @@
+~ warning
+Knight: Halt! Go no further!
+Knight: This area is off limits. Especially for scum like you.
+Knight: Go back from whence you came. Or bear the consequences...
+- I go where I will.
+	Knight: Then you’ll fall where you stand.
+	do Stats._map_trans_diag_combat()
+- I'm not looking for trouble, I will turn back
+- Why so hostile ?
+- You are making a grave error, mortal.

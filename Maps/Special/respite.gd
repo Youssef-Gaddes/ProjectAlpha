@@ -1,7 +1,7 @@
 # respite_map.gd
 extends BaseMap
 
-@onready var fountain: Node3D = $Fountain
+@onready var fountain: Node3D = $"Static bodies/Fountain"
 
 func _start_exploration() -> void:
 	# Connect fountain signal to our handler

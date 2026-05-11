@@ -132,6 +132,11 @@ layout_mode = 2
 text = "Deaths: "
 vertical_alignment = 1
 
+[node name="corruptionCores" type="Label" parent="statsInfoUi/Control/MarginContainer/Panel/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Corruption Cores: "
+vertical_alignment = 1
+
 [node name="interactionArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="interactionArea"]

@@ -7,9 +7,10 @@ extends Resource
 @export var map_id: String = "N-001"
 @export var display_name: String = "Beast Nest"
 @export var description: String = "Corrupted animals nest. Clear them out."
-@export var scene_path: String = "res://Maps/Combat maps/test.tscn"
+@export var possible_scenes: Array[String] = []
 @export var script_path: String 
 @export var has_intro: bool = false
+@export var weight:int = 0
 
 enum PrimaryCategory {
 	PURE_COMBAT,
@@ -286,31 +287,34 @@ func meets_requirements() -> bool:
 	
 	
 	return true
-
-func get_faction_opinion_requirements():
-	var faction = FactionAffected.keys()[required_faction].to_lower()
-	print("here: ", faction)
-	var opinion: int
-	match required_faction_opinion:
-		RequiredFactionOpinion.NONE: opinion = 0
-		RequiredFactionOpinion.POSITIVE: opinion = 1
-		RequiredFactionOpinion.NEGATIVE: opinion = -1
-		RequiredFactionOpinion.FRIENDLY:opinion = 25
-		RequiredFactionOpinion.ALLIED: opinion = 50
-		RequiredFactionOpinion.REVERENT: opinion = 75
-		RequiredFactionOpinion.HOSTILE: opinion = -25
-		RequiredFactionOpinion.HATED: opinion = -50
-		RequiredFactionOpinion.NEMESIS: opinion = -75
-	var current_opinion = Stats.faction_opinions.get(faction)
-	if faction == 'none' or opinion == 0:
+func get_faction_opinion_requirements() -> bool:
+	if required_faction == FactionAffected.NONE:
 		return true
-	if opinion > 0:
-		if current_opinion >= opinion:
-			return true
-	if opinion < 0:
-		if current_opinion <= opinion:
-			return true
-	return false
+	
+	var faction_name = FactionAffected.keys()[required_faction].to_lower()
+	var current_opinion = Stats.faction_opinions.get(faction_name, 0)
+	
+	if required_faction_opinion == RequiredFactionOpinion.NONE:
+		return true
+	
+	var required_opinion = _get_opinion_threshold(required_faction_opinion)
+	
+	if required_opinion > 0:
+		return current_opinion >= required_opinion
+	else:
+		return current_opinion <= required_opinion
+
+func _get_opinion_threshold(req: RequiredFactionOpinion) -> int:
+	match req:
+		RequiredFactionOpinion.POSITIVE: return 1
+		RequiredFactionOpinion.NEGATIVE: return -1
+		RequiredFactionOpinion.FRIENDLY: return 25
+		RequiredFactionOpinion.ALLIED: return 50
+		RequiredFactionOpinion.REVERENT: return 75
+		RequiredFactionOpinion.HOSTILE: return -25
+		RequiredFactionOpinion.HATED: return -50
+		RequiredFactionOpinion.NEMESIS: return -75
+		_: return 0
 
 func get_archetype_requirement():
 	var archetype = ""

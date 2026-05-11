@@ -3,7 +3,7 @@ Stranger: So... [wait=0.8]it is true after all.
 Stranger: The last god vanished centuries ago. No warning. No sign. One day the world simply grew quieter.
 Stranger: For a long time, we did not know if another would ever come.
 Stranger: Yet here you are.
-Stranger: I am called the Father Spirit.
+Father Spirit: I am called the Father Spirit.
 Father Spirit: I watch over families, neighbors, and communities — the small bonds that keep the world from falling apart.
 Father Spirit: Tell me, young god…
 Father Spirit: Do you know why you are here?
@@ -73,6 +73,7 @@ Father Spirit: So let us both hope history is not repeating itself.
 Father Spirit: Here... Have this.
 Father Spirit: Consider it a token of friendship.#
 do Stats._map_trans_diag_done()
+
 => END
 
 ~ done

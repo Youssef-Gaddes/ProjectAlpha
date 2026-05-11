@@ -1,0 +1,81 @@
+~ meeting
+Stranger: Stop.
+Stranger: You are not one of mine.
+Stranger: We do not see many strangers walking in unannounced anymore.
+Stranger: You must be confident or have a death wish to venture this far alone.
+Stranger: Who are you ?
+- I am not here to cause you trouble.
+	Stranger: Trouble tends to find us regardless.
+- You can relax.
+	Stranger: No.
+	Stranger: That is how people get killed.
+- No one.
+	Stranger: It does not matter anyway.
+	Stranger: As long as you stay out of our way.
+- Someone who is just passing by.
+	Stranger: If you intend to go deeper into the corruption, I hope that what you seek is worth it.
+	Stranger: There are terrors ou there that neither you nor I can even fathom.
+Stranger: I will not cast you out. But don't make yourslef too comfortable.
+Stranger: I am Ellana. High general of The Knights.
+Ellana: We hold this place because people still believe it’s safe.
+Ellana: It used to be. Now it's just... less dangerous than anywhere else.
+Ellana: If by some miracle you got this far without meeting it, I must warn you...
+Ellana: The corruption... It does not march like an army. 
+Ellana: No banners. No warning. No mercy.
+Ellana: You look away one moment, and it's there. Rot. Decay. Things turned into something they never should have been.
+Ellana: Sometimes people...
+Ellana: It will hunt you down relentlessly, for it does not need to sleep, eat or breathe. Mindless monsters whose sole purpose is to either kill or turn any living thing into one of them.
+Ellana: It will come for you, just like it has been coming for us.
+- You are still protecting them.
+	Ellana: someone has to.
+	Ellana: But i don't know how long we can hold it back.
+- Then why stay ?
+	Ellana: Because we are the only wall standing between the innocent and certain despair.
+	Ellana: We knights have a duty. We are born into in. We live by it.
+	Ellana: And we die by it.
+- I can help.
+	Ellana: Help is easy to offer.
+	Ellana: Harder to to follow through.
+- This place will not last.
+	Ellana: I know.
+- I've fought it. It's not that bad.
+	Ellana: Even if what you speak is true, which i doubt, any corruption you might have met on your way here is small fry. 
+	Ellana: But even trained knights cannot lower their guard around them.
+	Ellana: Still, compared to what dwells deeper, they are a delight to deal with...
+Ellana: ...There is something strange about you.
+Ellana: You do not seem like a civilian. Nor do you look affiliated with one of the factions.
+Ellana: I have met a lot of travelers through the years, none of them felt like this.
+- Like what ?
+	Ellana: I don't know.
+	Ellana: That is exactly what is bothering me.
+- You're imagining things.
+	Ellana: No. 
+	Ellana: I am not.
+- Maybe I'm just different
+	Ellana: Maybe...
+Ellana: See these ruins ?
+Ellana: Old stories say that this was a place of whorship.
+Ellana: It is said that there was something once, a long time ago.
+Ellana: A God. Watching over all of this.
+Ellana: When times were dire, they used to roam this world embodying powerful avatars. 
+Ellana: Some say they used to leave a trail of [color=Crimson]Death[/color] in their wake...
+Ellana: Others believe they blessed whoever they encountered with [color=Gold]Mercy[/color]...
+Ellana: It is also told that they instaured an iron-fisted [color=Lightskyblue]Order[/color]...
+Ellana: A few tales even depict them as a [color=Purple]Chaos[/color] spreading entity, caring only for their own amusement...
+Ellana: Hard to believe now. Isnt't it ?
+- You don't believe the stories ?
+	Ellana: I believe that in times of need, most people need something to believe in. 
+	Ellana: Might that be a God, a creed or a leader.
+- What happened to it ?
+	Ellana: That is the only thing the sotries agree on.
+	Ellana: No one knows. One day it supposedly just... dissapeared.
+	Ellana: Just... Gone. If it was ever there at all.
+- *Stay Silent*
+	Ellana: Yeah.
+Ellana: Whatever you are... You don't feel like the rest of this world.
+Ellana: That could be a good thing.
+Ellana: Or a bad one.
+Ellana: You are welcome here...For now.
+Ellana: Don't make me regret it.
+do Stats._map_trans_diag_done()
+=> END

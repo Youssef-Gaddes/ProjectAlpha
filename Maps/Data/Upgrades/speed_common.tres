@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=4 format=3 uid="uid://dnahkc5ho578s"]
+
+[ext_resource type="Script" uid="uid://c0ang66g7bob5" path="res://Maps/Data/UpgradeEffect.gd" id="1_c6jqu"]
+[ext_resource type="Resource" uid="uid://be33kf0eowjrw" path="res://Maps/Data/Effects/Speed1.tres" id="2_c6jqu"]
+[ext_resource type="Script" uid="uid://bchqa86sb8uej" path="res://Maps/Data/UpgradeData.gd" id="3_gwlxi"]
+
+[resource]
+script = ExtResource("3_gwlxi")
+upgrade_id = "2"
+display_name = "Light Feet"
+description = "You running speed is faster."
+effects = Array[ExtResource("1_c6jqu")]([ExtResource("2_c6jqu")])
+can_stack = true
+max_stacks = -1
+metadata/_custom_type_script = "uid://bchqa86sb8uej"

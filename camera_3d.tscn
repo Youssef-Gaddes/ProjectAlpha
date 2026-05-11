@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://djk4arky72p2m" path="res://entities/player/camera_3d.gd" id="1_86a6h"]
 
-[node name="Camera3D" type="Camera3D"]
+[node name="Camera3D" type="Camera3D" groups=["camera"]]
 transform = Transform3D(0.833, 0, 0, 0, 0.70133966, 0.4494571, 0, -0.4494571, 0.70133966, 0, 0, 0)
 keep_aspect = 0
 size = 35.0

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://cusjtfjk2d2jh"]
+
+[ext_resource type="Script" uid="uid://bd1y4r145gtx6" path="res://Maps/Data/MapData.gd" id="1_t0beo"]
+
+[resource]
+script = ExtResource("1_t0beo")
+map_id = "N-005"
+display_name = "Knight Campfire"
+description = "A camp of knights, Elena is usualy here"
+possible_scenes = Array[String](["res://Maps/MapScenes/warrior_map_2.tscn"])
+script_path = "res://Maps/Special/Campfire.gd"
+weight = 50
+primary_category = 1
+emotional_weight = 2
+victory_condition = 3
+npc_presence = 2
+faction_affected = Array[int]([5])
+faction_opinion_impact = 1
+faction_opinion_magnitude = 1
+can_appear_in = Array[int]([1])
+earliest_node = 2
+latest_node = 6
+max_per_run = 0
+min_nodes_between = 0
+required_faction = 5
+required_faction_opinion = 1
+metadata/_custom_type_script = "uid://bd1y4r145gtx6"

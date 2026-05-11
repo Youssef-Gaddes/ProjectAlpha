@@ -9,6 +9,8 @@ extends CanvasLayer
 @onready var bars:Array[ProgressBar] = [j_bar1,j_bar2,j_bar3,j_bar4,j_bar5]
 @onready var kill_spare: MarginContainer = $Control/MarginContainer/VBoxContainer/KillSpare
 
+signal lock_player
+signal unlock_player
 
 func _ready() -> void:
 	kill_spare.visible = false
@@ -19,6 +21,8 @@ func _ready() -> void:
 		bars[i].max_value = player.max_judgment
 func _process(_delta: float) -> void:
 	health_bar.value = player.health
+
+
 
 func show_verdict():
 	kill_spare.visible = true

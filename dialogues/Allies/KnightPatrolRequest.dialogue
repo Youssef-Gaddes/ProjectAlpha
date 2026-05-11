@@ -12,15 +12,19 @@ elif Stats.faction_opinions.get("knights") > 75
 
 ~ allies
 Knight: Warrior! Corruption forces press our defenses! Stand with us—we must hold the line together!
-~ friends
-Knight: Holy guardian! The corrupted masses surge against our walls! Grace us with your presence—help us repel this tide of darkness!
 - I will help you.
-	Knight: With you on our side, they do not stand a chance.
+	Knight: Your help will not go unnoticed.
 	do Stats._map_trans_diag_combat()
+	do Stats.update_opinion('knights',10)
 	=> END
 - Deal with it yourslef.
-	Knight: No..
+	Knight: Curse you!
+	do Stats.update_opinion('knights',-5)
+	do Stats._map_trans_diag_done()
 	=> END
+~ friends
+Knight: Holy guardian! The corrupted masses surge against our walls! Grace us with your presence—help us repel this tide of darkness!
+
 ~ reverent
 Knight: Divine protector! Corruption overwhelms our ranks! Descend and drive back these vile forces—only you can save us!
 ~ god

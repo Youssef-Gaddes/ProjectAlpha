@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://b3bs6v4x777ru"
+path="res://.godot/imported/elena.dialogue-779207f71fd8688ab85246f9e48d79bf.tres"
+
+[deps]
+
+source_file="res://dialogues/Named/elena.dialogue"
+dest_files=["res://.godot/imported/elena.dialogue-779207f71fd8688ab85246f9e48d79bf.tres"]
+
+[params]
+
+defaults=true

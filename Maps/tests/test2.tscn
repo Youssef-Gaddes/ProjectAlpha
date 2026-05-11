@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=4 uid="uid://bt25juxd5aejp"]
 
-[ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/judge.tscn" id="2_oip1d"]
+[ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/God/Judge/judge.tscn" id="2_oip1d"]
 [ext_resource type="PackedScene" uid="uid://co40qlblv3tjg" path="res://camera_3d.tscn" id="3_heb20"]
 [ext_resource type="Texture2D" uid="uid://cceyjwfmgcrhp" path="res://tiles/Floor/8/8_diffuseOriginal.bmp" id="4_n0ie2"]
 [ext_resource type="Texture2D" uid="uid://bmvkqq0qqxtuo" path="res://tiles/Floor/8/8_height.bmp" id="5_4gp43"]

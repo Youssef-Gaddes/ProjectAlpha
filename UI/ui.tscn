@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://1fpbgm5usmiw"]
+[gd_scene load_steps=5 format=3 uid="uid://1fpbgm5usmiw"]
 
 [ext_resource type="Script" uid="uid://baxp8wh0mwe35" path="res://UI/ui_script.gd" id="1_2fwl4"]
+[ext_resource type="Script" uid="uid://bxvggy0273xcj" path="res://UI/upgrade_screen.gd.gd" id="2_dajm1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dajm1"]
 bg_color = Color(0.7014114, 0.3583868, 0, 1)
@@ -33,6 +34,36 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
+
+[node name="Margin" type="MarginContainer" parent="Control/MarginContainer"]
+top_level = true
+layout_mode = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 90
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 200
+
+[node name="Panel" type="VBoxContainer" parent="Control/MarginContainer/Margin" groups=["UpgradeUI"]]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+script = ExtResource("2_dajm1")
+
+[node name="Cards" type="HBoxContainer" parent="Control/MarginContainer/Margin/Panel"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 6.51
+
+[node name="Confirm" type="Button" parent="Control/MarginContainer/Margin/Panel"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Confirm
+"
+
+[node name="Skip" type="Button" parent="Control/MarginContainer/Margin/Panel"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Skip"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
@@ -171,3 +202,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_styles/fill = SubResource("StyleBoxFlat_2fwl4")
+
+[connection signal="pressed" from="Control/MarginContainer/Margin/Panel/Confirm" to="Control/MarginContainer/Margin/Panel" method="_on_confirm_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/Margin/Panel/Skip" to="Control/MarginContainer/Margin/Panel" method="_on_skip_pressed"]

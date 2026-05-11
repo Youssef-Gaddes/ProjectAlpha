@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dpoim631oc1vk" path="res://Maps/Combat/CombatMap.gd" id="1_38v1m"]
 [ext_resource type="Resource" uid="uid://bx4fdpbvwfqbl" path="res://Maps/Res/CorruptedNest.tres" id="2_hk3u5"]
-[ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/judge.tscn" id="2_jmkrd"]
+[ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/God/Judge/judge.tscn" id="2_jmkrd"]
 [ext_resource type="PackedScene" uid="uid://co40qlblv3tjg" path="res://camera_3d.tscn" id="3_5xewu"]
 [ext_resource type="Texture2D" uid="uid://cceyjwfmgcrhp" path="res://tiles/Floor/8/8_diffuseOriginal.bmp" id="4_hkqdj"]
 [ext_resource type="Texture2D" uid="uid://bmvkqq0qqxtuo" path="res://tiles/Floor/8/8_height.bmp" id="5_1ssm6"]

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=4 format=3 uid="uid://dmgjs44kb5i56"]
+
+[ext_resource type="Script" uid="uid://c0ang66g7bob5" path="res://Maps/Data/UpgradeEffect.gd" id="1_o5kfa"]
+[ext_resource type="Resource" uid="uid://cv83q8i1pp8oc" path="res://Maps/Data/Effects/Health1.tres" id="2_o5kfa"]
+[ext_resource type="Script" uid="uid://bchqa86sb8uej" path="res://Maps/Data/UpgradeData.gd" id="3_mpboa"]
+
+[resource]
+script = ExtResource("3_mpboa")
+upgrade_id = "3"
+display_name = "Thick Skin"
+description = "Improves your maximum health"
+effects = Array[ExtResource("1_o5kfa")]([ExtResource("2_o5kfa")])
+can_stack = true
+max_stacks = -1
+metadata/_custom_type_script = "uid://bchqa86sb8uej"

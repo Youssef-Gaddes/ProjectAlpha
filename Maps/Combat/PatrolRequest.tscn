@@ -1,8 +1,8 @@
-[gd_scene load_steps=31 format=4 uid="uid://cgq3j335or3r8"]
+[gd_scene load_steps=29 format=4 uid="uid://cgq3j335or3r8"]
 
 [ext_resource type="Script" uid="uid://dpoim631oc1vk" path="res://Maps/Combat/CombatMap.gd" id="1_vwq0f"]
 [ext_resource type="Resource" uid="uid://b775ldgohbckd" path="res://Maps/Res/PatrolRequest.tres" id="2_v3bow"]
-[ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/judge.tscn" id="3_2b6vc"]
+[ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/God/Judge/judge.tscn" id="3_2b6vc"]
 [ext_resource type="PackedScene" uid="uid://co40qlblv3tjg" path="res://camera_3d.tscn" id="4_hmust"]
 [ext_resource type="Texture2D" uid="uid://cceyjwfmgcrhp" path="res://tiles/Floor/8/8_diffuseOriginal.bmp" id="5_84hir"]
 [ext_resource type="Texture2D" uid="uid://bmvkqq0qqxtuo" path="res://tiles/Floor/8/8_height.bmp" id="6_t18gi"]
@@ -16,9 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://de1vlmnbyhaqw" path="res://entities/NPCs/soldier/soldier.tscn" id="14_t18gi"]
 [ext_resource type="Script" uid="uid://b14gugdy3golt" path="res://entities/NPCs/AttackData.gd" id="15_v3bow"]
 [ext_resource type="Resource" uid="uid://cnruhddqxyw1c" path="res://entities/NPCs/soldier/SoldierSlaah.tres" id="16_d5j4x"]
-[ext_resource type="PackedScene" uid="uid://bs5go5v7ynou" path="res://entities/NPCs/combat_module.tscn" id="16_fqekx"]
 [ext_resource type="Resource" uid="uid://hufciabvv0me" path="res://entities/NPCs/soldier/SoldierSpin.tres" id="17_ghuh6"]
-[ext_resource type="PackedScene" uid="uid://cl1vujbtgdlt3" path="res://entities/NPCs/dialogue_module.tscn" id="17_v3bow"]
 [ext_resource type="Resource" uid="uid://cvdb10nklwyxa" path="res://dialogues/Allies/KnightPatrolRequest.dialogue" id="18_evuaa"]
 [ext_resource type="Script" uid="uid://e3mk4v0c7apw" path="res://entities/NPCs/NPCData.gd" id="19_sily2"]
 
@@ -115,7 +113,7 @@ map_data = ExtResource("2_v3bow")
 [node name="Judge" parent="." instance=ExtResource("3_2b6vc")]
 transform = Transform3D(-0.9995712, 0, -0.02928235, 0, 1, 0, 0.02928235, 0, -0.9995712, 0, 0.26908982, 20.196598)
 
-[node name="Camera3D" parent="." node_paths=PackedStringArray("target") groups=["camera"] instance=ExtResource("4_hmust")]
+[node name="Camera3D" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_hmust")]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.34202015, 0.9396926, 0, -0.9396926, 0.34202015, 0, 7, 0)
 fov = 65.7
 target = NodePath("../Judge")
@@ -195,5 +193,3 @@ where = "res://Maps/Combat maps/test2.tscn"
 [node name="Soldier" parent="." groups=["ally"] instance=ExtResource("14_t18gi")]
 transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, -2.9684489, 0, 10.982573)
 NPC_Data = SubResource("Resource_v3bow")
-Combat_Module_scene = ExtResource("16_fqekx")
-DialogueModule_scene = ExtResource("17_v3bow")

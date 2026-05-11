@@ -100,6 +100,7 @@ func _enter_state(state: MapState) -> void:
 		MapState.EXPLORATION:
 			_start_exploration()
 		MapState.COMBAT:
+			combat_started.emit()
 			_start_combat()
 		MapState.DONE:
 			_complete_map()
@@ -121,6 +122,10 @@ func _start_exploration() -> void:
 func _start_combat() -> void:
 	print("Combat started!")
 	
+	for enemy in enemies:
+		print(enemy,'entering combat')
+		if enemy.has_method("force_enter_combat"):
+			enemy.force_enter_combat()
 	# Activate allies
 	for ally in allies:
 
@@ -139,16 +144,22 @@ func _complete_map() -> void:
 	
 	# Save player health
 	Stats.player_health = player.health
-	
-	# Activate TP
-	if tp:
-		tp.activate()
+	var offer = UpgradeManager.generate_offer(map_data)
+	UpgradeManager.current_offer = offer  # add this var to UpgradeManager
+
+	# TP activates AFTER player picks upgrade — connect from UI
+	# UI calls UpgradeManager.apply_upgrade(chosen) then tp.activate()
+	_show_upgrade_ui(offer)
 	
 	# Build and report consequences
 	var consequences = _build_consequences()
 	print(consequences)
 	map_completed.emit(consequences)
 
+func _show_upgrade_ui(offer: Array[UpgradeData]) -> void:
+	var ui = get_tree().get_first_node_in_group("UpgradeUI")
+	if ui and ui.has_method("show_upgrade_offer"):
+		ui.show_upgrade_offer(offer)
 # ============================================
 # VICTORY CONDITION (Override in children)
 # ============================================
@@ -179,23 +190,23 @@ func _start_verdict_phase() -> void:
 func _on_enemy_killed(enemy_instance: CharacterBody3D) -> void:
 	if not all:
 		downed.erase(enemy_instance)
-	
+		
 		killed += 1
 		total += 1
 		Stats.total_kills += 1
-	
+		
 		# Check if all resolved
 		_check_resolution_complete()
 
 func _on_enemy_spared(enemy_instance: CharacterBody3D) -> void:
 	if not all:
 		downed.erase(enemy_instance)
-	
+		
 		spared += 1
 		total += 1
 		Stats.total_spares += 1
-	
-	# Check if all resolved
+		
+		# Check if all resolved
 		_check_resolution_complete()
 
 func _check_resolution_complete() -> void:

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=4 format=3 uid="uid://bsac3cigrs17s"]
+
+[ext_resource type="Script" uid="uid://c0ang66g7bob5" path="res://Maps/Data/UpgradeEffect.gd" id="1_bk0ay"]
+[ext_resource type="Resource" uid="uid://dxojqfscorhuq" path="res://Maps/Data/Effects/Dmg1.tres" id="2_53uqi"]
+[ext_resource type="Script" uid="uid://bchqa86sb8uej" path="res://Maps/Data/UpgradeData.gd" id="2_72gfd"]
+
+[resource]
+script = ExtResource("2_72gfd")
+upgrade_id = "1"
+display_name = "Divine Might"
+description = "Your attacks deal more damage."
+effects = Array[ExtResource("1_bk0ay")]([ExtResource("2_53uqi")])
+can_stack = true
+max_stacks = -1
+metadata/_custom_type_script = "uid://bchqa86sb8uej"

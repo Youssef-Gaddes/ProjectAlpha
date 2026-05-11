@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ul2ulni2pchi" path="res://Maps/Special/SpiritMeeting.gd" id="1_r1cc8"]
 [ext_resource type="Resource" uid="uid://dsm2fhbhnd2ks" path="res://Maps/Res/SpiritMeet.tres" id="2_838dy"]
-[ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/judge.tscn" id="3_k0ylp"]
+[ext_resource type="PackedScene" uid="uid://bly7lmhpqyqlp" path="res://entities/player/God/Judge/judge.tscn" id="3_k0ylp"]
 [ext_resource type="PackedScene" uid="uid://co40qlblv3tjg" path="res://camera_3d.tscn" id="4_3d6tm"]
 [ext_resource type="Texture2D" uid="uid://cceyjwfmgcrhp" path="res://tiles/Floor/8/8_diffuseOriginal.bmp" id="5_q7wyo"]
 [ext_resource type="Texture2D" uid="uid://bmvkqq0qqxtuo" path="res://tiles/Floor/8/8_height.bmp" id="6_lkost"]

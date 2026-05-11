@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://b0q22e63lwmk5"]
+
+[ext_resource type="Script" uid="uid://b14gugdy3golt" path="res://entities/NPCs/AttackData.gd" id="1_247ju"]
+[ext_resource type="Script" uid="uid://e3mk4v0c7apw" path="res://entities/NPCs/NPCData.gd" id="2_xb2jk"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("2_xb2jk")
+npc_name = "CheeringGoofus"
+npc_id = "006"
+faction = "Knights"
+metadata/_custom_type_script = "uid://e3mk4v0c7apw"

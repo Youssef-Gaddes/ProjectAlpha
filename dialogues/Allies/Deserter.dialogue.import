@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://qpayrxgnpwxb"
+path="res://.godot/imported/Deserter.dialogue-66a064ed90c86d4e32a9d53d4f040f79.tres"
+
+[deps]
+
+source_file="res://dialogues/Allies/Deserter.dialogue"
+dest_files=["res://.godot/imported/Deserter.dialogue-66a064ed90c86d4e32a9d53d4f040f79.tres"]
+
+[params]
+
+defaults=true

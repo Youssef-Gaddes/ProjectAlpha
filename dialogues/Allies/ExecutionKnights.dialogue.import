@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://bp36egfpheo5t"
+path="res://.godot/imported/ExecutionKnights.dialogue-72a6ffbf83b03d2a3c80e0b21d20615c.tres"
+
+[deps]
+
+source_file="res://dialogues/Allies/ExecutionKnights.dialogue"
+dest_files=["res://.godot/imported/ExecutionKnights.dialogue-72a6ffbf83b03d2a3c80e0b21d20615c.tres"]
+
+[params]
+
+defaults=true

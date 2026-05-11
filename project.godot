@@ -19,8 +19,14 @@ config/icon="res://icon.svg"
 [autoload]
 
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
-Stats="*res://stats.gd"
-RunManager="*res://RunManager.gd"
+Stats="*res://Autoloads/stats.gd"
+RunManager="*res://Autoloads/RunManager.gd"
+UpgradeManager="*res://Autoloads/upgrade_manager.gd"
+MCPRuntime="*res://addons/godot_mcp/runtime/mcp_runtime.gd"
+
+[dialogue_manager]
+
+runtime/balloon_path="uid://bm1konie7vhw2"
 
 [display]
 
@@ -29,7 +35,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/dialogue_manager/plugin.cfg", "res://addons/godot_mcp/plugin.cfg")
 
 [input]
 
@@ -101,7 +107,7 @@ interact={
 
 [internationalization]
 
-locale/translations_pot_files=PackedStringArray("res://test_dialogue.dialogue", "res://dialogues/normalEnemies/normalDialogue.dialogue", "res://dialogues/normalEnemies/begging.dialogue", "res://dialogues/normalEnemies/threat.dialogue", "res://dialogues/normalEnemies/bargain.dialogue", "res://dialogues/normalEnemies/begging2.dialogue", "res://dialogues/normalEnemies/threat2.dialogue", "res://dialogues/Allies/KnightPatrolRequest.dialogue", "res://dialogues/Spirits/KnightSpirit.dialogue")
+locale/translations_pot_files=PackedStringArray("res://dialogues/normalEnemies/normalDialogue.dialogue", "res://dialogues/normalEnemies/begging.dialogue", "res://dialogues/normalEnemies/threat.dialogue", "res://dialogues/normalEnemies/bargain.dialogue", "res://dialogues/normalEnemies/begging2.dialogue", "res://dialogues/normalEnemies/threat2.dialogue", "res://dialogues/Allies/KnightPatrolRequest.dialogue", "res://dialogues/Spirits/KnightSpirit.dialogue", "res://dialogues/Named/elena.dialogue", "res://dialogues/Hostile/CampfireWarningKnights.dialogue", "res://Old_Stuff/test_dialogue.dialogue", "res://dialogues/Allies/Deserter.dialogue", "res://dialogues/Allies/ExecutionKnights.dialogue")
 
 [layer_names]
 

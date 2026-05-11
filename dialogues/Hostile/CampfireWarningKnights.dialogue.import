@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=15
+type="Resource"
+uid="uid://bfk4hj0d6r0r8"
+path="res://.godot/imported/CampfireWarningKnights.dialogue-082f3de491ed5afc61d53a85350f9ae2.tres"
+
+[deps]
+
+source_file="res://dialogues/Hostile/CampfireWarningKnights.dialogue"
+dest_files=["res://.godot/imported/CampfireWarningKnights.dialogue-082f3de491ed5afc61d53a85350f9ae2.tres"]
+
+[params]
+
+defaults=true
