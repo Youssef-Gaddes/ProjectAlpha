@@ -1,4 +1,6 @@
-# ⚖️ [Game Title] — 3D Roguelite
+All Rights Reserved. No permission is granted to download, use, or modify this software for any purpose.
+
+# ⚖️ Project Alpha — 3D Roguelite
 
 > A 3D action roguelite built in **Godot 4** where you play as a divine judge navigating a fractured world of warring factions.
 > Every run is shaped by your choices — who you spare, which factions you favor, and which moral archetype you embody.
