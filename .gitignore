@@ -4,3 +4,6 @@
 Assets/
 *.zip
 *.tmp
+Maps/MapScenes/warrior_map_2.tscn
+Maps/MapScenes/KnightCamp2.tscn
+Maps/warrior_map_2.tscn
